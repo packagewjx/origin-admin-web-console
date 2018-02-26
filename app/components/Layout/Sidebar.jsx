@@ -1,7 +1,7 @@
 import React from 'react';
-import { Router, Route, Link, History, withRouter } from 'react-router';
+import {Router, Route, Link, History, withRouter} from 'react-router';
 import pubsub from 'pubsub-js';
-import { Collapse } from 'react-bootstrap';
+import {Collapse} from 'react-bootstrap';
 import SidebarRun from './Sidebar.run';
 
 class Sidebar extends React.Component {
@@ -9,12 +9,25 @@ class Sidebar extends React.Component {
     constructor(props, context) {
         super(props, context);
 
+        //For dynamic menu rendering.
+        this.menu = [
+            {kind: "item", route: "singleview", title: "Single View", iconClass: "icon-grid"},
+            {
+                kind: "submenu", name: "submenu", title: "Menu", iconClass: "icon-speedometer", children: [
+                    {kind: "item", route: "submenu", title: "Submenu", iconClass: "icon-grid"}
+                ]
+            },
+            {
+                kind: "submenu", name: "auth", title: "权限管理", iconClass: "icon-shield", children: [
+                    {kind: "item", route: "users", title: "用户管理", iconClass: "icon-people"},
+                    {kind: "item", route: "roles", title: "角色管理", iconClass: "fa fa-male"}
+                ]
+            }
+        ];
+
         this.state = {
             userBlockCollapse: false,
-            collapse: {
-                singleview: this.routeActive(['singleview']),
-                submenu: this.routeActive(['submenu'])
-            }
+            collapse: {}
         };
         this.pubsub_token = pubsub.subscribe('toggleUserblock', () => {
             this.setState({
@@ -59,27 +72,74 @@ class Sidebar extends React.Component {
         });
     }
 
+    toMenuItem(item) {
+        if (!item.kind || item.kind !== 'item'){
+            console.error("Not of a menu item", item);
+            return (<li/>);
+        }
+        return (
+            <li key={item.route} className={this.routeActive(item.route) ? 'active' : ''}>
+                <Link to={item.route} title={item.title}>
+                    <em className={item.iconClass || ""}/>
+                    <span>{item.title}</span>
+                </Link>
+            </li>
+        );
+    }
+
     render() {
+        let navMenu = [];
+        for (let i = 0; i < this.menu.length; i++) {
+            let item = this.menu[i];
+            if (item.kind === 'item') {
+                navMenu.push(
+                    this.toMenuItem(item)
+                );
+            } else if (item.kind === 'submenu') {
+                let subMenuItems = [];
+                let routes = [];
+                for (let j = 0; j < item.children.length; j++) {
+                    subMenuItems.push(this.toMenuItem(item.children[j]));
+                    routes.push(item.children[j].route);
+                }
+                navMenu.push(
+                    <li className={this.routeActive(routes) ? 'active' : ''}>
+                        <div className="nav-item" onClick={this.toggleItemCollapse.bind(this, item.name)}>
+                            <em className={item.iconClass}/>
+                            <span>{item.title}</span>
+                        </div>
+                        <Collapse in={this.state.collapse[item.name]} timeout={100}>
+                            <ul id={item.name} className="nav sidebar-subnav">
+                                {subMenuItems}
+                            </ul>
+                        </Collapse>
+                    </li>
+                );
+            }
+        }
+
+
         return (
             <aside className='aside'>
-                { /* START Sidebar (left) */ }
+                {/* START Sidebar (left) */}
                 <div className="aside-inner">
                     <nav data-sidebar-anyclick-close="" className="sidebar">
-                        { /* START sidebar nav */ }
+                        {/* START sidebar nav */}
                         <ul className="nav">
-                            { /* START user info */ }
+                            {/* START user info */}
                             <li className="has-user-block">
-                                <Collapse id="user-block" in={ this.state.userBlockCollapse }>
+                                <Collapse id="user-block" in={this.state.userBlockCollapse}>
                                     <div>
                                         <div className="item user-block">
-                                            { /* User picture */ }
+                                            {/* User picture */}
                                             <div className="user-block-picture">
                                                 <div className="user-block-status">
-                                                    <img src="img/user/02.jpg" alt="Avatar" width="60" height="60" className="img-thumbnail img-circle" />
+                                                    <img src="img/user/02.jpg" alt="Avatar" width="60" height="60"
+                                                         className="img-thumbnail img-circle"/>
                                                     <div className="circle circle-success circle-lg"></div>
                                                 </div>
                                             </div>
-                                            { /* Name and Job */ }
+                                            {/* Name and Job */}
                                             <div className="user-block-info">
                                                 <span className="user-block-name">Hello, Mike</span>
                                                 <span className="user-block-role">Designer</span>
@@ -88,44 +148,16 @@ class Sidebar extends React.Component {
                                     </div>
                                 </Collapse>
                             </li>
-                            { /* END user info */ }
-                            { /* Iterates over all sidebar items */ }
-                            <li className="nav-heading ">
-                                <span data-localize="sidebar.heading.HEADER">Main Navigation</span>
-                            </li>
+                            {/* END user info */}
 
-                            <li className={ this.routeActive('singleview') ? 'active' : '' }>
-                                <Link to="singleview" title="Single View">
-                                <em className="icon-grid"></em>
-                                <span data-localize="sidebar.nav.SINGLEVIEW">Single View</span>
-                                </Link>
-                            </li>
-
-                            <li className={ this.routeActive(['submenu']) ? 'active' : '' }>
-                                <div className="nav-item" onClick={ this.toggleItemCollapse.bind(this, 'submenu') }>
-                                    <div className="pull-right label label-info">1</div>
-                                    <em className="icon-speedometer"></em>
-                                    <span data-localize="sidebar.nav.MENU">Menu</span>
-                                </div>
-                                <Collapse in={ this.state.collapse.submenu } timeout={ 100 }>
-                                    <ul id="submenu" className="nav sidebar-subnav">
-                                        <li className="sidebar-subnav-header">Submenu</li>
-                                        <li className={ this.routeActive('submenu') ? 'active' : '' }>
-                                            <Link to="submenu" title="Submenu">
-                                            <span data-localize="sidebar.nav.SUBMENU">Submenu</span>
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                </Collapse>
-                            </li>
-
+                            {navMenu}
                         </ul>
-                        { /* END sidebar nav */ }
+                        {/* END sidebar nav */}
                     </nav>
                 </div>
-                { /* END Sidebar (left) */ }
+                {/* END Sidebar (left) */}
             </aside>
-            );
+        );
     }
 
 }

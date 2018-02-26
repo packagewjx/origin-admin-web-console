@@ -27,6 +27,12 @@ import SubMenu from './components/SubMenu/SubMenu';
 // Application Styles
 import './styles/bootstrap.scss';
 import './styles/app.scss'
+import Login from "./components/Page/Login";
+import NotFound from "./components/Page/NotFound";
+import Register from "./components/Page/Register";
+import UserManagement from "./components/AuthorizationManagement/UserManagement";
+import RoleManagement from "./components/AuthorizationManagement/RoleManagement";
+import ResourceOverview from "./components/Common/ResourceOverview/ResourceOverview";
 
 
 // Init translation system
@@ -42,7 +48,7 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
 // specify basename below if running in a subdirectory or set as "/" if app runs in root
 const appHistory = useRouterHistory(createHistory)({
   basename: WP_BASE_HREF
-})
+});
 
 ReactDOM.render(
     <Router history={appHistory}>
@@ -54,10 +60,36 @@ ReactDOM.render(
             <Route path="singleview" component={SingleView}/>
             <Route path="submenu" component={SubMenu}/>
 
+            {/*权限管理*/}
+            <Route path="users" component={UserManagement}/>
+            <Route path="roles" component={RoleManagement}/>
+            <Route path="overview" component={ResourceOverview}/>
+
+            {/*模板管理*/}
+            <Route path="imagestreams"/>
+            <Route path="templates"/>
+
+
+            <Route path="projectnetwork"/>
+
+
+
+
+
+
+
+        </Route>
+
+        <Route path="/" component={BasePage}>
+            <Route path="login" component={Login}/>
+            <Route path="register" component={Register}/>
         </Route>
 
         {/* Not found handler */}
         {/*<Route path="*" component={NotFound}/>*/}
+
+        {/* Not found handler */}
+        <Route path="*" component={NotFound}/>
 
     </Router>,
     document.getElementById('app')

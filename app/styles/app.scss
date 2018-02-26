@@ -34,11 +34,18 @@
 @import "app/sidebar";
 @import "app/offsidebar";
 
+// Form elements
+@import "app/form-elements";
+
+
+
 // Components
 @import "app/breadcrumbs";
 @import "app/user-block";
 @import "app/dropdown-extra";
 @import "app/animate";
+@import "app/panels";
+
 
 // Utilities 
 @import "app/utils";
