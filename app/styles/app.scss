@@ -37,18 +37,19 @@
 // Form elements
 @import "app/form-elements";
 
-
-
 // Components
 @import "app/breadcrumbs";
 @import "app/user-block";
 @import "app/dropdown-extra";
 @import "app/animate";
 @import "app/panels";
-
+@import "app/datatable";
 
 // Utilities 
 @import "app/utils";
 
 // Print CSS
 @import "app/print";
+
+// React table css
+@import "../../node_modules/react-table/react-table.css";

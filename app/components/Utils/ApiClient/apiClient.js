@@ -3,7 +3,7 @@ import DeleteOptions from "./model/DeleteOptions";
 const API_RESOURCE_LIST_URLS = ["https://116.56.140.108:8443/oapi/v1", "https://116.56.140.108:8443/api/v1"];
 
 let client = {};
-let initializing = true;
+let fetchingPromise = undefined;
 let token = "Bearer _c-Ef0Rd4DuIHUbd_qW0hkhasQURdATBtwmyNk-XzNY";
 
 let verbFunctions = {
@@ -45,9 +45,12 @@ let failCallback = function (xhr, status, error) {
  * @returns {Promise<any>}
  */
 function apiClient() {
-    return new Promise((resolve, reject) => {
-        if (initializing) {
-            API_RESOURCE_LIST_URLS.forEach((value, index) => {
+    if (fetchingPromise)
+        return fetchingPromise;
+    else {
+        fetchingPromise = new Promise((resolve, reject) => {
+            let fetched = 0;
+            API_RESOURCE_LIST_URLS.forEach((value) => {
                 $.getJSON(value, null, function (data, status, xhr) {
                     if (data.kind !== "APIResourceList") {
                         console.error("Error getting api resource list from ", value);
@@ -73,19 +76,19 @@ function apiClient() {
                         }
                     }
 
-                    //set initializing to false when this index is the last
-                    if (index === API_RESOURCE_LIST_URLS.length - 1) {
-                        initializing = false;
+                    fetched++;
+
+                    //if all fetched, resolve this Promise
+                    if (fetched === API_RESOURCE_LIST_URLS.length) {
                         resolve(client);
                     }
                 }).fail(function (xhr, status, error) {
                     reject(xhr, status, error);
                 })
             });
-        } else {
-            resolve(client);
-        }
-    })
+        });
+        return fetchingPromise;
+    }
 }
 
 /**
@@ -214,7 +217,7 @@ function listFunction(resource) {
  */
 function updateFunction(resource) {
     return function (obj, name, options) {
-        options = options ||defaultOption;
+        options = options || defaultOption;
 
         let url = resource.baseURL;
         if (options.namespace !== "") {

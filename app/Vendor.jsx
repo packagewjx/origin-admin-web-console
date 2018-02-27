@@ -18,3 +18,14 @@ import '../bower_components/animate.css/animate.min.css';
 import '../bower_components/simple-line-icons/css/simple-line-icons.css';
 // Localization
 import '../bower_components/jquery-localize-i18n/dist/jquery.localize.js';
+// Datatables
+$.fn.dataTable = require('datatables.net-bs')(window, $);
+require('datatables.net-buttons')(window, $);
+require('datatables.net-buttons-bs')(window, $);
+require('datatables.net-responsive')(window, $);
+require('datatables.net-responsive-bs')(window, $);
+require('datatables.net-buttons/js/buttons.colVis.js')(window, $); // Column visibility
+require('datatables.net-buttons/js/buttons.html5.js')(window, $); // HTML 5 file export
+require('datatables.net-buttons/js/buttons.flash.js')(window, $); // Flash file export
+require('datatables.net-buttons/js/buttons.print.js')(window, $); // Print view button
+import '../bower_components/dataTables.fontAwesome/index.css';

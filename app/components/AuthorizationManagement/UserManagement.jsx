@@ -7,15 +7,19 @@
 import React from 'react';
 import ContentWrapper from "../Layout/ContentWrapper";
 import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
+import {ColumnConfig, TableConfig} from "../Common/ResourceOverview/TableConfig";
 
 class UserManagement extends React.Component {
+
     render() {
+        let tableConfig = new TableConfig();
+        tableConfig.columns = [
+            "name",
+            "creationTimestamp",
+        ];
+
         return (
-            <ContentWrapper>
-                <div className="content-heading">
-                    用户管理
-                </div>
-            </ContentWrapper>
+            <ResourceOverview resourceName={"projects"} tableConfig={tableConfig} title="用户管理"/>
         );
     }
 }

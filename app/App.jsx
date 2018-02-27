@@ -40,6 +40,10 @@ initLoadThemes();
 // Init api client
 apiClient().then(function (client) {
     console.log(client);
+
+    client.users.get("admin").then(function (data) {
+        console.log(data);
+    })
 });
 
 // Disable warning "Synchronous XMLHttpRequest on the main thread is deprecated.."
@@ -73,9 +77,6 @@ ReactDOM.render(
 
 
             <Route path="projectnetwork"/>
-
-
-
 
 
         </Route>
