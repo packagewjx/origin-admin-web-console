@@ -14,12 +14,11 @@ import ReactDOM from 'react-dom';
 import { Router, Route, Link, hashHistory, useRouterHistory, IndexRedirect } from 'react-router';
 import { createHistory } from 'history';
 
-import initTranslation from './components/Common/localize';
 import initLoadThemes from './components/Common/load-themes';
+import {apiClient, init} from './components/Utils/ApiClient/apiClient';
 
 import Base from './components/Layout/Base';
 import BasePage from './components/Layout/BasePage';
-import BaseHorizontal from './components/Layout/BaseHorizontal';
 
 import SingleView from './components/SingleView/SingleView';
 import SubMenu from './components/SubMenu/SubMenu';
@@ -35,10 +34,13 @@ import RoleManagement from "./components/AuthorizationManagement/RoleManagement"
 import ResourceOverview from "./components/Common/ResourceOverview/ResourceOverview";
 
 
-// Init translation system
-initTranslation();
 // Init css loader (for themes)
 initLoadThemes();
+
+// Init api client
+apiClient().then(function (client) {
+    console.log(client);
+});
 
 // Disable warning "Synchronous XMLHttpRequest on the main thread is deprecated.."
 $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
@@ -71,8 +73,6 @@ ReactDOM.render(
 
 
             <Route path="projectnetwork"/>
-
-
 
 
 

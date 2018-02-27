@@ -1,0 +1,237 @@
+import DeleteOptions from "./model/DeleteOptions";
+
+const API_RESOURCE_LIST_URLS = ["https://116.56.140.108:8443/oapi/v1", "https://116.56.140.108:8443/api/v1"];
+
+let client = {};
+let initializing = true;
+let token = "Bearer _c-Ef0Rd4DuIHUbd_qW0hkhasQURdATBtwmyNk-XzNY";
+
+let verbFunctions = {
+    create: createFunction,
+    delete: deleteFunction,
+    get: getFunction,
+    list: listFunction,
+    update: updateFunction,
+    deletecollection: deleteCollectionFunction
+};
+
+class GlobalOption {
+    namespace;
+
+    constructor() {
+        this.namespace = "";
+    }
+}
+
+let defaultOption = new GlobalOption();
+
+let failCallback = function (xhr, status, error) {
+    console.log(xhr);
+    if (xhr.responseJSON) {
+        console.error("Error making api request, returned message: ", xhr.responseJSON.message, ". Status is");
+        console.error(xhr.responseJSON);
+    } else if (xhr.responseText) {
+        console.error("Error making api request, returned message:", xhr.responseText);
+    }
+};
+
+/**
+ * Usage: apiClient return a Promise object. Use callback to use the client. Example usage
+ * <code>
+ *     apiClient().then(function(client) {
+ *         //do what you want
+ *     });
+ * </code>
+ * @returns {Promise<any>}
+ */
+function apiClient() {
+    return new Promise((resolve, reject) => {
+        if (initializing) {
+            API_RESOURCE_LIST_URLS.forEach((value, index) => {
+                $.getJSON(value, null, function (data, status, xhr) {
+                    if (data.kind !== "APIResourceList") {
+                        console.error("Error getting api resource list from ", value);
+                        reject(data, status, xhr);
+                    }
+
+                    for (let i = 0; i < data.resources.length; i++) {
+                        let resource = data.resources[i];
+                        resource.baseURL = value;
+                        let api = {spec: resource};
+
+                        for (let j = 0; j < resource.verbs.length; j++) {
+                            if (verbFunctions[resource.verbs[j]]) {
+                                api[resource.verbs[j]] = verbFunctions[resource.verbs[j]](resource);
+                            }
+                        }
+
+                        client[resource.name] = api;
+                        if (resource.shortNames) {
+                            resource.shortNames.forEach(value => {
+                                client[value] = api;
+                            })
+                        }
+                    }
+
+                    //set initializing to false when this index is the last
+                    if (index === API_RESOURCE_LIST_URLS.length - 1) {
+                        initializing = false;
+                        resolve(client);
+                    }
+                }).fail(function (xhr, status, error) {
+                    reject(xhr, status, error);
+                })
+            });
+        } else {
+            resolve(client);
+        }
+    })
+}
+
+/**
+ * Create the function for verb get, to get an object of a kind of resource
+ * @return {function(name:string, options: GlobalOption)} a method to get an object of a resource kind.
+ * @param resource
+ */
+function getFunction(resource) {
+    return function (name, options) {
+        options = options || defaultOption;
+
+        let url = resource.baseURL;
+        if (options.namespace !== "") {
+            url += "/namespaces/" + options.namespace;
+        }
+
+        url += "/" + resource.name + "/" + name;
+
+        return $.ajax(url, {
+            headers: {authorization: token},
+            method: "GET",
+            error: failCallback
+        });
+    }
+}
+
+/**
+ *
+ * @param resource
+ * @returns {function(obj:any, options:GlobalOption)} a function to create an object using <obj> object definition
+ */
+function createFunction(resource) {
+    return function (obj, options) {
+        options = options || defaultOption;
+
+        let url = resource.baseURL;
+        if (options.namespace !== "") {
+            url += "/namespaces/" + options.namespace;
+        }
+
+        url += "/" + resource.name;
+
+        return $.ajax(url, {
+            headers: {authorization: token},
+            method: "POST",
+            processData: false,
+            contentType: "application/json",
+            data: JSON.stringify(obj),
+            error: failCallback
+        });
+    }
+}
+
+/**
+ *
+ * @param resource
+ * @returns {function(name:string, options:GlobalOption)} a function to delete an object whose name is <name>
+ */
+function deleteFunction(resource) {
+    return function (name, options) {
+        let deleteOptions = new DeleteOptions();
+
+        let url = resource.baseURL;
+        if (options.namespace !== "") {
+            url += "/namespaces/" + options.namespace;
+        }
+        url += "/" + resource.name + "/" + name;
+
+        return $.ajax(url, {
+            headers: {authorization: token},
+            method: "DELETE",
+            contentType: "application/json",
+            data: JSON.stringify(deleteOptions),
+            processData: false,
+            error: failCallback
+        })
+    }
+}
+
+/**
+ *
+ * @param resource
+ * @returns {function(options:GlobalOption)} a function to delete all resource in a namespace
+ */
+function deleteCollectionFunction(resource) {
+    return function (options) {
+        let url = resource.baseURL;
+        if (options.namespace !== "") {
+            url += "/namespaces/" + options.namespace;
+        }
+        url += "/" + resource.name;
+
+        return $.ajax(url, {
+            headers: {authorization: token},
+            method: "DELETE",
+            error: failCallback
+        })
+    }
+}
+
+/**
+ * Create a function for verb list, to list all objects of a kind of resource.
+ * @returns {function(options:GlobalOption)} a function return jqXHR object, see here: http://api.jquery.com/jQuery.ajax/#jqXHR
+ * @param resource
+ */
+function listFunction(resource) {
+    return function (options) {
+        options = options || defaultOption;
+        let url = resource.baseURL;
+        if (options.namespace !== "") {
+            url += "/namespaces/" + options.namespace;
+        }
+        url += "/" + resource.name;
+
+        return $.ajax(url, {
+            method: "GET",
+            headers: {"authorization": token},
+            error: failCallback
+        });
+    }
+}
+
+/**
+ *
+ * @param resource
+ */
+function updateFunction(resource) {
+    return function (obj, name, options) {
+        options = options ||defaultOption;
+
+        let url = resource.baseURL;
+        if (options.namespace !== "") {
+            url += "/namespaces/" + options.namespace;
+        }
+        url += "/" + resource.name + "/" + name;
+
+        return $.ajax(url, {
+            headers: {authorization: token},
+            method: "DELETE",
+            contentType: "application/json",
+            data: JSON.stringify(obj),
+            processData: false,
+            error: failCallback
+        })
+    }
+}
+
+
+export {client, apiClient}

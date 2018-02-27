@@ -103,7 +103,7 @@ class Sidebar extends React.Component {
                     routes.push(item.children[j].route);
                 }
                 navMenu.push(
-                    <li className={this.routeActive(routes) ? 'active' : ''}>
+                    <li key={item.name} className={this.routeActive(routes) ? 'active' : ''}>
                         <div className="nav-item" onClick={this.toggleItemCollapse.bind(this, item.name)}>
                             <em className={item.iconClass}/>
                             <span>{item.title}</span>
