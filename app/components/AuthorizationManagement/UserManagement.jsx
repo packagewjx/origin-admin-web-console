@@ -16,10 +16,11 @@ class UserManagement extends React.Component {
         tableConfig.columns = [
             "name",
             "creationTimestamp",
+            new ColumnConfig("用户身份", "identities")
         ];
 
         return (
-            <ResourceOverview resourceName={"projects"} tableConfig={tableConfig} title="用户管理"/>
+            <ResourceOverview resourceName={"users"} tableConfig={tableConfig} title="用户管理"/>
         );
     }
 }

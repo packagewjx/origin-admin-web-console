@@ -12,6 +12,7 @@ import {DefaultColumnConfig, TableConfig} from "./TableConfig";
 import {apiClient} from "../../Utils/ApiClient/apiClient";
 import Link from "react-router/es/Link";
 import ReactTable from "react-table";
+import {Button} from "react-bootstrap";
 
 class ResourceOverview extends React.Component {
     constructor(props) {
@@ -67,6 +68,9 @@ class ResourceOverview extends React.Component {
                 <div className="content-heading">
                     {this.props.title}
                 </div>
+                <p>
+                    <Button bsStyle="success"><em className="fa fa-plus"/> 添加一项</Button>
+                </p>
                 <ReactTable
                     data={this.state.data}
                     loading={this.state.loading}
@@ -76,8 +80,8 @@ class ResourceOverview extends React.Component {
                     nextText="下一页"
                     loadingText="获取数据中"
                     noDataText="无数据"
-                    pageText="页"
-                    ofText="的"
+                    pageText="第"
+                    ofText="页共"
                     rowsText="行"
                 />
             </ContentWrapper>
@@ -105,8 +109,12 @@ function Cell(props) {
 function renderItem(item, referer, linkTo) {
     let data = getData(item, referer);
     if (typeof linkTo === 'string' && linkTo !== "") {
-        //replace <<name>> to item name, if any
-        linkTo = linkTo.replace("<<name>>", item.name || (item.metadata ? item.metadata.name : "") || "");
+        //replace {referer} to item.referer, if any
+        let reg = /{([^}]+)}/g;
+        linkTo = linkTo.replace(reg, function (match, $1) {
+            return getData(item, $1);
+        });
+
         return (
             <Link to={linkTo}>{data}</Link>
         )

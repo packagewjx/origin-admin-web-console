@@ -11,7 +11,7 @@ export const DefaultColumnConfig = {
     name: {
         title: "名称",
         referer: "metadata.name",
-        linkTo: "<<resourceName>>/<<name>>"
+        linkTo: "<<resourceName>>/{metadata.name}"
     },
     namespace: {
         title: "命名空间",
@@ -39,7 +39,10 @@ export class ColumnConfig {
     referer;
 
     /**
-     * if set, this will open detail page. Format: resourceName.objectName. It will cal the route.
+     * If set, this will open detail page. Format: /path1/path2. It will cal the route.
+     * You can supply a item property selector using this format: {a.b.c}, e.g /users/{metadata.name}, {metadata.name}
+     * will be replaced with item.metadata.name. You can supply a constant placeholder '<<resourceName>>' to be replaced with
+     * the real resource name, e.g. users. Then it will be the actual route for React-Router.
      * @member {String} linkTo
      */
     linkTo;
