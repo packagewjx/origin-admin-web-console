@@ -51,6 +51,10 @@ class PropertyEditor extends React.Component {
      * @param oldKey
      */
     submitKeyChange(event, oldKey) {
+        if (event.target.value === oldKey) {
+            //if the key unchanged, just return
+            return;
+        }
         //change the key to newKey
         let map = this.props.option.value;
         let value = map[oldKey];

@@ -12,8 +12,6 @@ import PropertyOption from "../Common/ResourceEditor/PropertyOption";
 class RoleManagement extends React.Component {
     constructor(props) {
         super(props);
-
-
     }
 
     render() {
@@ -41,10 +39,19 @@ class RoleManagement extends React.Component {
                 <div className="content-heading">
                     角色管理
                 </div>
-                <ResourceEditor item={obj} resourceName={"人"} propertyOptions={options}/>
+                <ResourceEditor item={obj} resourceName={"人"} propertyOptions={options} onConfirm={confirm}/>
             </ContentWrapper>
         );
     }
+}
+
+function confirm(data) {
+    console.log(data);
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve();
+        }, 3000)
+    })
 }
 
 export default RoleManagement;

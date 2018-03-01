@@ -29,3 +29,5 @@ require('datatables.net-buttons/js/buttons.html5.js')(window, $); // HTML 5 file
 require('datatables.net-buttons/js/buttons.flash.js')(window, $); // Flash file export
 require('datatables.net-buttons/js/buttons.print.js')(window, $); // Print view button
 import '../bower_components/dataTables.fontAwesome/index.css';
+// Spinkit
+import '../bower_components/spinkit/css/spinkit.css';

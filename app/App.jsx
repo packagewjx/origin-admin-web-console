@@ -32,6 +32,7 @@ import Register from "./components/Page/Register";
 import UserManagement from "./components/AuthorizationManagement/UserManagement";
 import RoleManagement from "./components/AuthorizationManagement/RoleManagement";
 import ResourceOverview from "./components/Common/ResourceOverview/ResourceOverview";
+import User from "./components/Utils/ApiClient/model/User";
 
 
 // Init css loader (for themes)
@@ -40,10 +41,7 @@ initLoadThemes();
 // Init api client
 apiClient().then(function (client) {
     console.log(client);
-
-    client.users.get("admin").then(function (data) {
-        console.log(data);
-    })
+    console.log(new User());
 });
 
 // Disable warning "Synchronous XMLHttpRequest on the main thread is deprecated.."

@@ -9,24 +9,53 @@ import {Button, Col, Row, Tab, Tabs} from "react-bootstrap";
 import PropTypes from "prop-types";
 import PropertyOption from "./PropertyOption";
 import PropertyEditor from "./PropertyEditor";
+import brace from "brace";
+import AceEditor from "react-ace";
+import 'brace/mode/yaml';
+import 'brace/theme/textmate';
+import YAML from "yamljs"
 
 class ResourceEditor extends React.Component {
     constructor(props) {
         super(props);
+        this.confirmButtonClick = this.confirmButtonClick.bind(this);
 
-        this.state = {item: props.item};
+        this.state = {item: props.item, changed: false, waiting: props.disabled || false};
+    }
+
+    confirmButtonClick(event) {
+        let result = this.props.onConfirm(this.state.item);
+        if (result === true) {
+            // if boolean
+            this.setState({changed: false});
+        } else if (!!result && typeof result.then === 'function') {
+            // if result is a promise, so when it is fulfilled, set to changed false
+            let self = this;
+            this.setState({waiting: true});
+            result.then(function () {
+                self.setState({changed: false, waiting: false});
+            }, function () {
+                self.setState({waiting: false});
+            })
+        }
     }
 
     render() {
+        let self = this;
         let propertyEditors = undefined;
         if (this.props.propertyOptions instanceof Array) {
             propertyEditors = [];
             for (let i = 0; i < this.props.propertyOptions.length; i++) {
                 let option = this.props.propertyOptions[i];
                 option.value = accessData(this.state.item, option.accessor);
-                propertyEditors.push(<PropertyEditor
-                    onChange={(data) => this.setState({item: accessData(this.state.item, option.accessor, data)})}
-                    key={i} option={option}/>)
+                propertyEditors.push(
+                    <PropertyEditor
+                        onChange={(data) => this.setState({
+                            item: accessData(this.state.item, option.accessor, data),
+                            changed: true
+                        })}
+                        key={i} option={option}/>
+                )
             }
         }
         else {
@@ -41,22 +70,55 @@ class ResourceEditor extends React.Component {
                 <Tabs id="EditorTabs">
                     <Tab eventKey={1} title="属性设置">
                         <form className="form-horizontal">
-                            {propertyEditors}
-                            <hr/>
-                            <Row>
-                                <Col lg={4}>
-                                    <Button bsClass="btn btn-labeled btn-success mr">
-                                        <span className="btn-label"><i className="fa fa-check"/></span> 确定
-                                    </Button>
-                                    <Button bsClass="btn btn-labeled btn-danger mr">
-                                        <span className="btn-label"><i className="fa fa-times"/></span> 取消
-                                    </Button>
-                                </Col>
-                            </Row>
+                            <fieldset disabled={this.state.waiting}>
+                                {propertyEditors}
+                                <hr/>
+                                <Row>
+                                    <Col lg={6}>
+                                        <Button disabled={!this.state.changed || this.state.waiting}
+                                                onClick={this.confirmButtonClick}
+                                                bsClass="btn btn-labeled btn-success mr">
+                                            <span className="btn-label"><i className="fa fa-check"/></span> 确定
+                                        </Button>
+                                        <Button bsClass="btn btn-labeled btn-danger mr">
+                                            <span className="btn-label"><i className="fa fa-times"/></span> 取消
+                                        </Button>
+                                        {this.state.waiting ?
+                                            <strong>请稍侯...</strong>
+                                            : null}
+                                    </Col>
+                                </Row>
+                            </fieldset>
                         </form>
                     </Tab>
-                    <Tab eventKey={2} title="代码编辑">Mauris eros nibh, adipiscing ac commodo vel, molestie mattis
-                        magna. </Tab>
+                    <Tab eventKey={2} title="编辑YAML">
+                        <AceEditor
+                            mode="yaml"
+                            theme="textmate"
+                            value={YAML.stringify(this.state.item, null, 2)}
+                            onBlur={(event, editor) => {
+                                this.setState({item: YAML.parse(editor.getValue())});
+                            }}
+                            name="UNIQUE_ID_OF_DIV"
+                            editorProps={{$blockScrolling: true}}
+                        />
+                        <hr/>
+                        <Row>
+                            <Col lg={6}>
+                                <Button disabled={this.state.waiting}
+                                        onClick={this.confirmButtonClick}
+                                        bsClass="btn btn-labeled btn-success mr">
+                                    <span className="btn-label"><i className="fa fa-check"/></span> 确定
+                                </Button>
+                                <Button disabled={this.state.waiting} bsClass="btn btn-labeled btn-danger mr">
+                                    <span className="btn-label"><i className="fa fa-times"/></span> 取消
+                                </Button>
+                                {this.state.waiting ?
+                                    <strong>请稍侯...</strong>
+                                    : null}
+                            </Col>
+                        </Row>
+                    </Tab>
                 </Tabs>
             </div>
         );
@@ -64,7 +126,8 @@ class ResourceEditor extends React.Component {
 }
 
 /**
- * Access the value of obj indicated by accessor.
+ * Access the value of obj indicated by accessor. If this accessor cannot access a data, it WILL NOT create the data parent,
+ * just return, except when the last accessor is undefined, it will create the data. So be sure the set some default.
  * @param {object} obj
  * @param {string} accessor
  * @param newVal new value for this data, if set.
@@ -79,6 +142,7 @@ function accessData(obj, accessor, newVal) {
     let keys = accessor.split(".");
     let cur = obj;
     let regExp = /^([\w_$])+(?:\[(\d+)])?$/g;
+
     for (let i = 0; i < keys.length - 1; i++) {
         let match = regExp.exec(keys[i]);
         if (typeof cur !== 'undefined' && cur.hasOwnProperty(match[1])) {
@@ -100,10 +164,16 @@ function accessData(obj, accessor, newVal) {
     }
 }
 
+
 ResourceEditor.propTypes = {
     propertyOptions: PropTypes.arrayOf(PropTypes.instanceOf(PropertyOption)),
     resourceName: PropTypes.string,
     item: PropTypes.object.isRequired,
+    /**
+     * return true to indicate item changed successfully, false otherwise. Return a Promise, when promise fulfilled, it
+     * indicate item changed successfully.
+     * @type {function(data:object)}
+     */
     onConfirm: PropTypes.func,
     onCancel: PropTypes.func,
 };

@@ -1,7 +1,10 @@
+import ObjectMeta from "./ObjectMeta";
+
 export default class User {
     constructor() {
         this._kind = "User";
         this._apiVersion = "v1";
+        this._metadata = new ObjectMeta();
     }
 
     /**

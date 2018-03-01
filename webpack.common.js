@@ -92,6 +92,10 @@ module.exports = {
         }
     },
 
+    node: {
+        fs: "empty"
+    },
+
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor[hash:6].js' }),
         new HtmlWebpackPlugin({
