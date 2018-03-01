@@ -80,7 +80,7 @@ class ResourceEditor extends React.Component {
                                                 bsClass="btn btn-labeled btn-success mr">
                                             <span className="btn-label"><i className="fa fa-check"/></span> 确定
                                         </Button>
-                                        <Button bsClass="btn btn-labeled btn-danger mr">
+                                        <Button onClick={this.props.onCancel} bsClass="btn btn-labeled btn-danger mr">
                                             <span className="btn-label"><i className="fa fa-times"/></span> 取消
                                         </Button>
                                         {this.state.waiting ?
@@ -110,7 +110,7 @@ class ResourceEditor extends React.Component {
                                         bsClass="btn btn-labeled btn-success mr">
                                     <span className="btn-label"><i className="fa fa-check"/></span> 确定
                                 </Button>
-                                <Button disabled={this.state.waiting} bsClass="btn btn-labeled btn-danger mr">
+                                <Button onClick={this.props.onCancel} disabled={this.state.waiting} bsClass="btn btn-labeled btn-danger mr">
                                     <span className="btn-label"><i className="fa fa-times"/></span> 取消
                                 </Button>
                                 {this.state.waiting ?

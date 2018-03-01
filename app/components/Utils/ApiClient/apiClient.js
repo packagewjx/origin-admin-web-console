@@ -4,7 +4,7 @@ const API_RESOURCE_LIST_URLS = ["https://116.56.140.108:8443/oapi/v1", "https://
 
 let client = {};
 let fetchingPromise = undefined;
-let token = "Bearer I4Jjl_G9pFOEoevB9fNK0vLpE5nDtiORmJHnaXrbRsA";
+let token = "Bearer MCzzshkU9ud9rfiGBMpK1zWPkz96fMG7TUmX0bTJYzY";
 
 let verbFunctions = {
     create: createFunction,
@@ -31,7 +31,7 @@ let failCallback = function (xhr, status, error) {
         console.error("Error making api request, returned message: ", xhr.responseJSON.message, ". Status is");
         console.error(xhr.responseJSON);
     } else if (xhr.responseText) {
-        console.error("Error making api request, returned message:", xhr.responseText);
+        console.error("Error making api request, returned message: ", xhr.responseText);
     }
 };
 
@@ -42,6 +42,9 @@ let failCallback = function (xhr, status, error) {
  *         //do what you want
  *     });
  * </code>
+ * All api functions return jQuery.ajax Promise object. You can use then method to register callback.
+ * Success callback is function(any data, String textStatus, jqXHR jqXHR)
+ * Fail callback is function( jqXHR jqXHR, String textStatus, String errorThrown)
  * @returns {Promise<any>}
  */
 function apiClient() {
@@ -58,12 +61,12 @@ function apiClient() {
                     }
 
                     for (let i = 0; i < data.resources.length; i++) {
+                        data.resources[i].baseURL = value;
                         let resource = data.resources[i];
-                        resource.baseURL = value;
                         let api = {spec: resource};
 
                         for (let j = 0; j < resource.verbs.length; j++) {
-                            if (verbFunctions[resource.verbs[j]]) {
+                            if (verbFunctions.hasOwnProperty(resource.verbs[j])) {
                                 api[resource.verbs[j]] = verbFunctions[resource.verbs[j]](resource);
                             }
                         }
@@ -87,6 +90,7 @@ function apiClient() {
                 })
             });
         });
+        fetchingPromise.catch(failCallback);
         return fetchingPromise;
     }
 }
@@ -237,4 +241,4 @@ function updateFunction(resource) {
 }
 
 
-export {client, apiClient}
+export {client, apiClient, GlobalOption}

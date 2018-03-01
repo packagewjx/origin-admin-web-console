@@ -8,6 +8,7 @@ import React from 'react';
 import ContentWrapper from "../Layout/ContentWrapper";
 import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
 import {ColumnConfig, TableConfig} from "../Common/ResourceOverview/TableConfig";
+import User from "../Utils/ApiClient/model/User";
 
 class UserManagement extends React.Component {
 
@@ -20,9 +21,17 @@ class UserManagement extends React.Component {
         ];
 
         return (
-            <ResourceOverview resourceName={"users"} tableConfig={tableConfig} title="用户管理"/>
+            <ResourceOverview getNewResourceObject={getNewUser} resourceName={"users"} tableConfig={tableConfig} title="用户管理"/>
         );
     }
+}
+
+function getNewUser() {
+    let user = new User();
+    user.groups = [];
+    user.identities = [];
+    user.metadata.name = "";
+    return user;
 }
 
 export default UserManagement;

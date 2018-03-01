@@ -9,16 +9,20 @@ import React from 'react';
 import ContentWrapper from "../../Layout/ContentWrapper";
 import PropTypes from "prop-types"
 import {DefaultColumnConfig, TableConfig} from "./TableConfig";
-import {apiClient} from "../../Utils/ApiClient/apiClient";
+import {apiClient, GlobalOption} from "../../Utils/ApiClient/apiClient";
 import Link from "react-router/es/Link";
 import ReactTable from "react-table";
-import {Button} from "react-bootstrap";
+import {Button, Modal} from "react-bootstrap";
+import User from "../../Utils/ApiClient/model/User";
+import ResourceEditor from "../ResourceEditor/ResourceEditor";
 
 class ResourceOverview extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {data: [], loading: true};
+        this.submitNewResource = this.submitNewResource.bind(this);
+
+        this.state = {data: [], loading: true, showAddResourceModal: false};
 
         //fetch data
         let resourceName = this.props.resourceName;
@@ -27,11 +31,17 @@ class ResourceOverview extends React.Component {
             client[resourceName].list().then(function (data) {
                 console.log(data);
                 self.setState({data: data.items, loading: false});
+            }, function () {
+                self.setState({loading: false});
             })
         });
 
-        this.columns = [];
+        //initialize add resource modal
+        this.newResourceObject = {};
+
+
         // changing ColumnConfig, set to default and replace value.
+        this.columns = [];
         for (let i = 0; i < this.props.tableConfig.columns.length; i++) {
             /**
              * @type {ColumnConfig}
@@ -62,6 +72,49 @@ class ResourceOverview extends React.Component {
         }
     }
 
+    closeAddResourceModal() {
+        this.setState({showAddResourceModal: false});
+    }
+
+    showAddResourceModal() {
+        this.newResourceObject = this.props.getNewResourceObject ? this.props.getNewResourceObject() : {};
+        this.setState({showAddResourceModal: !this.state.showAddResourceModal})
+    }
+
+    /**
+     *
+     * @param data new data object
+     * @return {Promise<any>} Return a promise to be used in Resource Editor
+     */
+    submitNewResource(data) {
+        let self = this;
+        return new Promise((resolve, reject) => {
+            apiClient().then(function (client) {
+                //if this resource is namespaced, we should use the global options.
+                let option = new GlobalOption();
+                if (client[self.props.resourceName].spec.namespaced) {
+                    if (data.metadata.namespace) {
+                        option.namespace = data.metadata.namespace;
+                    } else {
+                        console.error("Error, Should set namespace");
+                        reject();
+                        return;
+                    }
+                }
+                client[self.props.resourceName].create(data, option).then(
+                    function () {
+                        //if success, close this modal
+                        self.closeAddResourceModal();
+                        resolve();
+                    }, function () {
+                        //if failed, do not close modal, and reject this promise.
+                        reject();
+                    }
+                );
+            });
+        });
+    }
+
     render() {
         return (
             <ContentWrapper>
@@ -69,7 +122,9 @@ class ResourceOverview extends React.Component {
                     {this.props.title}
                 </div>
                 <p>
-                    <Button bsStyle="success"><em className="fa fa-plus"/> 添加一项</Button>
+                    <Button bsStyle="success" onClick={this.showAddResourceModal.bind(this)}>
+                        <em className="fa fa-plus"/> 添加一项
+                    </Button>
                 </p>
                 <ReactTable
                     data={this.state.data}
@@ -84,6 +139,15 @@ class ResourceOverview extends React.Component {
                     ofText="页共"
                     rowsText="行"
                 />
+                <Modal show={this.state.showAddResourceModal} onHide={this.closeAddResourceModal.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>添加一项</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <ResourceEditor item={this.newResourceObject} onConfirm={this.submitNewResource}
+                                        onCancel={this.closeAddResourceModal.bind(this)}/>
+                    </Modal.Body>
+                </Modal>
             </ContentWrapper>
         );
     }
@@ -149,7 +213,8 @@ function getData(item, referer) {
 ResourceOverview.propTypes = {
     title: PropTypes.string.isRequired,
     resourceName: PropTypes.string.isRequired,
-    tableConfig: PropTypes.instanceOf(TableConfig).isRequired
+    tableConfig: PropTypes.instanceOf(TableConfig).isRequired,
+    getNewResourceObject: PropTypes.func
 };
 
 
