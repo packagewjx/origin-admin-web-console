@@ -75,7 +75,10 @@ class PropertyEditor extends React.Component {
     }
 
     render() {
-        if (this.props.option.type === 'select') {
+        if (typeof this.props.option.render === 'function') {
+            return this.props.option.render(this.props.option.value, this.props.onChange);
+        }
+        else if (this.props.option.type === 'select') {
             let optionHtml = [];
             for (let i = 0; i < this.props.option.selections.length; i++) {
                 let option = this.props.option.selections[i];

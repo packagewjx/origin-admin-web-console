@@ -9,7 +9,6 @@ import {Button, Col, Row, Tab, Tabs} from "react-bootstrap";
 import PropTypes from "prop-types";
 import PropertyOption from "./PropertyOption";
 import PropertyEditor from "./PropertyEditor";
-import brace from "brace";
 import AceEditor from "react-ace";
 import 'brace/mode/yaml';
 import 'brace/theme/textmate';
@@ -41,21 +40,22 @@ class ResourceEditor extends React.Component {
     }
 
     render() {
-        let self = this;
         let propertyEditors = undefined;
         if (this.props.propertyOptions instanceof Array) {
             propertyEditors = [];
             for (let i = 0; i < this.props.propertyOptions.length; i++) {
                 let option = this.props.propertyOptions[i];
-                option.value = accessData(this.state.item, option.accessor);
+                option.value = accessData(this.state.item, option.accessor) || "";
                 propertyEditors.push(
                     <PropertyEditor
-                        onChange={(data) => this.setState({
+                        onChange={(data) => {
+                            this.setState({
                             item: accessData(this.state.item, option.accessor, data),
                             changed: true
-                        })}
+                            });
+                        }}
                         key={i} option={option}/>
-                )
+                );
             }
         }
         else {
@@ -141,11 +141,11 @@ function accessData(obj, accessor, newVal) {
 
     let keys = accessor.split(".");
     let cur = obj;
-    let regExp = /^([\w_$])+(?:\[(\d+)])?$/g;
+    let regExp = /^([\w_$]+)(?:\[(\d+)])?$/g;
 
     for (let i = 0; i < keys.length - 1; i++) {
         let match = regExp.exec(keys[i]);
-        if (typeof cur !== 'undefined' && cur.hasOwnProperty(match[1])) {
+        if (typeof cur === 'object' && cur.hasOwnProperty(match[1])) {
             if (match[2]) {
                 cur = cur[match[1]][match[2]]
             } else {

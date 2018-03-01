@@ -13,32 +13,23 @@ import {apiClient, GlobalOption} from "../../Utils/ApiClient/apiClient";
 import Link from "react-router/es/Link";
 import ReactTable from "react-table";
 import {Button, Modal} from "react-bootstrap";
-import User from "../../Utils/ApiClient/model/User";
 import ResourceEditor from "../ResourceEditor/ResourceEditor";
+import PropertyOption from "../ResourceEditor/PropertyOption";
 
 class ResourceOverview extends React.Component {
     constructor(props) {
         super(props);
 
         this.submitNewResource = this.submitNewResource.bind(this);
+        this.fetchData = this.fetchData.bind(this);
 
         this.state = {data: [], loading: true, showAddResourceModal: false};
 
         //fetch data
-        let resourceName = this.props.resourceName;
-        let self = this;
-        apiClient().then(function (client) {
-            client[resourceName].list().then(function (data) {
-                console.log(data);
-                self.setState({data: data.items, loading: false});
-            }, function () {
-                self.setState({loading: false});
-            })
-        });
+        this.fetchData();
 
         //initialize add resource modal
         this.newResourceObject = {};
-
 
         // changing ColumnConfig, set to default and replace value.
         this.columns = [];
@@ -82,6 +73,22 @@ class ResourceOverview extends React.Component {
     }
 
     /**
+     * Fetch Resource Objects
+     */
+    fetchData() {
+        let resourceName = this.props.resourceName;
+        let self = this;
+        apiClient().then(function (client) {
+            client[resourceName].list().then(function (data) {
+                console.log(data);
+                self.setState({data: data.items, loading: false});
+            }, function () {
+                self.setState({loading: false});
+            })
+        });
+    }
+
+    /**
      *
      * @param data new data object
      * @return {Promise<any>} Return a promise to be used in Resource Editor
@@ -103,8 +110,9 @@ class ResourceOverview extends React.Component {
                 }
                 client[self.props.resourceName].create(data, option).then(
                     function () {
-                        //if success, close this modal
+                        //if success, close this modal and fetch new data
                         self.closeAddResourceModal();
+                        self.fetchData();
                         resolve();
                     }, function () {
                         //if failed, do not close modal, and reject this promise.
@@ -145,7 +153,8 @@ class ResourceOverview extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <ResourceEditor item={this.newResourceObject} onConfirm={this.submitNewResource}
-                                        onCancel={this.closeAddResourceModal.bind(this)}/>
+                                        onCancel={this.closeAddResourceModal.bind(this)}
+                                        propertyOptions={this.props.propertyOptions}/>
                     </Modal.Body>
                 </Modal>
             </ContentWrapper>
@@ -214,6 +223,7 @@ ResourceOverview.propTypes = {
     title: PropTypes.string.isRequired,
     resourceName: PropTypes.string.isRequired,
     tableConfig: PropTypes.instanceOf(TableConfig).isRequired,
+    propertyOptions: PropTypes.arrayOf(PropTypes.instanceOf(PropertyOption)),
     getNewResourceObject: PropTypes.func
 };
 

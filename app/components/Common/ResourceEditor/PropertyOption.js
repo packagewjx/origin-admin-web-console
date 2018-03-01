@@ -43,11 +43,18 @@ export default class PropertyOption {
      */
     selections;
 
+    /**
+     * If this is set, then just use this rendering function to render a row, it will receive a value, onChange props, when value is changed,
+     * use this to let ResourceEditor knows.
+     * @member {function(value:any, onChange:function)}
+     */
+    render;
+
     constructor(accessor, label, type, value) {
         this.accessor = accessor;
         this.label = label;
         this.type = type;
-        this.value = value;
+        this.value = value || "";
     }
 };
 
