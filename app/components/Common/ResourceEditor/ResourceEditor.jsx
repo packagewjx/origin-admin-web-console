@@ -45,7 +45,7 @@ class ResourceEditor extends React.Component {
             propertyEditors = [];
             for (let i = 0; i < this.props.propertyOptions.length; i++) {
                 let option = this.props.propertyOptions[i];
-                option.value = accessData(this.state.item, option.accessor) || "";
+                option.value = accessData(this.state.item, option.accessor);
                 propertyEditors.push(
                     <PropertyEditor
                         onChange={(data) => {

@@ -9,6 +9,7 @@ import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
 import {ColumnConfig, TableConfig} from "../Common/ResourceOverview/TableConfig";
 import User from "../Utils/ApiClient/model/User";
 import PropertyOption from "../Common/PropertyOption";
+import {apiClient} from "../Utils/ApiClient/apiClient";
 
 class UserManagement extends React.Component {
 
@@ -20,22 +21,25 @@ class UserManagement extends React.Component {
             new ColumnConfig("用户身份", "identities")
         ];
 
-        let objectPropertyOption = new PropertyOption("metadata", "元数据", "object");
-        let selectionPropertyOption = new PropertyOption("gender", "gender", "select");
-        selectionPropertyOption.selections = new Promise((resolve, reject) => {
-            setTimeout(function () {
-                resolve([
-                    {label: "male", value: "male"},
-                    {label: "female", value: "female"}
-                ])
-            }, 2000)
-        });
         let propertyOptions = [
             new PropertyOption("metadata.name", "用户名", "text"),
-            new PropertyOption("metadata", "metadata", "keyValue"),
-            objectPropertyOption,
-            selectionPropertyOption
+            new PropertyOption("identities", "用户身份", "select")
         ];
+
+        propertyOptions[1].selections = new Promise(resolve => {
+            apiClient().then(function (client) {
+                client.identities.list().then(function (data) {
+                    let selections = [];
+                    for (let i = 0; i < data.items.length; i++) {
+                        let item = data.items[i];
+                        selections.push({label: item.metadata.name, value: item.metadata.name});
+                    }
+                    resolve(selections);
+                })
+            })
+        });
+        propertyOptions[1].isArray = true;
+
 
         return (
             <ResourceOverview getNewResourceObject={getNewUser} propertyOptions={propertyOptions} resourceName={"users"}

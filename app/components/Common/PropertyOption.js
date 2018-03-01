@@ -26,6 +26,18 @@ export default class PropertyOption {
      */
     value;
 
+    /**
+     * If this Property is an array, it will render add and delete button. And based on type, render it, except keyValue.
+     * @member {boolean}
+     */
+    isArray;
+
+    /**
+     * When create new object in array, Will call this function;
+     * @member {function}
+     */
+    newValue;
+
 
     /**
      * Indicate this property type. One of:
@@ -58,11 +70,29 @@ export default class PropertyOption {
      */
     render;
 
-    constructor(accessor, label, type, value) {
+    /**
+     * This is used for display this property
+     * @member {function(value:any, propertyOption: PropertyOption)}
+     */
+    displayRender;
+
+    constructor(accessor, label, type, value, newValue) {
         this.accessor = accessor;
         this.label = label;
-        this.type = type;
+        this.type = type || "text";
         this.value = value || "";
+        this.newValue = newValue || function () {
+            switch (this.type) {
+                case "object":
+                    return {};
+                case "number":
+                    return 0;
+                case "boolean":
+                    return false;
+                default:
+                    return "";
+            }
+        }
     }
 };
 

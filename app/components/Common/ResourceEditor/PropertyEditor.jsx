@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import PropertyOption from "../PropertyOption";
-import {Button, Col, FormControl, FormGroup, Modal, Row} from "react-bootstrap";
+import {Button, Col, FormControl, FormGroup, InputGroup, Modal, Row} from "react-bootstrap";
 import ResourceEditor from "./ResourceEditor";
 
 class PropertyEditor extends React.Component {
@@ -27,19 +27,11 @@ class PropertyEditor extends React.Component {
         }
         state.showModal = false;
         this.state = state;
-
-
     }
 
     handleChange(arg) {
-        let type = this.props.option.type;
-        if (type === 'boolean') {
-            this.props.onChange(arg.target.checked);
-        } else if (type === 'keyValue') {
-            this.props.onChange(arg)
-        } else {
-            this.props.onChange(arg.target.value);
-        }
+        console.log(arg);
+        this.props.onChange(arg);
     }
 
     render() {
@@ -47,34 +39,51 @@ class PropertyEditor extends React.Component {
         if (typeof this.props.option.render === 'function') {
             return this.props.option.render(this.props.option.value, this.props.onChange);
         }
-        else if (this.props.option.type === 'select') {
+        else if (this.props.option.isArray) {
+            return (<ArrayEditor option={this.props.option} onChange={this.handleChange}/>);
+        } else if (this.props.option.type === 'keyValue') {
             return (
-                <SelectionEditor label={this.props.option.label} value={this.props.option.value}
-                                 selections={this.props.option.selections} onChange={this.handleChange}/>
+                <KeyValueEditor value={this.props.option.value} label={this.props.label}
+                                onChange={this.handleChange}/>
             );
-        }
-        else if (this.props.option.type === 'boolean') {
+        } else {
+            let formControl = {};
+            if (this.props.option.type === 'select') {
+                formControl = (
+                    <SelectionFormControl label={this.props.option.label} value={this.props.option.value}
+                                          selections={this.props.option.selections} onChange={this.handleChange}/>
+                );
+            }
+            else if (this.props.option.type === 'boolean') {
+                formControl = (
+                    <BooleanFormControl label={this.props.option.label} value={this.props.option.value}
+                                        onChange={this.handleChange}/>
+                );
+            }
+            else if (this.props.option.type === 'object') {
+                formControl = (
+                    <ObjectFormControl label={option.label} value={option.value} subOptions={option.subOptions}/>
+                );
+            }
+            else {
+                formControl = (
+                    <InputFormControl label={option.label} type={option.type} value={option.value}
+                                      onChange={this.handleChange}
+                                      placeholder={option.placeholder}/>
+                );
+            }
+
             return (
-                <BooleanEditor label={this.props.option.label} value={this.props.option.value}
-                               onChange={this.handleChange}/>
-            );
+                <FormGroup>
+                    {typeof this.props.option.label !== 'undefined' ?
+                        <label className="col-lg-2 control-label">{this.props.option.label}</label> : null}
+                    <Col lg={typeof this.props.option.label !== 'undefined' ? 10 : 12}>
+                        {formControl}
+                    </Col>
+                </FormGroup>
+            )
         }
-        else if (this.props.option.type === 'keyValue') {
-            return (
-                <KeyValueEditor value={this.props.option.value} label={this.props.label} onChange={this.handleChange}/>
-            );
-        }
-        else if (this.props.option.type === 'object') {
-            return (
-                <ObjectEditor label={option.label} value={option.value} subOptions={option.subOptions}/>
-            );
-        }
-        else {
-            return (
-                <InputEditor label={option.label} type={option.type} value={option.value} onChange={this.handleChange}
-                             placeholder={option.placeholder}/>
-            );
-        }
+
     }
 }
 
@@ -83,38 +92,47 @@ class PropertyEditor extends React.Component {
  * @return {*}
  * @constructor
  */
-function InputEditor(props) {
+function InputFormControl(props) {
+    let onChange = function (event) {
+        props.onChange(event.target.value);
+    };
     return (
-        <FormGroup>
-            <label className="col-lg-2 control-label">{props.label}</label>
-            <Col lg={10}>
-                <FormControl type={props.type} placeholder={props.placeholder}
-                             value={props.value}
-                             onChange={props.onChange}
-                             className="form-control"/>
-            </Col>
-        </FormGroup>
+        <FormControl type={props.type} placeholder={props.placeholder}
+                     value={props.value}
+                     onChange={onChange}
+                     className="form-control"/>
     );
 }
 
-function BooleanEditor(props) {
+InputFormControl.propTypes = {
+    type: PropTypes.string,
+    placeholder: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func
+};
+
+function BooleanFormControl(props) {
+    let onChange = function (event) {
+        props.onChange(event.target.checked);
+    };
     return (
-        <FormGroup>
-            <label className="col-lg-2 control-label">{props.label}</label>
-            <Col lg={10}>
-                <div className="checkbox c-checkbox">
-                    <label className="needsclick">
-                        <input type="checkbox" checked={props.value}
-                               onChange={props.onChange}
-                               className="needsclick"/>
-                        <em className="fa fa-check"/></label>
-                </div>
-            </Col>
-        </FormGroup>
+        <div className="checkbox c-checkbox">
+            <label className="needsclick">
+                <input type="checkbox" checked={props.value}
+                       onChange={onChange}
+                       className="needsclick"/>
+                <em className="fa fa-check"/></label>
+        </div>
     );
 }
 
-class ObjectEditor extends React.Component {
+BooleanFormControl.propTypes = {
+    label: PropTypes.string,
+    value: PropTypes.bool,
+    onChange: PropTypes.func
+};
+
+class ObjectFormControl extends React.Component {
 
     constructor(props) {
         super(props);
@@ -137,11 +155,8 @@ class ObjectEditor extends React.Component {
         let self = this;
 
         return (
-            <FormGroup>
-                <label className="col-lg-2 control-label">{this.props.label}</label>
-                <Col lg={10}>
-                    <Button onClick={() => self.setState({showModal: true})}>查看&编辑</Button>
-                </Col>
+            <div>
+                <Button onClick={() => self.setState({showModal: true})}>查看&编辑</Button>
                 <Modal show={this.state.showModal} onHide={this.closeModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>编辑{this.props.label}</Modal.Title>
@@ -153,10 +168,17 @@ class ObjectEditor extends React.Component {
                                         propertyOptions={this.props.subOptions}/>
                     </Modal.Body>
                 </Modal>
-            </FormGroup>
+            </div>
         );
     }
 }
+
+ObjectFormControl.propTypes = {
+    label: PropTypes.string,
+    value: PropTypes.any,
+    subOptions: PropTypes.arrayOf(PropTypes.instanceOf(PropertyOption)),
+    onChange: PropTypes.func
+};
 
 class KeyValueEditor extends React.Component {
     constructor(props) {
@@ -244,9 +266,16 @@ class KeyValueEditor extends React.Component {
     }
 }
 
-class SelectionEditor extends React.Component {
+KeyValueEditor.propTypes = {
+    value: PropTypes.object,
+    label: PropTypes.string,
+    onChange: PropTypes.func,
+};
+
+class SelectionFormControl extends React.Component {
     constructor(props) {
         super(props);
+        this.handleChange = this.handleChange.bind(this);
 
         this.state = {selections: []};
     }
@@ -259,12 +288,14 @@ class SelectionEditor extends React.Component {
             self.setState({selections});
         } else if (!!selections && typeof selections.then === 'function') {
             selections.then(function (options) {
-                console.log(options);
                 self.setState({selections: options});
             })
         }
     }
 
+    handleChange(event) {
+        this.props.onChange(event.target.value);
+    }
 
     render() {
         let optionHtml = [];
@@ -276,13 +307,103 @@ class SelectionEditor extends React.Component {
         }
 
         return (
+            <FormControl value={this.props.value} onChange={this.handleChange}
+                         componentClass="select" className="form-control m-b">
+                {optionHtml}
+            </FormControl>
+        );
+    }
+}
+
+SelectionFormControl.propTypes = {
+    label: PropTypes.string,
+    value: PropTypes.string,
+    selections: PropTypes.oneOf(PropTypes.string, PropTypes.object),
+    onChange: PropTypes.func
+};
+
+class ArrayEditor extends React.Component {
+    constructor(props) {
+        super(props);
+        this.onItemChange = this.onItemChange.bind(this);
+
+        console.log(this.props.option);
+        this.state = {array: this.props.option.value};
+    }
+
+    onItemChange(data, index) {
+        let array = this.state.array;
+        array.splice(index, 1, data);
+        this.props.onChange(array);
+    }
+
+    render() {
+        let itemEditors = [];
+        let option = this.props.option;
+        let array = this.state.array;
+        if (!array instanceof Array) {
+            console.error("Given value is not an array!");
+            return null;
+        }
+
+        for (let i = 0; i < array.length; i++) {
+            let item = array[i];
+            let itemEditor = undefined;
+            switch (option.type) {
+                case 'keyValue':
+                    console.error("Array Editor did not support keyValue!");
+                    return null;
+                case 'select':
+                    itemEditor = (
+                        <SelectionFormControl value={item} label={option.label} selections={option.selections}
+                                              onChange={(data) => this.onItemChange(data, i)}/>
+                    );
+                    break;
+                case 'object':
+                    itemEditor = (
+                        <ObjectFormControl onChange={(data) => this.onItemChange(data, i)} value={item}
+                                           label={option.label}/>
+                    );
+                    break;
+                case 'boolean':
+                    itemEditor = (
+                        <BooleanFormControl onChange={(data) => this.onItemChange(data, i)} label={option.label}
+                                            value={item}/>
+                    );
+                    break;
+                default:
+                    itemEditor = (
+                        <InputFormControl onChange={(data) => this.onItemChange(data, i)}
+                                          value={item} type={option.type} placeholder={option.placeholder}/>
+                    );
+                    break;
+            }
+            itemEditors.push(
+                <InputGroup>
+                    {itemEditor}
+                    <InputGroup.Button>
+                        <Button bsClass="btn btn-labeled btn-danger mr" onClick={() => {
+                            let array = this.state.array;
+                            array.splice(i, 1);
+                            this.props.onChange(array);
+                        }}><em className="fa fa-minus"/></Button>
+                    </InputGroup.Button>
+                </InputGroup>
+            );
+        }
+
+
+        return (
             <FormGroup>
-                <label className="col-lg-2 control-label">{this.props.label}</label>
+                <label className="col-lg-2 control-label">{this.props.option.label}</label>
                 <Col lg={10}>
-                    <FormControl value={this.props.value} onChange={this.props.onChange}
-                                 componentClass="select" className="form-control m-b">
-                        {optionHtml}
-                    </FormControl>
+                    {itemEditors}
+                    <Button bsClass="btn btn-labeled btn-success mr" onClick={() => {
+                        let array = this.state.array;
+                        //give the new value based on its type
+                        array.push(option.newValue());
+                        this.props.onChange(array);
+                    }}><em className="fa fa-plus"/></Button>
                 </Col>
             </FormGroup>
         );
