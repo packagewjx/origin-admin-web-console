@@ -33,6 +33,7 @@ export default class PropertyOption {
      * select: use <select>
      * boolean: use <input type=checkbox>
      * keyValue: use two <input>, one for key, one for value, to edit the object directly, but the value must not be an object.
+     * object: this will use a modal to edit this object, using this ResourceEditor.
      * @member {String} type
      */
     type;
@@ -42,6 +43,12 @@ export default class PropertyOption {
      * @member {Array.<{value:String, label:String}>}
      */
     selections;
+
+    /**
+     * If type is object, set this to configure the ResourceEditor of this object.
+     * @member {Array.<PropertyOption>}
+     */
+    subOptions;
 
     /**
      * If this is set, then just use this rendering function to render a row, it will receive a value, onChange props, when value is changed,

@@ -14,7 +14,7 @@ import Link from "react-router/es/Link";
 import ReactTable from "react-table";
 import {Button, Modal} from "react-bootstrap";
 import ResourceEditor from "../ResourceEditor/ResourceEditor";
-import PropertyOption from "../ResourceEditor/PropertyOption";
+import PropertyOption from "../PropertyOption";
 
 class ResourceOverview extends React.Component {
     constructor(props) {

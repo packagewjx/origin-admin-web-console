@@ -6,8 +6,9 @@
 
 import React from 'react';
 import PropTypes from "prop-types";
-import PropertyOption from "./PropertyOption";
-import {Col, FormControl, FormGroup, Row} from "react-bootstrap";
+import PropertyOption from "../PropertyOption";
+import {Button, Col, FormControl, FormGroup, Modal, Row} from "react-bootstrap";
+import ResourceEditor from "./ResourceEditor";
 
 class PropertyEditor extends React.Component {
     constructor(props) {
@@ -17,6 +18,7 @@ class PropertyEditor extends React.Component {
         this.handleValueChange = this.handleValueChange.bind(this);
         this.submitKeyChange = this.submitKeyChange.bind(this);
 
+        let state = {};
         if (this.props.option.type === 'keyValue') {
             let keys = {};
             for (let key in this.props.option.value) {
@@ -24,8 +26,13 @@ class PropertyEditor extends React.Component {
                     keys[key] = key;
                 }
             }
-            this.state = {key: keys};
+            state.key = keys;
         }
+        state.showModal = false;
+        this.state = state;
+
+
+
     }
 
     handleChange(event) {
@@ -72,6 +79,15 @@ class PropertyEditor extends React.Component {
         let map = this.props.option.value;
         map[key] = event.target.value;
         this.props.onChange(map);
+    }
+
+    closeModal() {
+        this.setState({showModal: false});
+    }
+
+    submitObjectChange(data) {
+        this.props.onChange(data);
+        this.closeModal();
     }
 
     render() {
@@ -146,7 +162,29 @@ class PropertyEditor extends React.Component {
                     </Col>
                 </FormGroup>
             );
-        } else {
+        }
+        else if (this.props.option.type === 'object') {
+            return (
+                <FormGroup>
+                    <label className="col-lg-2 control-label">{this.props.option.label}</label>
+                    <Col lg={10}>
+                        <Button onClick={() => this.setState({showModal: true})}>查看&编辑</Button>
+                    </Col>
+                    <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>编辑{this.props.option.label}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <ResourceEditor item={this.props.option.value}
+                                            onConfirm={this.submitObjectChange.bind(this)}
+                                            onCancel={this.closeModal.bind(this)}
+                                            propertyOptions={this.props.option.subOptions}/>
+                        </Modal.Body>
+                    </Modal>
+                </FormGroup>
+            );
+        }
+        else {
             return (
                 <FormGroup>
                     <label className="col-lg-2 control-label">{this.props.option.label}</label>

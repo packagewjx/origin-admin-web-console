@@ -8,7 +8,7 @@ import React from 'react';
 import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
 import {ColumnConfig, TableConfig} from "../Common/ResourceOverview/TableConfig";
 import User from "../Utils/ApiClient/model/User";
-import PropertyOption from "../Common/ResourceEditor/PropertyOption";
+import PropertyOption from "../Common/PropertyOption";
 
 class UserManagement extends React.Component {
 
@@ -19,16 +19,11 @@ class UserManagement extends React.Component {
             "creationTimestamp",
             new ColumnConfig("用户身份", "identities")
         ];
-        let testOption = new PropertyOption("metadata.name", "用户名", "text");
-        testOption.render = function (value, onChange) {
-            return (
-                <h1>Hello World.{value}{JSON.stringify(onChange)}</h1>
-            );
-        };
 
+        let objectPropertyOption = new PropertyOption("metadata", "元数据", "object");
         let propertyOptions = [
             new PropertyOption("metadata.name", "用户名", "text"),
-            testOption
+            objectPropertyOption
         ];
 
         return (

@@ -7,6 +7,7 @@
 import React from 'react';
 import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
 import {TableConfig} from "../Common/ResourceOverview/TableConfig";
+import PropertyOption from "../Common/PropertyOption";
 
 class RoleManagement extends React.Component {
     constructor(props) {
@@ -19,6 +20,10 @@ class RoleManagement extends React.Component {
             'name',
             'creationTimestamp',
             'namespace'
+        ];
+        let propertyOptions = [
+            new PropertyOption("metadata.name", "角色名", "text"),
+            new PropertyOption("metadata.namespace", "名称空间")
         ];
 
         return (

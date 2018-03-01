@@ -7,7 +7,7 @@
 import React from 'react';
 import {Button, Col, Row, Tab, Tabs} from "react-bootstrap";
 import PropTypes from "prop-types";
-import PropertyOption from "./PropertyOption";
+import PropertyOption from "../PropertyOption";
 import PropertyEditor from "./PropertyEditor";
 import AceEditor from "react-ace";
 import 'brace/mode/yaml';
@@ -60,7 +60,7 @@ class ResourceEditor extends React.Component {
         }
         else {
             propertyEditors = (
-                <h1>无属性编辑</h1>
+                <h1>请编辑YAML</h1>
             );
         }
 
