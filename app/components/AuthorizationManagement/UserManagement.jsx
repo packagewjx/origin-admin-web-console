@@ -21,9 +21,20 @@ class UserManagement extends React.Component {
         ];
 
         let objectPropertyOption = new PropertyOption("metadata", "元数据", "object");
+        let selectionPropertyOption = new PropertyOption("gender", "gender", "select");
+        selectionPropertyOption.selections = new Promise((resolve, reject) => {
+            setTimeout(function () {
+                resolve([
+                    {label: "male", value: "male"},
+                    {label: "female", value: "female"}
+                ])
+            }, 2000)
+        });
         let propertyOptions = [
             new PropertyOption("metadata.name", "用户名", "text"),
-            objectPropertyOption
+            new PropertyOption("metadata", "metadata", "keyValue"),
+            objectPropertyOption,
+            selectionPropertyOption
         ];
 
         return (
@@ -38,6 +49,7 @@ function getNewUser() {
     user.groups = [];
     user.identities = [];
     user.metadata.name = "";
+    user.gender = "";
     return user;
 }
 

@@ -39,8 +39,9 @@ export default class PropertyOption {
     type;
 
     /**
-     * When type is select, use this to indicate the options for select
-     * @member {Array.<{value:String, label:String}>}
+     * When type is select, use this to indicate the options for select. If selections is a promise, PropertyEditor
+     * will register the onFulfilled callback to get the selections.
+     * @member {Array.<{value:String, label:String}> | Promise}
      */
     selections;
 

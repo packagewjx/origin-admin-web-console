@@ -48,7 +48,6 @@ class ResourceOverview extends React.Component {
             // add render function if not exist
             column.renderFunction = column.renderFunction || renderItem;
             if (typeof column.linkTo === 'string' && column.linkTo !== "") {
-                console.log("here");
                 // replace <<resourceName>> in linkTo to real resource name
                 column.linkTo = column.linkTo.replace("<<resourceName>>", this.props.resourceName);
             }
@@ -226,6 +225,5 @@ ResourceOverview.propTypes = {
     propertyOptions: PropTypes.arrayOf(PropTypes.instanceOf(PropertyOption)),
     getNewResourceObject: PropTypes.func
 };
-
 
 export default ResourceOverview;
