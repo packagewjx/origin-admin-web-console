@@ -1,3 +1,5 @@
+import ObjectMeta from "./ObjectMeta";
+
 export default class Role {
     /**
      * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds
@@ -23,5 +25,6 @@ export default class Role {
     constructor() {
         this.kind = "Role";
         this.apiVersion = "v1";
+        this.metadata = new ObjectMeta();
     }
 };

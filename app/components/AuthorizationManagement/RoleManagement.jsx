@@ -7,11 +7,18 @@
 import React from 'react';
 import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
 import {TableConfig} from "../Common/ResourceOverview/TableConfig";
-import PropertyOption from "../Common/PropertyOption";
+import {PredifinedPropertyOption} from "../Common/PredifinedPropertyOption";
+import Role from "../Utils/ApiClient/model/Role";
 
 class RoleManagement extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    static getNewRole() {
+        let role = new Role();
+        role.rules = [];
+        return role;
     }
 
     render() {
@@ -21,13 +28,12 @@ class RoleManagement extends React.Component {
             'creationTimestamp',
             'namespace'
         ];
-        let propertyOptions = [
-            new PropertyOption("metadata.name", "角色名", "text"),
-            new PropertyOption("metadata.namespace", "名称空间")
-        ];
+        let propertyOptions = PredifinedPropertyOption.roles;
 
         return (
-            <ResourceOverview title={"角色管理"} resourceName={"roles"} tableConfig={tableConfig}/>
+            <ResourceOverview title={"角色管理"} resourceName={"roles"} tableConfig={tableConfig}
+                              propertyOptions={propertyOptions}
+                              getNewResourceObject={RoleManagement.getNewRole}/>
         )
         
         

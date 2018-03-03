@@ -70,4 +70,8 @@ export default class ObjectMeta {
      */
     clusterName;
 
+    constructor() {
+        this.name = "";
+    }
+
 }

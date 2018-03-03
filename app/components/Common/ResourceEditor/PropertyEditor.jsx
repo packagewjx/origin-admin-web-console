@@ -30,7 +30,6 @@ class PropertyEditor extends React.Component {
     }
 
     handleChange(arg) {
-        console.log(arg);
         this.props.onChange(arg);
     }
 
@@ -283,7 +282,6 @@ class SelectionFormControl extends React.Component {
     componentDidMount() {
         let selections = this.props.selections;
         let self = this;
-        console.log(selections);
         if (selections instanceof Array) {
             self.setState({selections});
         } else if (!!selections && typeof selections.then === 'function') {
@@ -328,7 +326,6 @@ class ArrayEditor extends React.Component {
         super(props);
         this.onItemChange = this.onItemChange.bind(this);
 
-        console.log(this.props.option);
         this.state = {array: this.props.option.value};
     }
 

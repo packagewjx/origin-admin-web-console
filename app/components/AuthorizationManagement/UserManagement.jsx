@@ -8,8 +8,7 @@ import React from 'react';
 import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
 import {ColumnConfig, TableConfig} from "../Common/ResourceOverview/TableConfig";
 import User from "../Utils/ApiClient/model/User";
-import PropertyOption from "../Common/PropertyOption";
-import {apiClient} from "../Utils/ApiClient/apiClient";
+import {PredifinedPropertyOption} from "../Common/PredifinedPropertyOption";
 
 class UserManagement extends React.Component {
 
@@ -21,25 +20,7 @@ class UserManagement extends React.Component {
             new ColumnConfig("用户身份", "identities")
         ];
 
-        let propertyOptions = [
-            new PropertyOption("metadata.name", "用户名", "text"),
-            new PropertyOption("identities", "用户身份", "select"),
-        ];
-
-        propertyOptions[1].selections = new Promise(resolve => {
-            apiClient().then(function (client) {
-                client.identities.list().then(function (data) {
-                    let selections = [];
-                    for (let i = 0; i < data.items.length; i++) {
-                        let item = data.items[i];
-                        selections.push({label: item.metadata.name, value: item.metadata.name});
-                    }
-                    resolve(selections);
-                })
-            })
-        });
-        propertyOptions[1].isArray = true;
-
+        let propertyOptions = PredifinedPropertyOption.users;
 
         return (
             <ResourceOverview getNewResourceObject={getNewUser} propertyOptions={propertyOptions} resourceName={"users"}
