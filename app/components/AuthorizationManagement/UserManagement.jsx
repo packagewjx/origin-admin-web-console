@@ -23,7 +23,7 @@ class UserManagement extends React.Component {
 
         let propertyOptions = [
             new PropertyOption("metadata.name", "用户名", "text"),
-            new PropertyOption("identities", "用户身份", "select")
+            new PropertyOption("identities", "用户身份", "select"),
         ];
 
         propertyOptions[1].selections = new Promise(resolve => {

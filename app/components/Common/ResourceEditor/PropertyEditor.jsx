@@ -309,6 +309,7 @@ class SelectionFormControl extends React.Component {
         return (
             <FormControl value={this.props.value} onChange={this.handleChange}
                          componentClass="select" className="form-control m-b">
+                <option value=""/>
                 {optionHtml}
             </FormControl>
         );
@@ -379,7 +380,7 @@ class ArrayEditor extends React.Component {
                     break;
             }
             itemEditors.push(
-                <InputGroup>
+                <InputGroup key={i}>
                     {itemEditor}
                     <InputGroup.Button>
                         <Button bsClass="btn btn-labeled btn-danger mr" onClick={() => {
@@ -390,6 +391,7 @@ class ArrayEditor extends React.Component {
                     </InputGroup.Button>
                 </InputGroup>
             );
+            itemEditors.push(<br key={"br" + i}/>);
         }
 
 

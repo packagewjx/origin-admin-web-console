@@ -56,6 +56,7 @@ class ResourceEditor extends React.Component {
                         }}
                         key={i} option={option}/>
                 );
+                propertyEditors.push(<br key={"br" + i}/>);
             }
         }
         else {
@@ -72,7 +73,7 @@ class ResourceEditor extends React.Component {
                         <form className="form-horizontal">
                             <fieldset disabled={this.state.waiting}>
                                 {propertyEditors}
-                                <hr/>
+                                <br/>
                                 <Row>
                                     <Col lg={6}>
                                         <Button disabled={!this.state.changed || this.state.waiting}
