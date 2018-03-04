@@ -13,6 +13,7 @@ import AceEditor from "react-ace";
 import 'brace/mode/yaml';
 import 'brace/theme/textmate';
 import YAML from "yamljs"
+import {accessData} from "../../Utils/UtilFunctions";
 
 class ResourceEditor extends React.Component {
     constructor(props) {
@@ -123,45 +124,6 @@ class ResourceEditor extends React.Component {
                 </Tabs>
             </div>
         );
-    }
-}
-
-/**
- * Access the value of obj indicated by accessor. If this accessor cannot access a data, it WILL NOT create the data parent,
- * just return, except when the last accessor is undefined, it will create the data. So be sure the set some default.
- * @param {object} obj
- * @param {string} accessor
- * @param newVal new value for this data, if set.
- * @return {object} if newVal is set, return new object, otherwise the accessor data.
- */
-function accessData(obj, accessor, newVal) {
-    if (!accessor.match(/^([\w_$]+(\[\d+])?\.)*[\w_$]+(\[\d+])?$/g)) {
-        console.error("accessor ", accessor, " is of wrong format");
-        return null;
-    }
-
-    let keys = accessor.split(".");
-    let cur = obj;
-    let regExp = /^([\w_$]+)(?:\[(\d+)])?$/g;
-
-    for (let i = 0; i < keys.length - 1; i++) {
-        let match = regExp.exec(keys[i]);
-        if (typeof cur === 'object' && cur.hasOwnProperty(match[1])) {
-            if (match[2]) {
-                cur = cur[match[1]][match[2]]
-            } else {
-                cur = cur[match[1]];
-            }
-        } else {
-            return null;
-        }
-        regExp.lastIndex = 0;
-    }
-    if (typeof newVal !== 'undefined') {
-        cur[keys[keys.length - 1]] = newVal;
-        return obj;
-    } else {
-        return cur[keys[keys.length - 1]];
     }
 }
 

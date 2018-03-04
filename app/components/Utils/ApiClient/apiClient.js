@@ -4,7 +4,7 @@ const API_RESOURCE_LIST_URLS = ["https://116.56.140.108:8443/oapi/v1", "https://
 
 let client = {};
 let fetchingPromise = undefined;
-let token = "Bearer ylee9zwfG2SjV6FbR_3LBPl9EObI8l9gmyy4Azmo6Zs";
+let token = "Bearer FSpx96IKG5nd4SGO5YhiPumNApb0LvSfPrRTrmcIMYU";
 
 let verbFunctions = {
     create: createFunction,

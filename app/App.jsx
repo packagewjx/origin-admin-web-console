@@ -11,8 +11,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, Link, hashHistory, useRouterHistory, IndexRedirect } from 'react-router';
-import { createHistory } from 'history';
+import {IndexRedirect, Route, Router, useRouterHistory} from 'react-router';
+import {createHistory} from 'history';
 
 import initLoadThemes from './components/Common/load-themes';
 import {apiClient, init} from './components/Utils/ApiClient/apiClient';
@@ -22,7 +22,6 @@ import BasePage from './components/Layout/BasePage';
 
 import SingleView from './components/SingleView/SingleView';
 import SubMenu from './components/SubMenu/SubMenu';
-
 // Application Styles
 import './styles/bootstrap.scss';
 import './styles/app.scss'
@@ -34,15 +33,14 @@ import RoleManagement from "./components/AuthorizationManagement/RoleManagement"
 import ResourceOverview from "./components/Common/ResourceOverview/ResourceOverview";
 import User from "./components/Utils/ApiClient/model/User";
 
-
 // Init css loader (for themes)
 initLoadThemes();
 
 // Init api client
 apiClient().then(function (client) {
     console.log(client);
-    console.log(new User());
 });
+
 
 // Disable warning "Synchronous XMLHttpRequest on the main thread is deprecated.."
 $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
