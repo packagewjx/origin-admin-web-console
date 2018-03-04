@@ -13,9 +13,14 @@ export const DefaultColumnConfig = {
         referer: "metadata.name",
         linkTo: "<<resourceName>>/{metadata.name}"
     },
+    namespacedName: {
+        title: "名称",
+        referer: "metadata.name",
+        linkTo: "<<resourceName>>/namespaces/{metadata.namespace}/{metadata.name}"
+    },
     namespace: {
         title: "名称空间",
-        referer: "metadata.namespace"
+        referer: "metadata.namespace",
     },
     creationTimestamp: {
         title: "创建时间",
