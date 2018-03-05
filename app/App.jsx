@@ -31,7 +31,7 @@ import Register from "./components/Page/Register";
 import UserManagement from "./components/AuthorizationManagement/UserManagement";
 import RoleManagement from "./components/AuthorizationManagement/RoleManagement";
 import ResourceOverview from "./components/Common/ResourceOverview/ResourceOverview";
-import User from "./components/Utils/ApiClient/model/User";
+import UserDetail from "./components/Common/ResourceDatail/UserDetail";
 
 // Init css loader (for themes)
 initLoadThemes();
@@ -48,7 +48,7 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
 });
 
 // specify basename below if running in a subdirectory or set as "/" if app runs in root
-const appHistory = useRouterHistory(createHistory)({
+export const appHistory = useRouterHistory(createHistory)({
   basename: WP_BASE_HREF
 });
 
@@ -64,6 +64,7 @@ ReactDOM.render(
 
             {/*权限管理*/}
             <Route path="users" component={UserManagement}/>
+            <Route path="users/:name" components={UserDetail}/>
             <Route path="roles" component={RoleManagement}/>
             <Route path="overview" component={ResourceOverview}/>
 

@@ -13,14 +13,17 @@ import AceEditor from "react-ace";
 import 'brace/mode/yaml';
 import 'brace/theme/textmate';
 import YAML from "yamljs"
-import {accessData} from "../../Utils/UtilFunctions";
+import {accessData, deepClone} from "../../Utils/UtilFunctions";
+import {FieldDisplayer} from "../FieldDisplayer";
 
 class ResourceEditor extends React.Component {
     constructor(props) {
         super(props);
         this.confirmButtonClick = this.confirmButtonClick.bind(this);
 
-        this.state = {item: props.item, changed: false, waiting: props.disabled || false};
+        let item = deepClone(props.item);//clone the object to prevent accidentally change it original value.
+
+        this.state = {item: item, changed: false, waiting: props.disabled || false};
     }
 
     confirmButtonClick(event) {
@@ -47,16 +50,22 @@ class ResourceEditor extends React.Component {
             for (let i = 0; i < this.props.propertyOptions.length; i++) {
                 let option = this.props.propertyOptions[i];
                 option.value = accessData(this.state.item, option.accessor);
-                propertyEditors.push(
-                    <PropertyEditor
-                        onChange={(data) => {
-                            this.setState({
-                            item: accessData(this.state.item, option.accessor, data),
-                            changed: true
-                            });
-                        }}
-                        key={i} option={option}/>
-                );
+                if (option.immutable) {
+                    propertyEditors.push(
+                        <FieldDisplayer option={option}/>
+                    )
+                } else {
+                    propertyEditors.push(
+                        <PropertyEditor
+                            onChange={(data) => {
+                                this.setState({
+                                    item: accessData(this.state.item, option.accessor, data),
+                                    changed: true
+                                });
+                            }}
+                            key={i} option={option}/>
+                    );
+                }
                 propertyEditors.push(<br key={"br" + i}/>);
             }
         }

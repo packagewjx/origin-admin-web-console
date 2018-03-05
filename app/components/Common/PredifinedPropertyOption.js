@@ -13,12 +13,14 @@ let itemNameSelectionCallback = function (data, resolve) {
     resolve(selections);
 };
 let namePropertyOption = new PropertyOption("metadata.name", "名称", "text");
+namePropertyOption.immutable = true;
 let namespacePropertyOption = new PropertyOption("metadata.namespace", "名称空间", "select");
 namespacePropertyOption.selections = new Promise(resolve => {
     apiClient().then(function (client) {
         client.namespaces.list().then((data) => itemNameSelectionCallback(data, resolve));
     })
 });
+namespacePropertyOption.immutable = true;
 
 /**
  * User Property Option Definition
@@ -58,7 +60,7 @@ let rolePropertyOption = [
  * each key is the resource plural name, e.g. users, roles
  * @type {{}}
  */
-export const PredifinedPropertyOption = {
+export const PredefinedPropertyOption = {
     users: userPropertyOption,
     roles: rolePropertyOption,
 };

@@ -8,7 +8,7 @@ import React from 'react';
 import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
 import {ColumnConfig, TableConfig} from "../Common/ResourceOverview/TableConfig";
 import User from "../Utils/ApiClient/model/User";
-import {PredifinedPropertyOption} from "../Common/PredifinedPropertyOption";
+import {PredefinedPropertyOption} from "../Common/PredifinedPropertyOption";
 
 class UserManagement extends React.Component {
 
@@ -20,7 +20,7 @@ class UserManagement extends React.Component {
             new ColumnConfig("用户身份", "identities")
         ];
 
-        let propertyOptions = PredifinedPropertyOption.users;
+        let propertyOptions = PredefinedPropertyOption.users;
 
         return (
             <ResourceOverview getNewResourceObject={getNewUser} propertyOptions={propertyOptions} resourceName={"users"}

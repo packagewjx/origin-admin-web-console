@@ -62,7 +62,36 @@ export function accessData(obj, accessor, newVal) {
     }
 }
 
-function testUtil() {
+/**
+ * Deep clone the entire object.
+ * @param obj
+ */
+export function deepClone(obj) {
+    if (typeof obj === 'object') {
+        if (obj instanceof Array) {
+            let copy = [];
+            for (let i = 0; i < obj.length; i++) {
+                copy.push(obj[i]);
+            }
+            return copy;
+        } else if (obj === null) {
+            //null is an object!
+            return null;
+        } else {
+            let copy = {};
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key))
+                    copy[key] = deepClone(obj[key]);
+            }
+            return copy;
+        }
+    } else {
+        return obj;
+    }
+}
+
+
+function testAccessData() {
     let obj = {};
     console.log(accessData(obj, ""));
     console.log(accessData(obj, "metadata"));
@@ -78,4 +107,29 @@ function testUtil() {
 
     obj = {metadata: {name: "Name"}, groups: [{}, {metadata: {name: "name"}}]};
     console.log(accessData(obj, "groups[1].metadata.name"));
+}
+
+export function testDeepClone() {
+    let obj = JSON.parse("{\n" +
+        "  \"kind\": \"User\",\n" +
+        "  \"apiVersion\": \"v1\",\n" +
+        "  \"metadata\": {\n" +
+        "    \"name\": \"admin\",\n" +
+        "    \"selfLink\": \"/oapi/v1/users/admin\",\n" +
+        "    \"uid\": \"7ff86975-1ac6-11e8-9003-000af7b00488\",\n" +
+        "    \"resourceVersion\": \"620411\",\n" +
+        "    \"creationTimestamp\": \"2018-02-26T07:27:28Z\"\n" +
+        "  },\n" +
+        "  \"identities\": [\n" +
+        "    \"htpasswd:admin\"\n" +
+        "  ],\n" +
+        "  \"groups\": []\n" +
+        "}");
+    obj.nullObject = null;
+    obj.funcObject = function (hey) {
+        console.log("hello world");
+    };
+    let copy = deepClone(obj);
+    console.log(obj);
+    console.log(copy);
 }

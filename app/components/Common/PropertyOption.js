@@ -38,6 +38,10 @@ export default class PropertyOption {
      */
     newValue;
 
+    /**
+     * If the field is immutable, its value can not be changed, just display it.
+     */
+    immutable;
 
     /**
      * Indicate this property type. One of:
@@ -71,10 +75,15 @@ export default class PropertyOption {
     render;
 
     /**
-     * This is used for display this property
-     * @member {function(value:any, propertyOption: PropertyOption)}
+     * This is used for display this property. You should render the label and the value together.
+     * @member {function(propertyOption: PropertyOption)}
      */
     displayRender;
+
+    /**
+     * If value is undefined, by default, it will ignore the entire property. If set this to true, it will display label.
+     */
+    displayIfUndefined;
 
     constructor(accessor, label, type, value, newValue) {
         this.accessor = accessor;
