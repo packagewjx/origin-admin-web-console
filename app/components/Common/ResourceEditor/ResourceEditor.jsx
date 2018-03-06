@@ -50,7 +50,7 @@ class ResourceEditor extends React.Component {
             for (let i = 0; i < this.props.propertyOptions.length; i++) {
                 let option = this.props.propertyOptions[i];
                 option.value = accessData(this.state.item, option.accessor);
-                if (option.immutable) {
+                if (!this.props.isCreate && option.immutable) {
                     propertyEditors.push(
                         <FieldDisplayer option={option}/>
                     )
@@ -110,7 +110,7 @@ class ResourceEditor extends React.Component {
                             onBlur={(event, editor) => {
                                 this.setState({item: YAML.parse(editor.getValue())});
                             }}
-                            name="UNIQUE_ID_OF_DIV"
+                            name="yaml-editor"
                             editorProps={{$blockScrolling: true}}
                         />
                         <hr/>
@@ -147,7 +147,16 @@ ResourceEditor.propTypes = {
      * @type {function(data:object)}
      */
     onConfirm: PropTypes.func,
+    /**
+     * when cancel button clicked, this will call.
+     * @type {function(event:object)}
+     */
     onCancel: PropTypes.func,
+    /**
+     * If this is true, indicating we are creating a new object, hence ignoring the immutable property in the object.
+     * @type {boolean}
+     */
+    isCreate: PropTypes.bool,
 };
 
 export default ResourceEditor;

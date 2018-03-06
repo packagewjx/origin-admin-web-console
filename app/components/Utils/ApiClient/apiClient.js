@@ -1,10 +1,11 @@
 import DeleteOptions from "./model/DeleteOptions";
+import {appHistory} from "../../../App";
 
 const API_RESOURCE_LIST_URLS = ["https://116.56.140.108:8443/oapi/v1", "https://116.56.140.108:8443/api/v1"];
 
 let client = {};
 let fetchingPromise = undefined;
-let token = "Bearer FSpx96IKG5nd4SGO5YhiPumNApb0LvSfPrRTrmcIMYU";
+let token = "";
 
 let verbFunctions = {
     create: createFunction,
@@ -33,7 +34,17 @@ let failCallback = function (xhr, status, error) {
     } else if (xhr.responseText) {
         console.error("Error making api request, returned message: ", xhr.responseText);
     }
+    if (xhr.status === 401 || xhr.status === 403) {
+        //jump to login page
+        appHistory.push("/login");
+    }
 };
+
+function setAccessToken(newToken) {
+    token = "Bearer " + newToken;
+    //clear fetchingPromise to clear all the functions that have been created
+    fetchingPromise = undefined;
+}
 
 /**
  * Usage: apiClient return a Promise object. Use callback to use the client. Example usage
@@ -94,6 +105,7 @@ function apiClient() {
         return fetchingPromise;
     }
 }
+
 
 /**
  * Create the function for verb get, to get an object of a kind of resource
@@ -241,4 +253,4 @@ function updateFunction(resource) {
 }
 
 
-export {client, apiClient, GlobalOption}
+export {client, apiClient, GlobalOption, setAccessToken}

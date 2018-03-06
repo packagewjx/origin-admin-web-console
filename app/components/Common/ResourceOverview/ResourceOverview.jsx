@@ -153,7 +153,7 @@ class ResourceOverview extends React.Component {
                     <Modal.Body>
                         <ResourceEditor item={this.newResourceObject} onConfirm={this.submitNewResource}
                                         onCancel={this.closeAddResourceModal.bind(this)}
-                                        propertyOptions={this.props.propertyOptions}/>
+                                        propertyOptions={this.props.propertyOptions} isCreate={true}/>
                     </Modal.Body>
                 </Modal>
             </ContentWrapper>
@@ -186,7 +186,6 @@ function renderItem(item, referer, linkTo) {
         linkTo = linkTo.replace(reg, function (match, $1) {
             return getData(item, $1);
         });
-        console.log("here");
 
         return (
             <Link to={linkTo}>{data}</Link>
