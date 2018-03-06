@@ -243,7 +243,7 @@ function updateFunction(resource) {
 
         return $.ajax(url, {
             headers: {authorization: token},
-            method: "DELETE",
+            method: "PUT",
             contentType: "application/json",
             data: JSON.stringify(obj),
             processData: false,

@@ -9,12 +9,13 @@ import PropTypes from 'prop-types';
 import PropertyOption from "../PropertyOption";
 import ContentWrapper from "../../Layout/ContentWrapper";
 import {apiClient, GlobalOption} from "../../Utils/ApiClient/apiClient";
-import {Col, Dropdown, MenuItem, Modal, Row} from "react-bootstrap";
+import {Button, Col, Dropdown, MenuItem, Modal, Row} from "react-bootstrap";
 import {accessData} from "../../Utils/UtilFunctions";
 import ResourceEditor from "../ResourceEditor/ResourceEditor";
 import {PredefinedPropertyOption} from "../PredifinedPropertyOption";
 import {FieldDisplayer} from "../FieldDisplayer";
 import {Link} from "react-router";
+import {appHistory} from "../../../App";
 
 /**
  * This component is used to display a certain object. It will get the object specified by resourceName, namespace and
@@ -27,10 +28,11 @@ class ResourceDetail extends React.Component {
         this.fetchData = this.fetchData.bind(this);
         this.onMenuItemClicked = this.onMenuItemClicked.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
+        this.closeDeleteModal = this.closeDeleteModal.bind(this);
         this.updateItem = this.updateItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
 
-        this.state = {item: {}, editModalShow: false};
+        this.state = {item: {}, editModalShow: false, deleteModalShow: false};
     }
 
     componentDidMount() {
@@ -52,20 +54,39 @@ class ResourceDetail extends React.Component {
 
     updateItem(data) {
         let self = this;
-        apiClient().then(function (client) {
-            client[self.props.resourceName].update(data).then(function (data) {
-                console.log(data);
-            });
-        })
+        return new Promise(resolve => {
+            apiClient().then(function (client) {
+                let option = new GlobalOption();
+                if (self.props.namespace) {
+                    option.namespace = self.props.namespace;
+                }
+                client[self.props.resourceName].update(data, self.props.objectName, option).then(function (data, status, xhr) {
+                    resolve();
+                    self.setState({item: data, editModalShow: false});
+                });
+            })
+        });
     }
 
     deleteItem() {
         let self = this;
-        apiClient().then(function (client) {
-            client[self.props.resourceName].delete(self.props.objectName).then(function (data) {
-                console.log(data);
-            })
-        })
+        return new Promise(resolve => {
+            apiClient().then(function (client) {
+                let option = new GlobalOption();
+                if (self.props.namespace) {
+                    option.namespace = self.props.namespace;
+                }
+                client[self.props.resourceName].delete(self.props.objectName, option).then(function (data) {
+                    if (data.status === 'Success') {
+                        resolve();
+                        appHistory.replace("/" + self.props.resourceName);
+                    } else {
+                        console.log(data);
+                        self.setState({deleteModalShow: false});
+                    }
+                });
+            });
+        });
     }
 
     onMenuItemClicked(eventKey, event) {
@@ -74,13 +95,16 @@ class ResourceDetail extends React.Component {
                 this.setState({editModalShow: true});
                 break;
             case "2":
-
-
+                this.setState({deleteModalShow: true});
         }
     }
 
     closeEditModal() {
         this.setState({editModalShow: false});
+    }
+
+    closeDeleteModal() {
+        this.setState({deleteModalShow: false});
     }
 
     render() {
@@ -150,10 +174,22 @@ class ResourceDetail extends React.Component {
                         <Modal.Title>编辑</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <ResourceEditor item={this.state.item} onCancel={() => console.log(this.state.item)}
+                        <ResourceEditor item={this.state.item} onCancel={this.closeEditModal}
                                         onConfirm={this.updateItem}
                                         propertyOptions={PredefinedPropertyOption[this.props.resourceName]}/>
                     </Modal.Body>
+                </Modal>
+                <Modal show={this.state.deleteModalShow} onHide={this.closeDeleteModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>确认删除</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        确认要删除{this.props.objectName}吗?
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button bsStyle="danger" onClick={this.deleteItem}>确认</Button>
+                        <Button onClick={this.closeDeleteModal}>取消</Button>
+                    </Modal.Footer>
                 </Modal>
             </ContentWrapper>
         );
