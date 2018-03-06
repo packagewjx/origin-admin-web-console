@@ -1,3 +1,7 @@
+/**
+ * Define the how to edit and display this property.
+ * TODO wrap displaying option into another object, rather than just store it in the root class, like displayRender and displayIfUndefined, and the Editing options too.
+ */
 export default class PropertyOption {
     /**
      * This accessor is used to access a value of this object, Example:

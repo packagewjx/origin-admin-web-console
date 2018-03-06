@@ -16,6 +16,10 @@ import YAML from "yamljs"
 import {accessData, deepClone} from "../../Utils/UtilFunctions";
 import {FieldDisplayer} from "../FieldDisplayer";
 
+/**
+ * A Component for editing the resource object. It use PropertyOptions to define what to edit, and how to edit, and
+ * generate field editor based on the option.
+ */
 class ResourceEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -138,8 +142,17 @@ class ResourceEditor extends React.Component {
 
 
 ResourceEditor.propTypes = {
+    /**
+     * Options to define how to edit this object specific fields.
+     */
     propertyOptions: PropTypes.arrayOf(PropTypes.instanceOf(PropertyOption)),
+    /**
+     * Resource Plural name.
+     */
     resourceName: PropTypes.string,
+    /**
+     * The object that this editor is editing.
+     */
     item: PropTypes.object.isRequired,
     /**
      * return true to indicate item changed successfully, false otherwise. Return a Promise, when promise fulfilled, it

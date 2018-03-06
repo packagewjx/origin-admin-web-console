@@ -10,6 +10,14 @@ import {Col, Row} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {accessData} from "../Utils/UtilFunctions";
 
+/**
+ * A component used to display a field. If this field is a value, just display its label and value. If it is an object
+ * or a keyValue object, it will recursively display its descendants. If it is an array, it will display the index and
+ * the value.
+ * @param props
+ * @return {*}
+ * @constructor
+ */
 export function FieldDisplayer(props) {
     let fieldDisplay = (<span/>);
     let value = props.option.value;

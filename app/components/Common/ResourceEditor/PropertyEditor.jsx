@@ -10,6 +10,16 @@ import PropertyOption from "../PropertyOption";
 import {Button, Col, FormControl, FormGroup, InputGroup, Modal, Row} from "react-bootstrap";
 import ResourceEditor from "./ResourceEditor";
 
+/**
+ * This is the class that generate the field editor based on a single PropertyOption. It use some sub components to
+ * make this work.
+ * @see ArrayEditor
+ * @see KeyValueEditor
+ * @see BooleanFormControl
+ * @see InputFormControl
+ * @see SelectionFormControl
+ * @see ObjectFormControl
+ */
 class PropertyEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -87,6 +97,7 @@ class PropertyEditor extends React.Component {
 }
 
 /**
+ * The default form element, use <input> to edit this field, and can set its type, using PropertyOption.type.
  * @param {{label, placeholder, value, type, onChange:Function}} props
  * @return {*}
  * @constructor
@@ -110,6 +121,12 @@ InputFormControl.propTypes = {
     onChange: PropTypes.func
 };
 
+/**
+ * This is just a checkbox component, editing the boolean value.
+ * @param props
+ * @return {*}
+ * @constructor
+ */
 function BooleanFormControl(props) {
     let onChange = function (event) {
         props.onChange(event.target.checked);
@@ -131,6 +148,10 @@ BooleanFormControl.propTypes = {
     onChange: PropTypes.func
 };
 
+/**
+ * This component is used to edit a more complex object. Using a modal, display another ResourceEditor to edit this object.
+ * The sub-ResourceEditor will use the subOptions of the PropertyEditor.
+ */
 class ObjectFormControl extends React.Component {
 
     constructor(props) {
@@ -179,6 +200,11 @@ ObjectFormControl.propTypes = {
     onChange: PropTypes.func
 };
 
+/**
+ * This component is used to edit key value map. You can edit both the key and the value. It will generate all key value
+ * <input> component. But I did prefer using the object editor to edit key value, so
+ * TODO add a keyValue PropertyOptions Generate function, to edit the keyValue pairs using the object editor.
+ */
 class KeyValueEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -193,6 +219,14 @@ class KeyValueEditor extends React.Component {
                 keys[key] = key;
             }
         }
+        /**
+         * the key property is a map, key is the original key, value is the key that is changed by the user.
+         * When the user changed the key, it will change this map's key, but not the item's key. Item's key will only
+         * be changed when the <input> element changing this key has lost focus. This is to prevent a bug that when you
+         * edit object's key, the state is updated, and the old <input> is deleted because the key is deleted, and then
+         * render the new <input> storing the new key.
+         * @type {{key: {}}}
+         */
         this.state = {key: keys};
     }
 
@@ -271,6 +305,9 @@ KeyValueEditor.propTypes = {
     onChange: PropTypes.func,
 };
 
+/**
+ * This component will generate a select drop menu, using the selections props supply, and fetch selections if necessary.
+ */
 class SelectionFormControl extends React.Component {
     constructor(props) {
         super(props);
@@ -321,6 +358,10 @@ SelectionFormControl.propTypes = {
     onChange: PropTypes.func
 };
 
+/**
+ * If this property is an array, this component will generate the array display, each element will will its own editor,
+ * using current PropertyOption.
+ */
 class ArrayEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -412,7 +453,14 @@ class ArrayEditor extends React.Component {
 }
 
 PropertyEditor.propTypes = {
+    /**
+     * The PropertyOption for this field. To configure how to edit it.
+     */
     option: PropTypes.instanceOf(PropertyOption).isRequired,
+    /**
+     * After this field change, it will call this onChange method, to give the new value to the upper class.
+     * @type {function(data:any)}
+     */
     onChange: PropTypes.func.isRequired,
 };
 

@@ -1,3 +1,10 @@
+/**
+ Date: Unknown
+ Author: <a href="mailto:wu812730157@gmail.com">packagewjx</a>
+ Description: This file store some default PropertyOption, other component can use these option to quickly set up the
+ common component like ResourceDetail, ResourceEditor, ResourceOverview.
+ **/
+
 import PropertyOption from "./PropertyOption";
 import {apiClient} from "../Utils/ApiClient/apiClient";
 import PolicyRule from "../Utils/ApiClient/model/PolicyRule";
@@ -101,8 +108,7 @@ let rolePropertyOption = [
 ];
 
 /**
- * each key is the resource plural name, e.g. users, roles
- * @type {{}}
+ * Some defined PropertyOptions, each key is the resource plural name, e.g. users, roles
  */
 export const PredefinedPropertyOption = {
     users: userPropertyOption,

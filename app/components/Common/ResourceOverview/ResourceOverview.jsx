@@ -16,6 +16,11 @@ import {Button, Modal} from "react-bootstrap";
 import ResourceEditor from "../ResourceEditor/ResourceEditor";
 import PropertyOption from "../PropertyOption";
 
+/**
+ * This component is used to display all resource objects of a kind of resource. They are displayed in a table. The
+ * table is defined using TableConfig, which defines what fields will be displayed and how, in the column.
+ * @see TableConfig
+ */
 class ResourceOverview extends React.Component {
     constructor(props) {
         super(props);
@@ -198,7 +203,8 @@ function renderItem(item, referer, linkTo) {
 }
 
 /**
- * using the referer to retrieve data for a column
+ * using the referer to retrieve data for a column.
+ * TODO replace this method with accessData function in UtilFunctions.
  * @param {any} item
  * @param {String} referer
  * @return {String | Object}
@@ -222,7 +228,15 @@ ResourceOverview.propTypes = {
     title: PropTypes.string.isRequired,
     resourceName: PropTypes.string.isRequired,
     tableConfig: PropTypes.instanceOf(TableConfig).isRequired,
+    /**
+     * defines the PropertyOptions to edit the new object of this kind.
+     */
     propertyOptions: PropTypes.arrayOf(PropTypes.instanceOf(PropertyOption)),
+    /**
+     * This function is used to create a new object of this kind. It does not have any arguments, and returns the new
+     * Object.
+     * @type {function():any}
+     */
     getNewResourceObject: PropTypes.func
 };
 

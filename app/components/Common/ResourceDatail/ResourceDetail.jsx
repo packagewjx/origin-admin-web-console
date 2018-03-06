@@ -16,6 +16,11 @@ import {PredefinedPropertyOption} from "../PredifinedPropertyOption";
 import {FieldDisplayer} from "../FieldDisplayer";
 import {Link} from "react-router";
 
+/**
+ * This component is used to display a certain object. It will get the object specified by resourceName, namespace and
+ * name using the apiClient. Then it will display it using the PropertyOptions supplied. By default, it will display
+ * the metadata of this object. And generate a button on top-right, to edit this object, or delete this object.
+ */
 class ResourceDetail extends React.Component {
     constructor(props) {
         super(props);
@@ -156,9 +161,21 @@ class ResourceDetail extends React.Component {
 }
 
 ResourceDetail.propTypes = {
+    /**
+     * Resource name, in plural
+     */
     resourceName: PropTypes.string.isRequired,
+    /**
+     * Resource object name
+     */
     objectName: PropTypes.string.isRequired,
+    /**
+     * The namespace that this object belongs to.
+     */
     namespace: PropTypes.string,
+    /**
+     * To display the object, this component will use PropertyOptions to display it, use the display options.
+     */
     propertyOptions: PropTypes.arrayOf(PropTypes.instanceOf(PropertyOption))
 };
 
