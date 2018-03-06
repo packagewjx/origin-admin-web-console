@@ -1,0 +1,466 @@
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "v1",
+      "kind": "Role",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:33Z",
+        "labels": {
+          "kubernetes.io/bootstrapping": "rbac-defaults"
+        },
+        "name": "system:controller:bootstrap-signer",
+        "namespace": "kube-public",
+        "resourceVersion": "276",
+        "selfLink": "/oapi/v1/namespaces/kube-public/roles/system%3Acontroller%3Abootstrap-signer",
+        "uid": "984a8fe0-17cc-11e8-8726-000af7b00488"
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resources": [
+            "configmaps"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resourceNames": [
+            "cluster-info"
+          ],
+          "resources": [
+            "configmaps"
+          ],
+          "verbs": [
+            "update"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resources": [
+            "events"
+          ],
+          "verbs": [
+            "create",
+            "patch",
+            "update"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Role",
+      "metadata": {
+        "creationTimestamp": "2018-03-06T01:03:57Z",
+        "name": "endpoint-accessor",
+        "namespace": "kube-service-catalog",
+        "resourceVersion": "1759176",
+        "selfLink": "/oapi/v1/namespaces/kube-service-catalog/roles/endpoint-accessor",
+        "uid": "3fb53493-20da-11e8-a6fa-000af7b00488"
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resources": [
+            "endpoints"
+          ],
+          "verbs": [
+            "create",
+            "get",
+            "list",
+            "update",
+            "watch"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Role",
+      "metadata": {
+        "creationTimestamp": "2018-03-06T01:04:01Z",
+        "name": "extension-apiserver-authentication-reader",
+        "namespace": "kube-system",
+        "resourceVersion": "1759188",
+        "selfLink": "/oapi/v1/namespaces/kube-system/roles/extension-apiserver-authentication-reader",
+        "uid": "41c69375-20da-11e8-a6fa-000af7b00488"
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resourceNames": [
+            "extension-apiserver-authentication"
+          ],
+          "resources": [
+            "configmaps"
+          ],
+          "verbs": [
+            "get"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Role",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:33Z",
+        "labels": {
+          "kubernetes.io/bootstrapping": "rbac-defaults"
+        },
+        "name": "system::leader-locking-kube-controller-manager",
+        "namespace": "kube-system",
+        "resourceVersion": "273",
+        "selfLink": "/oapi/v1/namespaces/kube-system/roles/system%3A%3Aleader-locking-kube-controller-manager",
+        "uid": "984630f5-17cc-11e8-8726-000af7b00488"
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resources": [
+            "configmaps"
+          ],
+          "verbs": [
+            "watch"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resourceNames": [
+            "kube-controller-manager"
+          ],
+          "resources": [
+            "configmaps"
+          ],
+          "verbs": [
+            "get",
+            "update"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Role",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:33Z",
+        "labels": {
+          "kubernetes.io/bootstrapping": "rbac-defaults"
+        },
+        "name": "system::leader-locking-kube-scheduler",
+        "namespace": "kube-system",
+        "resourceVersion": "275",
+        "selfLink": "/oapi/v1/namespaces/kube-system/roles/system%3A%3Aleader-locking-kube-scheduler",
+        "uid": "9847f66a-17cc-11e8-8726-000af7b00488"
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resources": [
+            "configmaps"
+          ],
+          "verbs": [
+            "watch"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resourceNames": [
+            "kube-scheduler"
+          ],
+          "resources": [
+            "configmaps"
+          ],
+          "verbs": [
+            "get",
+            "update"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Role",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:32Z",
+        "labels": {
+          "kubernetes.io/bootstrapping": "rbac-defaults"
+        },
+        "name": "system:controller:bootstrap-signer",
+        "namespace": "kube-system",
+        "resourceVersion": "270",
+        "selfLink": "/oapi/v1/namespaces/kube-system/roles/system%3Acontroller%3Abootstrap-signer",
+        "uid": "983d730e-17cc-11e8-8726-000af7b00488"
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Role",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:32Z",
+        "labels": {
+          "kubernetes.io/bootstrapping": "rbac-defaults"
+        },
+        "name": "system:controller:cloud-provider",
+        "namespace": "kube-system",
+        "resourceVersion": "271",
+        "selfLink": "/oapi/v1/namespaces/kube-system/roles/system%3Acontroller%3Acloud-provider",
+        "uid": "983f368b-17cc-11e8-8726-000af7b00488"
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resources": [
+            "configmaps"
+          ],
+          "verbs": [
+            "create",
+            "get",
+            "list",
+            "watch"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Role",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:33Z",
+        "labels": {
+          "kubernetes.io/bootstrapping": "rbac-defaults"
+        },
+        "name": "system:controller:token-cleaner",
+        "namespace": "kube-system",
+        "resourceVersion": "272",
+        "selfLink": "/oapi/v1/namespaces/kube-system/roles/system%3Acontroller%3Atoken-cleaner",
+        "uid": "98447644-17cc-11e8-8726-000af7b00488"
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "delete",
+            "get",
+            "list",
+            "watch"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resources": [
+            "events"
+          ],
+          "verbs": [
+            "create",
+            "patch",
+            "update"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Role",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:32Z",
+        "name": "system:node-config-reader",
+        "namespace": "openshift-node",
+        "resourceVersion": "268",
+        "selfLink": "/oapi/v1/namespaces/openshift-node/roles/system%3Anode-config-reader",
+        "uid": "9838d408-17cc-11e8-8726-000af7b00488"
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resources": [
+            "configmaps"
+          ],
+          "verbs": [
+            "get"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Role",
+      "metadata": {
+        "creationTimestamp": "2018-02-24T01:59:59Z",
+        "name": "templateservicebroker-auth-reader",
+        "namespace": "openshift-template-service-broker",
+        "resourceVersion": "254585",
+        "selfLink": "/oapi/v1/namespaces/openshift-template-service-broker/roles/templateservicebroker-auth-reader",
+        "uid": "6b08b20b-1906-11e8-9ee5-000af7b00488"
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "attributeRestrictions": null,
+          "resourceNames": [
+            "templateservicebroker-client"
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Role",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:32Z",
+        "name": "shared-resource-viewer",
+        "namespace": "openshift",
+        "resourceVersion": "266",
+        "selfLink": "/oapi/v1/namespaces/openshift/roles/shared-resource-viewer",
+        "uid": "9835a37c-17cc-11e8-8726-000af7b00488"
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            "",
+            "template.openshift.io"
+          ],
+          "attributeRestrictions": null,
+          "resources": [
+            "templates"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch"
+          ]
+        },
+        {
+          "apiGroups": [
+            "",
+            "image.openshift.io"
+          ],
+          "attributeRestrictions": null,
+          "resources": [
+            "imagestreamimages",
+            "imagestreams",
+            "imagestreamtags"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch"
+          ]
+        },
+        {
+          "apiGroups": [
+            "",
+            "image.openshift.io"
+          ],
+          "attributeRestrictions": null,
+          "resources": [
+            "imagestreams/layers"
+          ],
+          "verbs": [
+            "get"
+          ]
+        }
+      ]
+    }
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": "",
+    "selfLink": ""
+  }
+}

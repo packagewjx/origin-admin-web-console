@@ -31,7 +31,8 @@ import Register from "./components/Page/Register";
 import UserManagement from "./components/AuthorizationManagement/UserManagement";
 import RoleManagement from "./components/AuthorizationManagement/RoleManagement";
 import ResourceOverview from "./components/Common/ResourceOverview/ResourceOverview";
-import UserDetail from "./components/Common/ResourceDatail/UserDetail";
+import UserDetail from "./components/AuthorizationManagement/UserDetail";
+import RoleDetail from "./components/AuthorizationManagement/RoleDetail";
 
 // Init css loader (for themes)
 initLoadThemes();
@@ -66,6 +67,7 @@ ReactDOM.render(
             <Route path="users" component={UserManagement}/>
             <Route path="users/:name" components={UserDetail}/>
             <Route path="roles" component={RoleManagement}/>
+            <Route path="roles/namespaces/:namespace/:name" components={RoleDetail}/>
             <Route path="overview" component={ResourceOverview}/>
 
             {/*模板管理*/}

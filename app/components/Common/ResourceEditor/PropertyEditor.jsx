@@ -145,7 +145,7 @@ class ObjectFormControl extends React.Component {
         this.setState({showModal: false});
     }
 
-    submitChange() {
+    submitChange(data) {
         this.props.onChange(data);
         this.closeModal();
     }
@@ -339,6 +339,8 @@ class ArrayEditor extends React.Component {
         let itemEditors = [];
         let option = this.props.option;
         let array = this.state.array;
+        if (typeof array === 'undefined')
+            return null;
         if (!array instanceof Array) {
             console.error("Given value is not an array!");
             return null;
@@ -360,7 +362,7 @@ class ArrayEditor extends React.Component {
                 case 'object':
                     itemEditor = (
                         <ObjectFormControl onChange={(data) => this.onItemChange(data, i)} value={item}
-                                           label={option.label}/>
+                                           label={option.label} subOptions={option.subOptions}/>
                     );
                     break;
                 case 'boolean':

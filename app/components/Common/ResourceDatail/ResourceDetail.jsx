@@ -40,7 +40,6 @@ class ResourceDetail extends React.Component {
                 option.namespace = self.props.namespace;
             }
             client[self.props.resourceName].get(self.props.objectName, option).then(function (data) {
-                console.log(data);
                 self.setState({item: data});
             });
         })
@@ -49,7 +48,9 @@ class ResourceDetail extends React.Component {
     updateItem(data) {
         let self = this;
         apiClient().then(function (client) {
-            client[self.props.resourceName].update(data);
+            client[self.props.resourceName].update(data).then(function (data) {
+                console.log(data);
+            });
         })
     }
 
@@ -112,7 +113,7 @@ class ResourceDetail extends React.Component {
         let breadcrumbs = [];
         breadcrumbs.push(<li key="1"><Link to={"/" + this.props.resourceName}>{this.props.resourceName}</Link></li>);
         if (this.props.namespace)
-            breadcrumbs.push(<li key="2"><Link to={this.props.namespace}>{this.props.namespace}</Link></li>);
+            breadcrumbs.push(<li key="2">{this.props.namespace}</li>);
         breadcrumbs.push(<li key="3">{this.props.objectName}</li>);
 
         return (

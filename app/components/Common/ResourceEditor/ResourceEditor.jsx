@@ -52,7 +52,7 @@ class ResourceEditor extends React.Component {
                 option.value = accessData(this.state.item, option.accessor);
                 if (!this.props.isCreate && option.immutable) {
                     propertyEditors.push(
-                        <FieldDisplayer option={option}/>
+                        <FieldDisplayer key={i} option={option}/>
                     )
                 } else {
                     propertyEditors.push(
