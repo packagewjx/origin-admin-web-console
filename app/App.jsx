@@ -19,9 +19,6 @@ import {apiClient, init} from './components/Utils/ApiClient/apiClient';
 
 import Base from './components/Layout/Base';
 import BasePage from './components/Layout/BasePage';
-
-import SingleView from './components/SingleView/SingleView';
-import SubMenu from './components/SubMenu/SubMenu';
 // Application Styles
 import './styles/bootstrap.scss';
 import './styles/app.scss'
@@ -33,6 +30,7 @@ import RoleManagement from "./components/AuthorizationManagement/RoleManagement"
 import ResourceOverview from "./components/Common/ResourceOverview/ResourceOverview";
 import UserDetail from "./components/AuthorizationManagement/UserDetail";
 import RoleDetail from "./components/AuthorizationManagement/RoleDetail";
+import WelcomeView from "./components/Welcome";
 
 // Init css loader (for themes)
 initLoadThemes();
@@ -58,10 +56,9 @@ ReactDOM.render(
         <Route path="/" component={Base}>
 
             {/* Default route*/}
-            <IndexRedirect to="/singleview" />
+            <IndexRedirect to="/welcome"/>
 
-            <Route path="singleview" component={SingleView}/>
-            <Route path="submenu" component={SubMenu}/>
+            <Route path="welcome" component={WelcomeView}/>
 
             {/*权限管理*/}
             <Route path="users" component={UserManagement}/>
@@ -70,9 +67,9 @@ ReactDOM.render(
             <Route path="roles/namespaces/:namespace/:name" components={RoleDetail}/>
             <Route path="overview" component={ResourceOverview}/>
 
-            {/*模板管理*/}
-            <Route path="imagestreams"/>
-            <Route path="templates"/>
+            {/*/!*模板管理*!/*/}
+            {/*<Route path="imagestreams"/>*/}
+            {/*<Route path="templates"/>*/}
 
 
             <Route path="projectnetwork"/>

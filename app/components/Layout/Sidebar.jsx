@@ -1,5 +1,5 @@
 import React from 'react';
-import {Router, Route, Link, History, withRouter} from 'react-router';
+import {History, Link, withRouter} from 'react-router';
 import pubsub from 'pubsub-js';
 import {Collapse} from 'react-bootstrap';
 import SidebarRun from './Sidebar.run';
@@ -11,18 +11,28 @@ class Sidebar extends React.Component {
 
         //For dynamic menu rendering.
         this.menu = [
-            {kind: "item", route: "singleview", title: "Single View", iconClass: "icon-grid"},
             {
-                kind: "submenu", name: "submenu", title: "Menu", iconClass: "icon-speedometer", children: [
-                    {kind: "item", route: "submenu", title: "Submenu", iconClass: "icon-grid"}
+                kind: "submenu", name: "auth", title: "权限管理", iconClass: "icon-people", children: [
+                    {kind: "item", route: "users", title: "用户管理", iconClass: ""},
+                    {kind: "item", route: "identities", title: "用户身份管理"},
+                    {kind: "item", route: "roles", title: "角色管理"}
                 ]
             },
             {
-                kind: "submenu", name: "auth", title: "权限管理", iconClass: "icon-shield", children: [
-                    {kind: "item", route: "users", title: "用户管理", iconClass: "icon-people"},
-                    {kind: "item", route: "roles", title: "角色管理", iconClass: "fa fa-male"}
+                kind: "submenu", name: "persistent-storage", title: "持久存储管理", iconClass: "fa fa-hdd-o", children: [
+                    {kind: "item", route: "persistentvolumes", title: "持久卷管理"},
+                    {kind: "item", route: "persistentvolumeclaims", title: "查看持久卷申请"},
                 ]
-            }
+            },
+            {
+                kind: "submenu", name: "template-imagestream", title: "镜像流与模板管理", iconClass: "fa fa-tags", children: [
+                    {kind: "item", route: "templates", title: "模板管理"},
+                    {kind: "item", route: "imagestreams", title: "镜像流管理"}
+                ]
+            },
+            {kind: "item", route: "network", title: "项目网络设置", iconClass: "fa fa-wifi"},
+            {kind: "item", route: "monitor", title: "监控", iconClass: "fa fa-desktop"},
+            {kind: "item", route: "ssh", title: "终端", iconClass: "fa fa-code"}
         ];
 
         this.state = {
@@ -73,7 +83,7 @@ class Sidebar extends React.Component {
     }
 
     toMenuItem(item) {
-        if (!item.kind || item.kind !== 'item'){
+        if (!item.kind || item.kind !== 'item') {
             console.error("Not of a menu item", item);
             return (<li/>);
         }
@@ -126,30 +136,6 @@ class Sidebar extends React.Component {
                     <nav data-sidebar-anyclick-close="" className="sidebar">
                         {/* START sidebar nav */}
                         <ul className="nav">
-                            {/* START user info */}
-                            <li className="has-user-block">
-                                <Collapse id="user-block" in={this.state.userBlockCollapse}>
-                                    <div>
-                                        <div className="item user-block">
-                                            {/* User picture */}
-                                            <div className="user-block-picture">
-                                                <div className="user-block-status">
-                                                    <img src="img/user/02.jpg" alt="Avatar" width="60" height="60"
-                                                         className="img-thumbnail img-circle"/>
-                                                    <div className="circle circle-success circle-lg"></div>
-                                                </div>
-                                            </div>
-                                            {/* Name and Job */}
-                                            <div className="user-block-info">
-                                                <span className="user-block-name">Hello, Mike</span>
-                                                <span className="user-block-role">Designer</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Collapse>
-                            </li>
-                            {/* END user info */}
-
                             {navMenu}
                         </ul>
                         {/* END sidebar nav */}
