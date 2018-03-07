@@ -25,12 +25,6 @@ export default class PropertyOption {
     placeholder;
 
     /**
-     * Original Value
-     * @member {any} value
-     */
-    value;
-
-    /**
      * If this Property is an array, it will render add and delete button. And based on type, render it, except keyValue.
      * @member {boolean}
      */
@@ -89,13 +83,12 @@ export default class PropertyOption {
      */
     displayIfUndefined;
 
-    constructor(accessor, label, type, value, newValue) {
+    constructor(accessor, label, type, newValue) {
         this.accessor = accessor;
         this.label = label;
         this.type = type || "text";
-        this.value = value || "";
         this.newValue = newValue || function () {
-            switch (this.type) {
+            switch (type) {
                 case "object":
                     return {};
                 case "number":

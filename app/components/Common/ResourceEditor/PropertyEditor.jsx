@@ -28,8 +28,8 @@ class PropertyEditor extends React.Component {
         let state = {};
         if (this.props.option.type === 'keyValue') {
             let keys = {};
-            for (let key in this.props.option.value) {
-                if (this.props.option.value.hasOwnProperty(key)) {
+            for (let key in this.props.value) {
+                if (this.props.value.hasOwnProperty(key)) {
                     keys[key] = key;
                 }
             }
@@ -44,39 +44,42 @@ class PropertyEditor extends React.Component {
     }
 
     render() {
+        //TODO get rid of object editor bug
         let option = this.props.option;
-        if (typeof this.props.option.render === 'function') {
-            return this.props.option.render(this.props.option.value, this.props.onChange);
+        if (typeof option.render === 'function') {
+            return option.render(this.props.value, this.props.onChange);
         }
-        else if (this.props.option.isArray) {
-            return (<ArrayEditor option={this.props.option} onChange={this.handleChange}/>);
-        } else if (this.props.option.type === 'keyValue') {
+        else if (option.isArray) {
+            return (<ArrayEditor option={option} value={this.props.value} onChange={this.handleChange}/>);
+        } else if (option.type === 'keyValue') {
             return (
-                <KeyValueEditor value={this.props.option.value} label={this.props.label}
+                <KeyValueEditor value={this.props.value} label={this.props.label}
                                 onChange={this.handleChange}/>
             );
         } else {
             let formControl = {};
-            if (this.props.option.type === 'select') {
+            if (option.type === 'select') {
                 formControl = (
-                    <SelectionFormControl label={this.props.option.label} value={this.props.option.value}
-                                          selections={this.props.option.selections} onChange={this.handleChange}/>
+                    <SelectionFormControl label={option.label} value={this.props.value}
+                                          selections={option.selections} onChange={this.handleChange}/>
                 );
             }
-            else if (this.props.option.type === 'boolean') {
+            else if (option.type === 'boolean') {
                 formControl = (
-                    <BooleanFormControl label={this.props.option.label} value={this.props.option.value}
+                    <BooleanFormControl label={option.label} value={this.props.value}
                                         onChange={this.handleChange}/>
                 );
             }
-            else if (this.props.option.type === 'object') {
+            else if (option.type === 'object') {
+                console.log(this.props.value);
                 formControl = (
-                    <ObjectFormControl label={option.label} value={option.value} subOptions={option.subOptions}/>
+                    <ObjectFormControl label={option.label} value={this.props.value} subOptions={option.subOptions}
+                                       onChange={this.handleChange} newValue={option.newValue}/>
                 );
             }
             else {
                 formControl = (
-                    <InputFormControl label={option.label} type={option.type} value={option.value}
+                    <InputFormControl label={option.label} type={option.type} value={this.props.value}
                                       onChange={this.handleChange}
                                       placeholder={option.placeholder}/>
                 );
@@ -84,9 +87,9 @@ class PropertyEditor extends React.Component {
 
             return (
                 <FormGroup>
-                    {typeof this.props.option.label !== 'undefined' ?
-                        <label className="col-lg-2 control-label">{this.props.option.label}</label> : null}
-                    <Col lg={typeof this.props.option.label !== 'undefined' ? 10 : 12}>
+                    {typeof option.label !== 'undefined' ?
+                        <label className="col-lg-2 control-label">{option.label}</label> : null}
+                    <Col lg={typeof option.label !== 'undefined' ? 10 : 12}>
                         {formControl}
                     </Col>
                 </FormGroup>
@@ -167,12 +170,15 @@ class ObjectFormControl extends React.Component {
     }
 
     submitChange(data) {
+        console.log("in objectFormControl");
+        console.log(data);
         this.props.onChange(data);
         this.closeModal();
     }
 
     render() {
         let self = this;
+        let value = this.props.value || typeof this.props.newValue === 'function' ? this.props.newValue() : {};
 
         return (
             <div>
@@ -182,7 +188,7 @@ class ObjectFormControl extends React.Component {
                         <Modal.Title>编辑{this.props.label}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <ResourceEditor item={this.props.value}
+                        <ResourceEditor item={value}
                                         onConfirm={this.submitChange}
                                         onCancel={this.closeModal}
                                         propertyOptions={this.props.subOptions}/>
@@ -197,7 +203,8 @@ ObjectFormControl.propTypes = {
     label: PropTypes.string,
     value: PropTypes.any,
     subOptions: PropTypes.arrayOf(PropTypes.instanceOf(PropertyOption)),
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    newValue: PropTypes.func
 };
 
 /**
@@ -367,7 +374,7 @@ class ArrayEditor extends React.Component {
         super(props);
         this.onItemChange = this.onItemChange.bind(this);
 
-        this.state = {array: this.props.option.value};
+        this.state = {array: this.props.value};
     }
 
     onItemChange(data, index) {
@@ -382,10 +389,6 @@ class ArrayEditor extends React.Component {
         let array = this.state.array;
         if (typeof array === 'undefined')
             return null;
-        if (!array instanceof Array) {
-            console.error("Given value is not an array!");
-            return null;
-        }
 
         for (let i = 0; i < array.length; i++) {
             let item = array[i];
@@ -452,6 +455,13 @@ class ArrayEditor extends React.Component {
     }
 }
 
+ArrayEditor.propTypes = {
+    value: PropTypes.array,
+    option: PropTypes.instanceOf(PropertyOption),
+    onChange: PropTypes.func
+};
+
+
 PropertyEditor.propTypes = {
     /**
      * The PropertyOption for this field. To configure how to edit it.
@@ -462,6 +472,10 @@ PropertyEditor.propTypes = {
      * @type {function(data:any)}
      */
     onChange: PropTypes.func.isRequired,
+    /**
+     * The current value of this propertyEditor editing.
+     */
+    value: PropTypes.any
 };
 
 

@@ -144,9 +144,9 @@ class ResourceDetail extends React.Component {
         }
 
         for (let i = 0; i < options.length; i++) {
-            options[i].value = accessData(this.state.item, options[i].accessor);
             //if undefined, by default, not to display this.
-            fieldsDisplay.push(<FieldDisplayer key={i} option={options[i]}/>)
+            fieldsDisplay.push(<FieldDisplayer key={i} option={options[i]}
+                                               value={accessData(this.state.item, options[i].accessor)}/>)
         }
 
         //render breadcrumb

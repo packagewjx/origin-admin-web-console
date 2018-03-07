@@ -189,9 +189,6 @@ function Cell(props) {
 function renderItem(item, referer, linkTo) {
     let data = getData(item, referer);
     if (typeof linkTo === 'string' && linkTo !== "") {
-        if (linkTo.match("users.*"))
-            console.log("wrong");
-
         //replace {referer} to item.referer, if any
         let reg = /{([^}]+)}/g;
         linkTo = linkTo.replace(reg, function (match, $1) {

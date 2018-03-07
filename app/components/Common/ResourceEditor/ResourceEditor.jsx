@@ -53,21 +53,25 @@ class ResourceEditor extends React.Component {
             propertyEditors = [];
             for (let i = 0; i < this.props.propertyOptions.length; i++) {
                 let option = this.props.propertyOptions[i];
-                option.value = accessData(this.state.item, option.accessor);
                 if (!this.props.isCreate && option.immutable) {
                     propertyEditors.push(
-                        <FieldDisplayer key={i} option={option}/>
+                        <FieldDisplayer key={i} option={option} value={accessData(this.state.item, option.accessor)}/>
                     )
                 } else {
                     propertyEditors.push(
                         <PropertyEditor
                             onChange={(data) => {
+                                console.log(data);
                                 this.setState({
                                     item: accessData(this.state.item, option.accessor, data),
                                     changed: true
+                                }, () => {
+                                    console.log("here");
+                                    console.log(this.state);
+                                    this.forceUpdate()
                                 });
                             }}
-                            key={i} option={option}/>
+                            key={i} option={option} value={accessData(this.state.item, option.accessor)}/>
                     );
                 }
                 propertyEditors.push(<br key={"br" + i}/>);
@@ -125,7 +129,8 @@ class ResourceEditor extends React.Component {
                                         bsClass="btn btn-labeled btn-success mr">
                                     <span className="btn-label"><i className="fa fa-check"/></span> 确定
                                 </Button>
-                                <Button onClick={this.props.onCancel} disabled={this.state.waiting} bsClass="btn btn-labeled btn-danger mr">
+                                <Button onClick={this.props.onCancel} disabled={this.state.waiting}
+                                        bsClass="btn btn-labeled btn-danger mr">
                                     <span className="btn-label"><i className="fa fa-times"/></span> 取消
                                 </Button>
                                 {this.state.waiting ?

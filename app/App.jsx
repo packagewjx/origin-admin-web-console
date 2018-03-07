@@ -32,6 +32,7 @@ import RoleDetail from "./components/AuthorizationManagement/RoleDetail";
 import WelcomeView from "./components/Welcome";
 import ServerMonitor from "./components/ServerMonitor";
 import IdentityManagement from "./components/AuthorizationManagement/IdentityManagement";
+import IdentityDetail from "./components/AuthorizationManagement/IdentityDetail";
 
 // Init css loader (for themes)
 initLoadThemes();
@@ -67,6 +68,7 @@ ReactDOM.render(
             <Route path="roles" component={RoleManagement}/>
             <Route path="roles/namespaces/:namespace/:name" components={RoleDetail}/>
             <Route path="identities" component={IdentityManagement}/>
+            <Route path="identities/:name" component={IdentityDetail}/>
 
 
             {/*/!*模板管理*!/*/}

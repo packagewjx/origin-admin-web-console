@@ -48,7 +48,7 @@ export class FieldDisplayer extends React.Component {
 
     render() {
         let fieldDisplay = (<span/>);
-        let value = this.props.option.value;
+        let value = this.props.value;
         if (typeof value === 'undefined' && !this.props.option.displayIfUndefined) {
             return (<noscript/>);
         } else if (typeof this.props.option.displayRender === 'function') {
@@ -59,11 +59,11 @@ export class FieldDisplayer extends React.Component {
             Array should calculate the selection map for child FieldDisplayer to avoid repeatedly compute it.
              */
             fieldDisplay = [];
-            for (let i = 0; i < this.props.option.value.length; i++) {
-                let option = new PropertyOption("", i + 1, this.props.option.type, this.props.option.value[i]);
+            for (let i = 0; i < this.props.value.length; i++) {
+                let option = new PropertyOption("", i + 1, this.props.option.type);
                 option.subOptions = this.props.option.subOptions;
                 option.selections = this.props.option.selections;
-                fieldDisplay.push(<FieldDisplayer key={i} option={option}/>);
+                fieldDisplay.push(<FieldDisplayer key={i} option={option} value={this.props.value[i]}/>);
                 fieldDisplay.push(<hr style={{marginTop: 5, marginBottom: 5}} key={"hr" + i}/>);
             }
         } else {
@@ -83,8 +83,8 @@ export class FieldDisplayer extends React.Component {
                     fieldDisplay = [];
                     for (let key in value) {
                         if (value.hasOwnProperty(key)) {
-                            let option = new PropertyOption("", key, "text", value[key]);
-                            fieldDisplay.push(<FieldDisplayer key={key} option={option}/>)
+                            let option = new PropertyOption("", key, "text");
+                            fieldDisplay.push(<FieldDisplayer key={key} option={option} value={value[key]}/>)
                         }
                     }
                     break;
@@ -94,13 +94,14 @@ export class FieldDisplayer extends React.Component {
                     if (subOption instanceof Array) {
                         //this method use the defined sub options.
                         for (let i = 0; i < subOption.length; i++) {
-                            subOption[i].value = accessData(this.props.option.value, subOption[i].accessor);
+                            subOption[i].value = accessData(this.props.value, subOption[i].accessor);
                             subOptionMap[subOption[i].accessor] = subOption[i];
                         }
                         fieldDisplay = [];
                         for (let key in value) {
                             if (value.hasOwnProperty(key)) {
-                                fieldDisplay.push(<FieldDisplayer key={key} option={subOptionMap[key]}/>);
+                                fieldDisplay.push(<FieldDisplayer key={key} option={subOptionMap[key]}
+                                                                  value={value[key]}/>);
                             }
                         }
                     } else {
@@ -111,10 +112,10 @@ export class FieldDisplayer extends React.Component {
                                 let valueKeyValue = value[key];
                                 let option = undefined;
                                 if (typeof valueKeyValue === 'object' && valueKeyValue !== null)
-                                    option = new PropertyOption("", key, "object", valueKeyValue);
+                                    option = new PropertyOption("", key, "object");
                                 else
-                                    option = new PropertyOption("", key, "text", valueKeyValue);
-                                fieldDisplay.push(<FieldDisplayer key={key} option={option}/>)
+                                    option = new PropertyOption("", key, "text");
+                                fieldDisplay.push(<FieldDisplayer key={key} option={option} value={valueKeyValue}/>)
                             }
                         }
                     }
@@ -141,4 +142,8 @@ FieldDisplayer.propTypes = {
      * For display a select field, it will use this value-label map, to display the label rather than just display value.
      */
     selectionMap: PropTypes.object,
+    /**
+     * The value that this displayer is displayed
+     */
+    value: PropTypes.any
 };

@@ -18,7 +18,6 @@ export function accessData(obj, accessor, newVal) {
     let parent = null;
     let keyRegExp = /^([\w_$]+)(?:\[(\d+)])?$/;//e.g. a[1], a
 
-
     for (let i = 0; i < keys.length - 1; i++) {
         let key = keys[i];
         let keyMatch = keyRegExp.exec(key);

@@ -110,7 +110,12 @@ let rolePropertyOption = [
 /**
  * User Identity Options
  */
-
+let identityPropertyOption = [
+    namePropertyOption,
+    new PropertyOption("providerName", "身份提供方", "text"),
+    new PropertyOption("providerUserName", "身份提供方用户名", "text"),
+    new PropertyOption("extra", "额外信息", "object"),
+];
 
 /**
  * Some defined PropertyOptions, each key is the resource plural name, e.g. users, roles
@@ -118,4 +123,5 @@ let rolePropertyOption = [
 export const PredefinedPropertyOption = {
     users: userPropertyOption,
     roles: rolePropertyOption,
+    identities: identityPropertyOption
 };
