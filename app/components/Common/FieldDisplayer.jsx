@@ -27,7 +27,6 @@ export class FieldDisplayer extends React.Component {
     componentDidMount() {
         let self = this;
         let selectFunc = function (selections) {
-            console.log(selections);
             let selectionMap = {};
             for (let i = 0; i < selections.length; i++) {
                 selectionMap[selections[i].value] = selections[i].label;
@@ -36,8 +35,9 @@ export class FieldDisplayer extends React.Component {
         };
 
         if (this.props.option.type === "select") {
+            //when this is an array, it will create the selection map to pass down to each FieldDisplayer child.
+            //when not, it will calculate its own map.
             let selections = this.props.option.selections;
-            console.log(this.props.option);
             if (!!selections && typeof selections.then === 'function') {
                 selections.then(selectFunc);
             } else {
@@ -55,13 +55,16 @@ export class FieldDisplayer extends React.Component {
             //use the displayRender if it exists.
             return this.props.option.displayRender(this.props.option);
         } else if (this.props.option.isArray) {
+            /*
+            Array should calculate the selection map for child FieldDisplayer to avoid repeatedly compute it.
+             */
             fieldDisplay = [];
             for (let i = 0; i < this.props.option.value.length; i++) {
                 let option = new PropertyOption("", i + 1, this.props.option.type, this.props.option.value[i]);
                 option.subOptions = this.props.option.subOptions;
                 option.selections = this.props.option.selections;
-                fieldDisplay.push(<FieldDisplayer key={i} option={option} selectionMap={this.state.selectionMap}/>);
-                fieldDisplay.push(<hr key={"hr" + i}/>);
+                fieldDisplay.push(<FieldDisplayer key={i} option={option}/>);
+                fieldDisplay.push(<hr style={{marginTop: 5, marginBottom: 5}} key={"hr" + i}/>);
             }
         } else {
             //display it normally
@@ -73,7 +76,7 @@ export class FieldDisplayer extends React.Component {
                     break;
                 case "select":
                     fieldDisplay = (
-                        <span>{this.props.selectionMap[value]}</span>
+                        <span>{this.state.selectionMap[value]}</span>
                     );
                     break;
                 case "keyValue":

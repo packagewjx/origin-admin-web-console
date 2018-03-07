@@ -33,6 +33,23 @@ class ResourceDetail extends React.Component {
         this.deleteItem = this.deleteItem.bind(this);
 
         this.state = {item: {}, editModalShow: false, deleteModalShow: false};
+
+        //menu action setting
+        this.actions = [
+            {
+                label: "编辑", func: (data) => {
+                    //this action is edit
+                    this.setState({editModalShow: true});
+                }
+            },
+            {
+                label: "删除", func: (data) => {
+                    //this action is delete
+                    this.setState({deleteModalShow: true});
+                }
+            }
+        ];
+        this.actions.concat(this.props.additionalActions);
     }
 
     componentDidMount() {
@@ -90,13 +107,7 @@ class ResourceDetail extends React.Component {
     }
 
     onMenuItemClicked(eventKey, event) {
-        switch (eventKey) {
-            case "1":
-                this.setState({editModalShow: true});
-                break;
-            case "2":
-                this.setState({deleteModalShow: true});
-        }
+        this.actions[eventKey].func(this.state.item);
     }
 
     closeEditModal() {
@@ -145,6 +156,13 @@ class ResourceDetail extends React.Component {
             breadcrumbs.push(<li key="2">{this.props.namespace}</li>);
         breadcrumbs.push(<li key="3">{this.props.objectName}</li>);
 
+        //render menuItems
+        let menuItems = [];
+        for (let i = 0; i < this.actions.length; i++) {
+            menuItems.push(<MenuItem key={i} eventKey={i}>{this.actions[i].label}</MenuItem>)
+        }
+
+
         return (
             <ContentWrapper>
                 <div className="content-heading">
@@ -154,8 +172,7 @@ class ResourceDetail extends React.Component {
                                 操作
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                                <MenuItem eventKey="1">编辑</MenuItem>
-                                <MenuItem eventKey="2">删除</MenuItem>
+                                {menuItems}
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>
@@ -169,6 +186,7 @@ class ResourceDetail extends React.Component {
                         {fieldsDisplay}
                     </Col>
                 </Row>
+                {this.props.children}
                 <Modal show={this.state.editModalShow} onHide={this.closeEditModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>编辑</Modal.Title>
@@ -212,7 +230,15 @@ ResourceDetail.propTypes = {
     /**
      * To display the object, this component will use PropertyOptions to display it, use the display options.
      */
-    propertyOptions: PropTypes.arrayOf(PropTypes.instanceOf(PropertyOption))
+    propertyOptions: PropTypes.arrayOf(PropTypes.instanceOf(PropertyOption)),
+    /**
+     * By default, there are two action, edit and delete. You can add more operation through this props, each element
+     * of this array contains a function named that has one argument, which is the data this page displaying, and the name
+     * of this action. Normally, you can add children to this ResourceDetail, which contains the modal you need to display
+     * these actions's UI. Children will be placed below the content. Or you can just go to another page.
+     * @type {Array.<{label:string, func:function(data:any)}>}
+     */
+    additionalActions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string, PropTypes.func))
 };
 
 export default ResourceDetail;
