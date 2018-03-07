@@ -354,7 +354,7 @@ class SelectionFormControl extends React.Component {
 SelectionFormControl.propTypes = {
     label: PropTypes.string,
     value: PropTypes.string,
-    selections: PropTypes.oneOf(PropTypes.string, PropTypes.object),
+    selections: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
     onChange: PropTypes.func
 };
 
