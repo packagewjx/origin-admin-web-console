@@ -31,6 +31,7 @@ import ResourceOverview from "./components/Common/ResourceOverview/ResourceOverv
 import UserDetail from "./components/AuthorizationManagement/UserDetail";
 import RoleDetail from "./components/AuthorizationManagement/RoleDetail";
 import WelcomeView from "./components/Welcome";
+import ServerMonitor from "./components/ServerMonitor";
 
 // Init css loader (for themes)
 initLoadThemes();
@@ -71,8 +72,7 @@ ReactDOM.render(
             {/*<Route path="imagestreams"/>*/}
             {/*<Route path="templates"/>*/}
 
-
-            <Route path="projectnetwork"/>
+            <Route path="monitor" component={ServerMonitor}/>
 
 
         </Route>
