@@ -108,6 +108,11 @@ let rolePropertyOption = [
 ];
 
 /**
+ * User Identity Options
+ */
+
+
+/**
  * Some defined PropertyOptions, each key is the resource plural name, e.g. users, roles
  */
 export const PredefinedPropertyOption = {

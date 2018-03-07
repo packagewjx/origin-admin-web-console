@@ -15,6 +15,7 @@ import ReactTable from "react-table";
 import {Button, Modal} from "react-bootstrap";
 import ResourceEditor from "../ResourceEditor/ResourceEditor";
 import PropertyOption from "../PropertyOption";
+import {deepClone} from "../../Utils/UtilFunctions";
 
 /**
  * This component is used to display all resource objects of a kind of resource. They are displayed in a table. The
@@ -30,9 +31,6 @@ class ResourceOverview extends React.Component {
 
         this.state = {data: [], loading: true, showAddResourceModal: false};
 
-        //fetch data
-        this.fetchData();
-
         //initialize add resource modal
         this.newResourceObject = {};
 
@@ -45,7 +43,8 @@ class ResourceOverview extends React.Component {
             let column = this.props.tableConfig.columns[i];
             if (typeof column === 'string') {
                 if (DefaultColumnConfig.hasOwnProperty(column)) {
-                    column = this.props.tableConfig.columns[i] = DefaultColumnConfig[column];
+                    //because javascript is giving value, so ,we have to clone it, to prevent changing the DefaultColumnConfig
+                    column = this.props.tableConfig.columns[i] = deepClone(DefaultColumnConfig[column]);
                 } else {
                     console.error("Error, this column is not one of keys of DefaultColumnConfig");
                 }
@@ -76,6 +75,11 @@ class ResourceOverview extends React.Component {
         this.setState({showAddResourceModal: !this.state.showAddResourceModal})
     }
 
+    componentDidMount() {
+        //fetch data
+        this.fetchData();
+    }
+
     /**
      * Fetch Resource Objects
      */
@@ -84,7 +88,6 @@ class ResourceOverview extends React.Component {
         let self = this;
         apiClient().then(function (client) {
             client[resourceName].list().then(function (data) {
-                console.log(data);
                 self.setState({data: data.items, loading: false});
             }, function () {
                 self.setState({loading: false});
@@ -186,6 +189,9 @@ function Cell(props) {
 function renderItem(item, referer, linkTo) {
     let data = getData(item, referer);
     if (typeof linkTo === 'string' && linkTo !== "") {
+        if (linkTo.match("users.*"))
+            console.log("wrong");
+
         //replace {referer} to item.referer, if any
         let reg = /{([^}]+)}/g;
         linkTo = linkTo.replace(reg, function (match, $1) {

@@ -13,6 +13,13 @@ import Role from "../Utils/ApiClient/model/Role";
 class RoleManagement extends React.Component {
     constructor(props) {
         super(props);
+
+        this.tableConfig = new TableConfig();
+        this.tableConfig.columns = [
+            'namespacedName',
+            'creationTimestamp',
+            'namespace'
+        ];
     }
 
     static getNewRole() {
@@ -22,16 +29,11 @@ class RoleManagement extends React.Component {
     }
 
     render() {
-        let tableConfig = new TableConfig();
-        tableConfig.columns = [
-            'namespacedName',
-            'creationTimestamp',
-            'namespace'
-        ];
+
         let propertyOptions = PredefinedPropertyOption.roles;
 
         return (
-            <ResourceOverview title={"角色管理"} resourceName={"roles"} tableConfig={tableConfig}
+            <ResourceOverview title={"角色管理"} resourceName={"roles"} tableConfig={this.tableConfig}
                               propertyOptions={propertyOptions}
                               getNewResourceObject={RoleManagement.getNewRole}/>
         )

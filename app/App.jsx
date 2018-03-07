@@ -27,11 +27,11 @@ import NotFound from "./components/Page/NotFound";
 import Register from "./components/Page/Register";
 import UserManagement from "./components/AuthorizationManagement/UserManagement";
 import RoleManagement from "./components/AuthorizationManagement/RoleManagement";
-import ResourceOverview from "./components/Common/ResourceOverview/ResourceOverview";
 import UserDetail from "./components/AuthorizationManagement/UserDetail";
 import RoleDetail from "./components/AuthorizationManagement/RoleDetail";
 import WelcomeView from "./components/Welcome";
 import ServerMonitor from "./components/ServerMonitor";
+import IdentityManagement from "./components/AuthorizationManagement/IdentityManagement";
 
 // Init css loader (for themes)
 initLoadThemes();
@@ -66,7 +66,8 @@ ReactDOM.render(
             <Route path="users/:name" components={UserDetail}/>
             <Route path="roles" component={RoleManagement}/>
             <Route path="roles/namespaces/:namespace/:name" components={RoleDetail}/>
-            <Route path="overview" component={ResourceOverview}/>
+            <Route path="identities" component={IdentityManagement}/>
+
 
             {/*/!*模板管理*!/*/}
             {/*<Route path="imagestreams"/>*/}
