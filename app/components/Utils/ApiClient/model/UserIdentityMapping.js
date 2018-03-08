@@ -1,3 +1,5 @@
+import ObjectMeta from "./ObjectMeta";
+
 export default class UserIdentityMapping {
     /**
      * User is a reference to a user
@@ -29,5 +31,10 @@ export default class UserIdentityMapping {
      */
     apiVersion;
 
+    constructor() {
+        this.metadata = new ObjectMeta();
+        this.kind = "UserIdentityMapping";
+        this.apiVersion = "v1";
+    }
 
 }

@@ -112,10 +112,12 @@ let rolePropertyOption = [
  */
 let identityPropertyOption = [
     namePropertyOption,
+    new PropertyOption("user.name", "关联用户", "text"),
     new PropertyOption("providerName", "身份提供方", "text"),
     new PropertyOption("providerUserName", "身份提供方用户名", "text"),
     new PropertyOption("extra", "额外信息", "object"),
 ];
+identityPropertyOption[1].displayIfUndefined = true;
 
 /**
  * Some defined PropertyOptions, each key is the resource plural name, e.g. users, roles

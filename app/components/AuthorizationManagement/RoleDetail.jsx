@@ -5,7 +5,7 @@
  **/
 
 import React from 'react';
-import {PredefinedPropertyOption} from "../Common/PredifinedPropertyOption";
+import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
 import ResourceDetail from "../Common/ResourceDatail/ResourceDetail";
 
 class RoleDetail extends React.Component {

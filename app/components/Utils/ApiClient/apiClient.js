@@ -5,7 +5,7 @@ const API_RESOURCE_LIST_URLS = ["https://116.56.140.108:8443/oapi/v1", "https://
 
 let client = {};
 let fetchingPromise = undefined;
-let token = "Bearer txpLqkycudvPtJuOhlM4-4bYk0oANBVkYJrFJFiRALI";
+let token = "Bearer 5v4UPEd1WjHwuqFxSqa2bBJIAAEwxwUVpVKp-oGfM8c";
 
 let verbFunctions = {
     create: createFunction,
@@ -166,6 +166,7 @@ function createFunction(resource) {
 function deleteFunction(resource) {
     return function (name, options) {
         let deleteOptions = new DeleteOptions();
+        options = options || defaultOption;
 
         let url = resource.baseURL;
         if (options.namespace !== "") {
@@ -192,6 +193,8 @@ function deleteFunction(resource) {
 function deleteCollectionFunction(resource) {
     return function (options) {
         let url = resource.baseURL;
+        options = options || defaultOption;
+
         if (options.namespace !== "") {
             url += "/namespaces/" + options.namespace;
         }

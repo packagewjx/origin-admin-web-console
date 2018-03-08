@@ -12,7 +12,7 @@ import {apiClient, GlobalOption} from "../../Utils/ApiClient/apiClient";
 import {Button, Col, Dropdown, MenuItem, Modal, Row} from "react-bootstrap";
 import {accessData} from "../../Utils/UtilFunctions";
 import ResourceEditor from "../ResourceEditor/ResourceEditor";
-import {PredefinedPropertyOption} from "../PredifinedPropertyOption";
+import {PredefinedPropertyOption} from "../PredefinedPropertyOption";
 import {FieldDisplayer} from "../FieldDisplayer";
 import {Link} from "react-router";
 import {appHistory} from "../../../App";
@@ -49,7 +49,7 @@ class ResourceDetail extends React.Component {
                 }
             }
         ];
-        this.actions = this.actions.concat(this.props.additionalActions);
+        this.actions = this.actions.concat(this.props.additionalActions || []);
     }
 
     componentDidMount() {

@@ -8,7 +8,7 @@ import React from 'react';
 import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
 import {ColumnConfig, TableConfig} from "../Common/ResourceOverview/TableConfig";
 import User from "../Utils/ApiClient/model/User";
-import {PredefinedPropertyOption} from "../Common/PredifinedPropertyOption";
+import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
 
 class UserManagement extends React.Component {
 

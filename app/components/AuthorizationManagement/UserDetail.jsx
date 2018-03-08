@@ -6,7 +6,7 @@
 
 import React from 'react';
 import ResourceDetail from "../Common/ResourceDatail/ResourceDetail";
-import {PredefinedPropertyOption} from "../Common/PredifinedPropertyOption";
+import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
 
 class UserDetail extends React.Component {
     render() {

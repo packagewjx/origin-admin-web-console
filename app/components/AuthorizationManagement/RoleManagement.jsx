@@ -7,7 +7,7 @@
 import React from 'react';
 import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
 import {TableConfig} from "../Common/ResourceOverview/TableConfig";
-import {PredefinedPropertyOption} from "../Common/PredifinedPropertyOption";
+import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
 import Role from "../Utils/ApiClient/model/Role";
 
 class RoleManagement extends React.Component {
