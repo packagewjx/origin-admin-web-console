@@ -55,7 +55,7 @@ class PropertyEditor extends React.Component {
             return (<ArrayEditor option={option} value={this.props.value} onChange={this.handleChange}/>);
         } else if (option.type === 'keyValue') {
             return (
-                <KeyValueEditor value={this.props.value} label={this.props.label}
+                <KeyValueEditor value={this.props.value} label={option.label}
                                 onChange={this.handleChange}/>
             );
         } else {

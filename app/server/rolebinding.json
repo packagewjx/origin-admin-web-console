@@ -1,0 +1,1974 @@
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-02T17:39:47Z",
+        "name": "admin",
+        "namespace": "ci",
+        "resourceVersion": "1227495",
+        "selfLink": "/oapi/v1/namespaces/ci/rolebindings/admin",
+        "uid": "b35bf372-1e40-11e8-8e41-000af7b00488"
+      },
+      "roleRef": {
+        "name": "admin"
+      },
+      "subjects": [
+        {
+          "kind": "User",
+          "name": "test"
+        }
+      ],
+      "userNames": [
+        "test"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "annotations": {
+          "openshift.io/generated-by": "OpenShiftNewApp"
+        },
+        "creationTimestamp": "2018-03-02T17:39:54Z",
+        "labels": {
+          "app": "jenkins-ephemeral",
+          "template": "jenkins-ephemeral-template"
+        },
+        "name": "jenkins_edit",
+        "namespace": "ci",
+        "resourceVersion": "1227548",
+        "selfLink": "/oapi/v1/namespaces/ci/rolebindings/jenkins_edit",
+        "uid": "b7beb8c7-1e40-11e8-8e41-000af7b00488"
+      },
+      "roleRef": {
+        "name": "edit"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "jenkins"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:ci:jenkins"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-02T17:39:47Z",
+        "name": "system:deployers",
+        "namespace": "ci",
+        "resourceVersion": "1227494",
+        "selfLink": "/oapi/v1/namespaces/ci/rolebindings/system%3Adeployers",
+        "uid": "b359f12d-1e40-11e8-8e41-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "ci"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:ci:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-02T17:39:47Z",
+        "name": "system:image-builders",
+        "namespace": "ci",
+        "resourceVersion": "1227493",
+        "selfLink": "/oapi/v1/namespaces/ci/rolebindings/system%3Aimage-builders",
+        "uid": "b3575564-1e40-11e8-8e41-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "ci"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:ci:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:ci"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-02T17:39:46Z",
+        "name": "system:image-pullers",
+        "namespace": "ci",
+        "resourceVersion": "1227489",
+        "selfLink": "/oapi/v1/namespaces/ci/rolebindings/system%3Aimage-pullers",
+        "uid": "b347d34e-1e40-11e8-8e41-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:ci"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:33:32Z",
+        "name": "system:deployers",
+        "namespace": "default",
+        "resourceVersion": "181",
+        "selfLink": "/oapi/v1/namespaces/default/rolebindings/system%3Adeployers",
+        "uid": "97a96deb-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "default"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:default:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:33:31Z",
+        "name": "system:image-builders",
+        "namespace": "default",
+        "resourceVersion": "175",
+        "selfLink": "/oapi/v1/namespaces/default/rolebindings/system%3Aimage-builders",
+        "uid": "97a23fc6-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "default"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:default:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:default"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:33:31Z",
+        "name": "system:image-pullers",
+        "namespace": "default",
+        "resourceVersion": "169",
+        "selfLink": "/oapi/v1/namespaces/default/rolebindings/system%3Aimage-pullers",
+        "uid": "979b10b2-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:default"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-26T01:41:54Z",
+        "name": "admin",
+        "namespace": "demo",
+        "resourceVersion": "580994",
+        "selfLink": "/oapi/v1/namespaces/demo/rolebindings/admin",
+        "uid": "392b5e4d-1a96-11e8-9003-000af7b00488"
+      },
+      "roleRef": {
+        "name": "admin"
+      },
+      "subjects": [
+        {
+          "kind": "User",
+          "name": "test"
+        }
+      ],
+      "userNames": [
+        "test"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "annotations": {
+          "openshift.io/generated-by": "OpenShiftNewApp"
+        },
+        "creationTimestamp": "2018-03-02T17:39:08Z",
+        "labels": {
+          "app": "jenkins-ephemeral",
+          "template": "jenkins-ephemeral-template"
+        },
+        "name": "jenkins_edit",
+        "namespace": "demo",
+        "resourceVersion": "1227379",
+        "selfLink": "/oapi/v1/namespaces/demo/rolebindings/jenkins_edit",
+        "uid": "9c18df4f-1e40-11e8-8e41-000af7b00488"
+      },
+      "roleRef": {
+        "name": "edit"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "jenkins"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:demo:jenkins"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-26T01:41:54Z",
+        "name": "system:deployers",
+        "namespace": "demo",
+        "resourceVersion": "580992",
+        "selfLink": "/oapi/v1/namespaces/demo/rolebindings/system%3Adeployers",
+        "uid": "39289c00-1a96-11e8-9003-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "demo"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:demo:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-26T01:41:54Z",
+        "name": "system:image-builders",
+        "namespace": "demo",
+        "resourceVersion": "580991",
+        "selfLink": "/oapi/v1/namespaces/demo/rolebindings/system%3Aimage-builders",
+        "uid": "3927acb7-1a96-11e8-9003-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "demo"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:demo:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:demo"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-26T01:41:54Z",
+        "name": "system:image-pullers",
+        "namespace": "demo",
+        "resourceVersion": "580989",
+        "selfLink": "/oapi/v1/namespaces/demo/rolebindings/system%3Aimage-pullers",
+        "uid": "39273931-1a96-11e8-9003-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:demo"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-05T11:49:08Z",
+        "name": "admin",
+        "namespace": "jenkins",
+        "resourceVersion": "1677044",
+        "selfLink": "/oapi/v1/namespaces/jenkins/rolebindings/admin",
+        "uid": "36cfa4dd-206b-11e8-b8d2-000af7b00488"
+      },
+      "roleRef": {
+        "name": "admin"
+      },
+      "subjects": [
+        {
+          "kind": "User",
+          "name": "admin"
+        }
+      ],
+      "userNames": [
+        "admin"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-06T01:19:31Z",
+        "labels": {
+          "template": "jenkins-persistent-template"
+        },
+        "name": "jenkins_edit",
+        "namespace": "jenkins",
+        "ownerReferences": [
+          {
+            "apiVersion": "template.openshift.io/v1",
+            "blockOwnerDeletion": true,
+            "kind": "TemplateInstance",
+            "name": "a485ea12-285c-4ede-a519-fc0dcb69df16",
+            "uid": "6bfad717-20dc-11e8-a6fa-000af7b00488"
+          }
+        ],
+        "resourceVersion": "1761000",
+        "selfLink": "/oapi/v1/namespaces/jenkins/rolebindings/jenkins_edit",
+        "uid": "6c25f426-20dc-11e8-a6fa-000af7b00488"
+      },
+      "roleRef": {
+        "name": "edit"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "jenkins"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:jenkins:jenkins"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-05T11:49:08Z",
+        "name": "system:deployers",
+        "namespace": "jenkins",
+        "resourceVersion": "1677042",
+        "selfLink": "/oapi/v1/namespaces/jenkins/rolebindings/system%3Adeployers",
+        "uid": "36ced9e3-206b-11e8-b8d2-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "jenkins"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:jenkins:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-05T11:49:08Z",
+        "name": "system:image-builders",
+        "namespace": "jenkins",
+        "resourceVersion": "1677041",
+        "selfLink": "/oapi/v1/namespaces/jenkins/rolebindings/system%3Aimage-builders",
+        "uid": "36cdff5c-206b-11e8-b8d2-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "jenkins"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:jenkins:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:jenkins"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-05T11:49:08Z",
+        "name": "system:image-pullers",
+        "namespace": "jenkins",
+        "resourceVersion": "1677039",
+        "selfLink": "/oapi/v1/namespaces/jenkins/rolebindings/system%3Aimage-pullers",
+        "uid": "36cb9b45-206b-11e8-b8d2-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:jenkins"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:33Z",
+        "labels": {
+          "kubernetes.io/bootstrapping": "rbac-defaults"
+        },
+        "name": "system:controller:bootstrap-signer",
+        "namespace": "kube-public",
+        "resourceVersion": "282",
+        "selfLink": "/oapi/v1/namespaces/kube-public/rolebindings/system%3Acontroller%3Abootstrap-signer",
+        "uid": "985dc29c-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:controller:bootstrap-signer",
+        "namespace": "kube-public"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bootstrap-signer",
+          "namespace": "kube-system"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:kube-system:bootstrap-signer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-06T01:03:58Z",
+        "name": "endpointer-accessor-binding",
+        "namespace": "kube-service-catalog",
+        "resourceVersion": "1759178",
+        "selfLink": "/oapi/v1/namespaces/kube-service-catalog/rolebindings/endpointer-accessor-binding",
+        "uid": "3fed3d80-20da-11e8-a6fa-000af7b00488"
+      },
+      "roleRef": {
+        "name": "endpoint-accessor",
+        "namespace": "kube-service-catalog"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "service-catalog-controller",
+          "namespace": "kube-service-catalog"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:kube-service-catalog:service-catalog-controller"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:51:16Z",
+        "name": "system:deployer",
+        "namespace": "kube-service-catalog",
+        "resourceVersion": "2607",
+        "selfLink": "/oapi/v1/namespaces/kube-service-catalog/rolebindings/system%3Adeployer",
+        "uid": "12199354-17cf-11e8-96ac-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "kube-service-catalog"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:kube-service-catalog:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:51:16Z",
+        "name": "system:image-builder",
+        "namespace": "kube-service-catalog",
+        "resourceVersion": "2599",
+        "selfLink": "/oapi/v1/namespaces/kube-service-catalog/rolebindings/system%3Aimage-builder",
+        "uid": "120e8681-17cf-11e8-96ac-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "kube-service-catalog"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:kube-service-catalog:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:kube-service-catalog"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:51:16Z",
+        "name": "system:image-puller",
+        "namespace": "kube-service-catalog",
+        "resourceVersion": "2589",
+        "selfLink": "/oapi/v1/namespaces/kube-service-catalog/rolebindings/system%3Aimage-puller",
+        "uid": "120254db-17cf-11e8-96ac-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:kube-service-catalog"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-06T01:04:01Z",
+        "name": "extension-apiserver-authentication-reader-binding",
+        "namespace": "kube-system",
+        "resourceVersion": "1759189",
+        "selfLink": "/oapi/v1/namespaces/kube-system/rolebindings/extension-apiserver-authentication-reader-binding",
+        "uid": "41fd4215-20da-11e8-a6fa-000af7b00488"
+      },
+      "roleRef": {
+        "name": "extension-apiserver-authentication-reader",
+        "namespace": "kube-system"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "service-catalog-apiserver",
+          "namespace": "kube-service-catalog"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:kube-service-catalog:service-catalog-apiserver"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:33Z",
+        "labels": {
+          "kubernetes.io/bootstrapping": "rbac-defaults"
+        },
+        "name": "system::leader-locking-kube-controller-manager",
+        "namespace": "kube-system",
+        "resourceVersion": "277",
+        "selfLink": "/oapi/v1/namespaces/kube-system/rolebindings/system%3A%3Aleader-locking-kube-controller-manager",
+        "uid": "984eee67-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system::leader-locking-kube-controller-manager",
+        "namespace": "kube-system"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "kube-controller-manager",
+          "namespace": "kube-system"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:kube-system:kube-controller-manager"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:33Z",
+        "labels": {
+          "kubernetes.io/bootstrapping": "rbac-defaults"
+        },
+        "name": "system::leader-locking-kube-scheduler",
+        "namespace": "kube-system",
+        "resourceVersion": "278",
+        "selfLink": "/oapi/v1/namespaces/kube-system/rolebindings/system%3A%3Aleader-locking-kube-scheduler",
+        "uid": "9850a7c3-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system::leader-locking-kube-scheduler",
+        "namespace": "kube-system"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "kube-scheduler",
+          "namespace": "kube-system"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:kube-system:kube-scheduler"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:33Z",
+        "labels": {
+          "kubernetes.io/bootstrapping": "rbac-defaults"
+        },
+        "name": "system:controller:bootstrap-signer",
+        "namespace": "kube-system",
+        "resourceVersion": "279",
+        "selfLink": "/oapi/v1/namespaces/kube-system/rolebindings/system%3Acontroller%3Abootstrap-signer",
+        "uid": "9852698d-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:controller:bootstrap-signer",
+        "namespace": "kube-system"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bootstrap-signer",
+          "namespace": "kube-system"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:kube-system:bootstrap-signer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:33Z",
+        "labels": {
+          "kubernetes.io/bootstrapping": "rbac-defaults"
+        },
+        "name": "system:controller:cloud-provider",
+        "namespace": "kube-system",
+        "resourceVersion": "280",
+        "selfLink": "/oapi/v1/namespaces/kube-system/rolebindings/system%3Acontroller%3Acloud-provider",
+        "uid": "9857a647-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:controller:cloud-provider",
+        "namespace": "kube-system"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "cloud-provider",
+          "namespace": "kube-system"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:kube-system:cloud-provider"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:33Z",
+        "labels": {
+          "kubernetes.io/bootstrapping": "rbac-defaults"
+        },
+        "name": "system:controller:token-cleaner",
+        "namespace": "kube-system",
+        "resourceVersion": "281",
+        "selfLink": "/oapi/v1/namespaces/kube-system/rolebindings/system%3Acontroller%3Atoken-cleaner",
+        "uid": "985bffe8-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:controller:token-cleaner",
+        "namespace": "kube-system"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "token-cleaner",
+          "namespace": "kube-system"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:kube-system:token-cleaner"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:39:59Z",
+        "name": "system:deployer",
+        "namespace": "logging",
+        "resourceVersion": "1452",
+        "selfLink": "/oapi/v1/namespaces/logging/rolebindings/system%3Adeployer",
+        "uid": "7e69b6cb-17cd-11e8-96ac-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "logging"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:logging:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:39:59Z",
+        "name": "system:image-builder",
+        "namespace": "logging",
+        "resourceVersion": "1445",
+        "selfLink": "/oapi/v1/namespaces/logging/rolebindings/system%3Aimage-builder",
+        "uid": "7e6423bb-17cd-11e8-96ac-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "logging"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:logging:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:logging"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:39:59Z",
+        "name": "system:image-puller",
+        "namespace": "logging",
+        "resourceVersion": "1437",
+        "selfLink": "/oapi/v1/namespaces/logging/rolebindings/system%3Aimage-puller",
+        "uid": "7e5b6291-17cd-11e8-96ac-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:logging"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:34:20Z",
+        "name": "admin",
+        "namespace": "management-infra",
+        "resourceVersion": "923",
+        "selfLink": "/oapi/v1/namespaces/management-infra/rolebindings/admin",
+        "uid": "b476c3de-17cc-11e8-96ac-000af7b00488"
+      },
+      "roleRef": {
+        "name": "admin"
+      },
+      "subjects": [
+        {
+          "kind": "User",
+          "name": "management-admin"
+        },
+        {
+          "kind": "ServiceAccount",
+          "name": "management-admin",
+          "namespace": "management-infra"
+        }
+      ],
+      "userNames": [
+        "management-admin",
+        "system:serviceaccount:management-infra:management-admin"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:34:15Z",
+        "name": "system:deployer",
+        "namespace": "management-infra",
+        "resourceVersion": "881",
+        "selfLink": "/oapi/v1/namespaces/management-infra/rolebindings/system%3Adeployer",
+        "uid": "b1648ca6-17cc-11e8-96ac-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "management-infra"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:management-infra:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:34:15Z",
+        "name": "system:image-builder",
+        "namespace": "management-infra",
+        "resourceVersion": "873",
+        "selfLink": "/oapi/v1/namespaces/management-infra/rolebindings/system%3Aimage-builder",
+        "uid": "b15eceb5-17cc-11e8-96ac-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "management-infra"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:management-infra:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:management-infra"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:34:15Z",
+        "name": "system:image-puller",
+        "namespace": "management-infra",
+        "resourceVersion": "866",
+        "selfLink": "/oapi/v1/namespaces/management-infra/rolebindings/system%3Aimage-puller",
+        "uid": "b155dcad-17cc-11e8-96ac-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:management-infra"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-07T14:48:50Z",
+        "name": "admin",
+        "namespace": "microservice",
+        "resourceVersion": "2023292",
+        "selfLink": "/oapi/v1/namespaces/microservice/rolebindings/admin",
+        "uid": "a5fca474-2216-11e8-b9cc-000af7b00488"
+      },
+      "roleRef": {
+        "name": "admin"
+      },
+      "subjects": [
+        {
+          "kind": "User",
+          "name": "test"
+        }
+      ],
+      "userNames": [
+        "test"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-07T14:48:50Z",
+        "name": "system:deployers",
+        "namespace": "microservice",
+        "resourceVersion": "2023291",
+        "selfLink": "/oapi/v1/namespaces/microservice/rolebindings/system%3Adeployers",
+        "uid": "a5f88243-2216-11e8-b9cc-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "microservice"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:microservice:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-07T14:48:50Z",
+        "name": "system:image-builders",
+        "namespace": "microservice",
+        "resourceVersion": "2023290",
+        "selfLink": "/oapi/v1/namespaces/microservice/rolebindings/system%3Aimage-builders",
+        "uid": "a5f7a560-2216-11e8-b9cc-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "microservice"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:microservice:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:microservice"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-07T14:48:50Z",
+        "name": "system:image-pullers",
+        "namespace": "microservice",
+        "resourceVersion": "2023287",
+        "selfLink": "/oapi/v1/namespaces/microservice/rolebindings/system%3Aimage-pullers",
+        "uid": "a5f69e79-2216-11e8-b9cc-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:microservice"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-06T10:55:42Z",
+        "name": "admin",
+        "namespace": "mybank",
+        "resourceVersion": "1826040",
+        "selfLink": "/oapi/v1/namespaces/mybank/rolebindings/admin",
+        "uid": "ea2fd063-212c-11e8-a6fa-000af7b00488"
+      },
+      "roleRef": {
+        "name": "admin"
+      },
+      "subjects": [
+        {
+          "kind": "User",
+          "name": "test"
+        }
+      ],
+      "userNames": [
+        "test"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-06T10:55:42Z",
+        "name": "system:deployers",
+        "namespace": "mybank",
+        "resourceVersion": "1826036",
+        "selfLink": "/oapi/v1/namespaces/mybank/rolebindings/system%3Adeployers",
+        "uid": "ea2d8d47-212c-11e8-a6fa-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "mybank"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:mybank:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-06T10:55:42Z",
+        "name": "system:image-builders",
+        "namespace": "mybank",
+        "resourceVersion": "1826033",
+        "selfLink": "/oapi/v1/namespaces/mybank/rolebindings/system%3Aimage-builders",
+        "uid": "ea2941d6-212c-11e8-a6fa-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "mybank"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:mybank:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:mybank"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-06T10:55:42Z",
+        "name": "system:image-pullers",
+        "namespace": "mybank",
+        "resourceVersion": "1826032",
+        "selfLink": "/oapi/v1/namespaces/mybank/rolebindings/system%3Aimage-pullers",
+        "uid": "ea2841fa-212c-11e8-a6fa-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:mybank"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-07T11:09:44Z",
+        "name": "admin",
+        "namespace": "mybank1",
+        "resourceVersion": "1992943",
+        "selfLink": "/oapi/v1/namespaces/mybank1/rolebindings/admin",
+        "uid": "0a3f9d9c-21f8-11e8-b9cc-000af7b00488"
+      },
+      "roleRef": {
+        "name": "admin"
+      },
+      "subjects": [
+        {
+          "kind": "User",
+          "name": "test"
+        }
+      ],
+      "userNames": [
+        "test"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-07T11:09:44Z",
+        "name": "system:deployers",
+        "namespace": "mybank1",
+        "resourceVersion": "1992941",
+        "selfLink": "/oapi/v1/namespaces/mybank1/rolebindings/system%3Adeployers",
+        "uid": "0a3e7539-21f8-11e8-b9cc-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "mybank1"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:mybank1:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-07T11:09:44Z",
+        "name": "system:image-builders",
+        "namespace": "mybank1",
+        "resourceVersion": "1992940",
+        "selfLink": "/oapi/v1/namespaces/mybank1/rolebindings/system%3Aimage-builders",
+        "uid": "0a3e36a7-21f8-11e8-b9cc-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "mybank1"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:mybank1:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:mybank1"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-07T11:09:44Z",
+        "name": "system:image-pullers",
+        "namespace": "mybank1",
+        "resourceVersion": "1992939",
+        "selfLink": "/oapi/v1/namespaces/mybank1/rolebindings/system%3Aimage-pullers",
+        "uid": "0a3954fe-21f8-11e8-b9cc-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:mybank1"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-24T01:59:34Z",
+        "name": "system:deployer",
+        "namespace": "openshift-ansible-service-broker",
+        "resourceVersion": "254358",
+        "selfLink": "/oapi/v1/namespaces/openshift-ansible-service-broker/rolebindings/system%3Adeployer",
+        "uid": "5c46da9b-1906-11e8-9ee5-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "openshift-ansible-service-broker"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:openshift-ansible-service-broker:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-24T01:59:34Z",
+        "name": "system:image-builder",
+        "namespace": "openshift-ansible-service-broker",
+        "resourceVersion": "254348",
+        "selfLink": "/oapi/v1/namespaces/openshift-ansible-service-broker/rolebindings/system%3Aimage-builder",
+        "uid": "5c3b7be4-1906-11e8-9ee5-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "openshift-ansible-service-broker"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:openshift-ansible-service-broker:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:openshift-ansible-service-broker"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-24T01:59:34Z",
+        "name": "system:image-puller",
+        "namespace": "openshift-ansible-service-broker",
+        "resourceVersion": "254341",
+        "selfLink": "/oapi/v1/namespaces/openshift-ansible-service-broker/rolebindings/system%3Aimage-puller",
+        "uid": "5c34aee7-1906-11e8-9ee5-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:openshift-ansible-service-broker"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:33:31Z",
+        "name": "system:deployers",
+        "namespace": "openshift-infra",
+        "resourceVersion": "178",
+        "selfLink": "/oapi/v1/namespaces/openshift-infra/rolebindings/system%3Adeployers",
+        "uid": "97a5b7f2-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "openshift-infra"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:openshift-infra:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:33:31Z",
+        "name": "system:image-builders",
+        "namespace": "openshift-infra",
+        "resourceVersion": "173",
+        "selfLink": "/oapi/v1/namespaces/openshift-infra/rolebindings/system%3Aimage-builders",
+        "uid": "979ec905-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "openshift-infra"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:openshift-infra:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:openshift-infra"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:33:31Z",
+        "name": "system:image-pullers",
+        "namespace": "openshift-infra",
+        "resourceVersion": "168",
+        "selfLink": "/oapi/v1/namespaces/openshift-infra/rolebindings/system%3Aimage-pullers",
+        "uid": "979534a1-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:openshift-infra"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:nodes"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:33Z",
+        "name": "system:node-config-reader",
+        "namespace": "openshift-node",
+        "resourceVersion": "284",
+        "selfLink": "/oapi/v1/namespaces/openshift-node/rolebindings/system%3Anode-config-reader",
+        "uid": "98613c64-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:node-config-reader",
+        "namespace": "openshift-node"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:nodes"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-24T01:59:53Z",
+        "name": "system:deployer",
+        "namespace": "openshift-template-service-broker",
+        "resourceVersion": "254492",
+        "selfLink": "/oapi/v1/namespaces/openshift-template-service-broker/rolebindings/system%3Adeployer",
+        "uid": "67e7fd54-1906-11e8-9ee5-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "openshift-template-service-broker"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:openshift-template-service-broker:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-24T01:59:53Z",
+        "name": "system:image-builder",
+        "namespace": "openshift-template-service-broker",
+        "resourceVersion": "254482",
+        "selfLink": "/oapi/v1/namespaces/openshift-template-service-broker/rolebindings/system%3Aimage-builder",
+        "uid": "67c5a881-1906-11e8-9ee5-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "openshift-template-service-broker"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:openshift-template-service-broker:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:openshift-template-service-broker"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-24T01:59:53Z",
+        "name": "system:image-puller",
+        "namespace": "openshift-template-service-broker",
+        "resourceVersion": "254478",
+        "selfLink": "/oapi/v1/namespaces/openshift-template-service-broker/rolebindings/system%3Aimage-puller",
+        "uid": "67b8b362-1906-11e8-9ee5-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:openshift-template-service-broker"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-24T01:59:59Z",
+        "name": "templateservicebroker-auth-reader",
+        "namespace": "openshift-template-service-broker",
+        "resourceVersion": "254590",
+        "selfLink": "/oapi/v1/namespaces/openshift-template-service-broker/rolebindings/templateservicebroker-auth-reader",
+        "uid": "6b2ecaae-1906-11e8-9ee5-000af7b00488"
+      },
+      "roleRef": {
+        "name": "templateservicebroker-auth-reader",
+        "namespace": "openshift-template-service-broker"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "service-catalog-controller",
+          "namespace": "kube-service-catalog"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:kube-service-catalog:service-catalog-controller"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:authenticated"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "annotations": {
+          "openshift.io/reconcile-protect": "false"
+        },
+        "creationTimestamp": "2018-02-22T12:33:33Z",
+        "name": "shared-resource-viewers",
+        "namespace": "openshift",
+        "resourceVersion": "283",
+        "selfLink": "/oapi/v1/namespaces/openshift/rolebindings/shared-resource-viewers",
+        "uid": "985f790e-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "shared-resource-viewer",
+        "namespace": "openshift"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:authenticated"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:33:31Z",
+        "name": "system:deployers",
+        "namespace": "openshift",
+        "resourceVersion": "176",
+        "selfLink": "/oapi/v1/namespaces/openshift/rolebindings/system%3Adeployers",
+        "uid": "97a3f9f2-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "openshift"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:openshift:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:33:31Z",
+        "name": "system:image-builders",
+        "namespace": "openshift",
+        "resourceVersion": "171",
+        "selfLink": "/oapi/v1/namespaces/openshift/rolebindings/system%3Aimage-builders",
+        "uid": "979d02a6-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "openshift"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:openshift:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:openshift"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-22T12:33:31Z",
+        "name": "system:image-pullers",
+        "namespace": "openshift",
+        "resourceVersion": "167",
+        "selfLink": "/oapi/v1/namespaces/openshift/rolebindings/system%3Aimage-pullers",
+        "uid": "979462d4-17cc-11e8-8726-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:openshift"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-26T07:37:15Z",
+        "name": "admin",
+        "namespace": "temp",
+        "resourceVersion": "2160886",
+        "selfLink": "/oapi/v1/namespaces/temp/rolebindings/admin",
+        "uid": "ddc83e5b-1ac7-11e8-9003-000af7b00488"
+      },
+      "roleRef": {
+        "name": "admin"
+      },
+      "subjects": [
+        {
+          "kind": "User",
+          "name": "test"
+        },
+        {
+          "kind": "User",
+          "name": "admin"
+        }
+      ],
+      "userNames": [
+        "test",
+        "admin"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-07T07:32:08Z",
+        "labels": {
+          "template": "jenkins-ephemeral-template"
+        },
+        "name": "jenkins-pipeline_edit",
+        "namespace": "temp",
+        "ownerReferences": [
+          {
+            "apiVersion": "template.openshift.io/v1",
+            "blockOwnerDeletion": true,
+            "kind": "TemplateInstance",
+            "name": "7c7f9bc1-6874-4988-a800-954f9fb87ee4",
+            "uid": "a4553b37-21d9-11e8-b9cc-000af7b00488"
+          }
+        ],
+        "resourceVersion": "1965476",
+        "selfLink": "/oapi/v1/namespaces/temp/rolebindings/jenkins-pipeline_edit",
+        "uid": "a47cf71c-21d9-11e8-b9cc-000af7b00488"
+      },
+      "roleRef": {
+        "name": "edit"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "jenkins-pipeline"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:temp:jenkins-pipeline"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-03-07T09:06:24Z",
+        "labels": {
+          "template": "jenkins-ephemeral-template"
+        },
+        "name": "jenkins_edit",
+        "namespace": "temp",
+        "resourceVersion": "1976576",
+        "selfLink": "/oapi/v1/namespaces/temp/rolebindings/jenkins_edit",
+        "uid": "cf6f08c7-21e6-11e8-b9cc-000af7b00488"
+      },
+      "roleRef": {
+        "name": "edit"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "jenkins"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:temp:jenkins"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-26T07:37:15Z",
+        "name": "system:deployers",
+        "namespace": "temp",
+        "resourceVersion": "622299",
+        "selfLink": "/oapi/v1/namespaces/temp/rolebindings/system%3Adeployers",
+        "uid": "ddc58d8e-1ac7-11e8-9003-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "temp"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:temp:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-26T07:37:15Z",
+        "name": "system:image-builders",
+        "namespace": "temp",
+        "resourceVersion": "622296",
+        "selfLink": "/oapi/v1/namespaces/temp/rolebindings/system%3Aimage-builders",
+        "uid": "ddc24419-1ac7-11e8-9003-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "temp"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:temp:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:temp"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-26T07:37:15Z",
+        "name": "system:image-pullers",
+        "namespace": "temp",
+        "resourceVersion": "622294",
+        "selfLink": "/oapi/v1/namespaces/temp/rolebindings/system%3Aimage-pullers",
+        "uid": "ddbf5a69-1ac7-11e8-9003-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:temp"
+        }
+      ],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-25T06:41:44Z",
+        "name": "admin",
+        "namespace": "test",
+        "resourceVersion": "580728",
+        "selfLink": "/oapi/v1/namespaces/test/rolebindings/admin",
+        "uid": "f1d3a920-19f6-11e8-b0fa-000af7b00488"
+      },
+      "roleRef": {
+        "name": "admin"
+      },
+      "subjects": [],
+      "userNames": null
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-25T06:41:44Z",
+        "name": "system:deployers",
+        "namespace": "test",
+        "resourceVersion": "452343",
+        "selfLink": "/oapi/v1/namespaces/test/rolebindings/system%3Adeployers",
+        "uid": "f1d2e4d9-19f6-11e8-b0fa-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:deployer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "deployer",
+          "namespace": "test"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:test:deployer"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": null,
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-25T06:41:44Z",
+        "name": "system:image-builders",
+        "namespace": "test",
+        "resourceVersion": "452342",
+        "selfLink": "/oapi/v1/namespaces/test/rolebindings/system%3Aimage-builders",
+        "uid": "f1cf501d-19f6-11e8-b0fa-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-builder"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "builder",
+          "namespace": "test"
+        }
+      ],
+      "userNames": [
+        "system:serviceaccount:test:builder"
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "groupNames": [
+        "system:serviceaccounts:test"
+      ],
+      "kind": "RoleBinding",
+      "metadata": {
+        "creationTimestamp": "2018-02-25T06:41:44Z",
+        "name": "system:image-pullers",
+        "namespace": "test",
+        "resourceVersion": "452340",
+        "selfLink": "/oapi/v1/namespaces/test/rolebindings/system%3Aimage-pullers",
+        "uid": "f1cb0602-19f6-11e8-b0fa-000af7b00488"
+      },
+      "roleRef": {
+        "name": "system:image-puller"
+      },
+      "subjects": [
+        {
+          "kind": "SystemGroup",
+          "name": "system:serviceaccounts:test"
+        }
+      ],
+      "userNames": null
+    }
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": "",
+    "selfLink": ""
+  }
+}

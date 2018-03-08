@@ -26,5 +26,6 @@ export default class ClusterRole {
     constructor() {
         this.kind = "ClusterRole";
         this.apiVersion = "v1";
+        this.rules = [];
     }
 }

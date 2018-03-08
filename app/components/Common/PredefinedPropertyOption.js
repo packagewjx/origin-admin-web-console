@@ -10,7 +10,7 @@ import {apiClient} from "../Utils/ApiClient/apiClient";
 import PolicyRule from "../Utils/ApiClient/model/PolicyRule";
 
 /**
- * Utils
+ * Utils. Global Property Options
  */
 let itemNameSelectionCallback = function (data, resolve) {
     let selections = [];
@@ -29,6 +29,8 @@ namespacePropertyOption.selections = new Promise(resolve => {
     })
 });
 namespacePropertyOption.immutable = true;
+
+let annotationPropertyOption = new PropertyOption("metadata.annotations", "注解", "keyValue");
 
 /**
  * User Property Option Definition
@@ -104,8 +106,19 @@ subPolicyRuleOption.isArray = true;
 let rolePropertyOption = [
     namePropertyOption,
     namespacePropertyOption,
+    annotationPropertyOption,
     subPolicyRuleOption
 ];
+
+/**
+ * Cluster Role Property Options
+ */
+let clusterRolePropertyOption = [
+    namePropertyOption,
+    annotationPropertyOption,
+    subPolicyRuleOption,
+];
+
 
 /**
  * User Identity Options
@@ -125,5 +138,6 @@ identityPropertyOption[1].displayIfUndefined = true;
 export const PredefinedPropertyOption = {
     users: userPropertyOption,
     roles: rolePropertyOption,
-    identities: identityPropertyOption
+    identities: identityPropertyOption,
+    clusterroles: clusterRolePropertyOption,
 };
