@@ -50,6 +50,18 @@ class ResourceDetail extends React.Component {
             }
         ];
         this.actions = this.actions.concat(this.props.additionalActions || []);
+
+        //fill the api props with functions.
+        if (typeof this.props.api === 'object') {
+            Object.assign(this.props.api, {
+                refreshData: () => {
+                    return this.fetchData();
+                },
+                getData: () => {
+                    return this.state.item
+                }
+            });
+        }
     }
 
     componentDidMount() {
@@ -58,15 +70,19 @@ class ResourceDetail extends React.Component {
 
     fetchData() {
         let self = this;
-        apiClient().then(function (client) {
-            let option = new GlobalOption();
-            if (self.props.namespace) {
-                option.namespace = self.props.namespace;
-            }
-            client[self.props.resourceName].get(self.props.objectName, option).then(function (data) {
-                self.setState({item: data});
-            });
-        })
+        return new Promise(resolve => {
+            apiClient().then(function (client) {
+                let option = new GlobalOption();
+                if (self.props.namespace) {
+                    option.namespace = self.props.namespace;
+                }
+                client[self.props.resourceName].get(self.props.objectName, option).then(function (data) {
+                    self.setState({item: data});
+                    resolve(data);
+                });
+            })
+        });
+
     }
 
     updateItem(data) {
@@ -238,7 +254,14 @@ ResourceDetail.propTypes = {
      * these actions's UI. Children will be placed below the content. Or you can just go to another page.
      * @type {Array.<{label:string, func:function(data:any)}>}
      */
-    additionalActions: PropTypes.arrayOf(PropTypes.object)
+    additionalActions: PropTypes.arrayOf(PropTypes.object),
+    /**
+     * API to control this element. Contains following functions
+     * refreshData():Promise  a function to call to retrieve data from server and re-render, returns a promise,
+     * onFulFilled has one argument, is the data item this page is displaying.
+     * getData():any  return this page's displaying data.
+     */
+    api: PropTypes.object,
 };
 
 export default ResourceDetail;

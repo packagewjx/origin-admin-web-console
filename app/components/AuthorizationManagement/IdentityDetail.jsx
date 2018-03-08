@@ -17,7 +17,8 @@ class IdentityDetail extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {showBindUserModal: false}
+        this.state = {showBindUserModal: false};
+        this.resourceDetailAPI = {};
     }
 
 
@@ -30,9 +31,13 @@ class IdentityDetail extends React.Component {
 
         return (
             <ResourceDetail resourceName="identities" objectName={this.props.params.name}
-                            propertyOptions={PredefinedPropertyOption.identities} additionalActions={actions}>
+                            propertyOptions={PredefinedPropertyOption.identities} additionalActions={actions}
+                            api={this.resourceDetailAPI}>
                 <BindUserModal show={this.state.showBindUserModal}
-                               onHide={() => this.setState({showBindUserModal: false})}
+                               onHide={() => {
+                                   this.setState({showBindUserModal: false});
+                                   this.resourceDetailAPI.refreshData();
+                               }}
                                identityName={this.props.params.name}/>
             </ResourceDetail>
         );
@@ -51,7 +56,6 @@ class BindUserModal extends React.Component {
             users: [],
             mappedUser: "",
             originalMapping: null,
-            disableUnbindButton: true,
             waiting: false
         };
     }
@@ -74,7 +78,7 @@ class BindUserModal extends React.Component {
             let p1 = client.useridentitymappings.get(this.props.identityName);
             p1.then((data) => {
                 //only when data is exist, will display unbind button.
-                this.setState({disableUnbindButton: false, mappedUser: data.user.name, originalMapping: data});
+                this.setState({mappedUser: data.user.name, originalMapping: data});
             });
             let p2 = client.users.list();
             p2.then((data) => {
@@ -101,9 +105,11 @@ class BindUserModal extends React.Component {
         return new Promise(resolve => {
             apiClient().then((client) => {
                 client["useridentitymappings"].delete(this.props.identityName).then((data) => {
-                    this.setState({showBindUserModal: false, originalMapping: null});
+                    // clear all mapping data.
+                    this.setState({originalMapping: null, mappedUser: ""});
+                    this.closeBindUserModal();
                     resolve();
-                });
+                }).always(() => this.setState({waiting: false}));//set to not waiting in finally
             })
         });
     }
@@ -112,31 +118,23 @@ class BindUserModal extends React.Component {
      * Bind the identity to a user. If exists, unbind it first.
      */
     bindUser() {
+        this.setState({waiting: true});
+        let selectedUser = this.state.mappedUser;
         let doBind = () => {
             let mapping = new UserIdentityMapping();
-            // let users = this.state.users;
-            // let user = {};
-            // for (let i = 0; i < users.length; i++) {
-            //     if (users[i].metadata.name === this.state.mappedUser) {
-            //         user = users[i];
-            //         break;
-            //     }
-            // }
             let userRef = new ObjectReference();
-            userRef.name = this.state.mappedUser;
-            // userRef.name = user.metadata.name;
-            // userRef.uid = user.metadata.uid;
+            userRef.name = selectedUser;
             let identityRef = new ObjectReference();
             identityRef.name = this.props.identityName;
-
             mapping.user = userRef;
             mapping.identity = identityRef;
             mapping.metadata.name = this.props.identityName;
 
             apiClient().then((client) => {
                 client.useridentitymappings.create(mapping).then((data) => {
+                    this.setState({originalMapping: data, mappedUser: data.user.name});
                     this.closeBindUserModal();
-                })
+                }).always(() => this.setState({waiting: false}));
             })
         };
 
@@ -186,7 +184,7 @@ class BindUserModal extends React.Component {
                     <fieldset disabled={this.state.waiting}>
                         <Button disabled={this.state.mappedUser === ""} bsStyle="primary"
                                 onClick={this.bindUser}>确认</Button>
-                        <Button disabled={this.state.disableUnbindButton} bsStyle="danger"
+                        <Button disabled={this.state.originalMapping === null} bsStyle="danger"
                                 onClick={this.unbindUser}>删除关联</Button>
                         <Button onClick={this.closeBindUserModal.bind(this)}>取消</Button>
                     </fieldset>
@@ -203,7 +201,7 @@ BindUserModal.propTypes = {
      * The modal will decide when to hide itself, not its parent, so parent get noticed when onHide is called.
      * parent should set its show state to false
      */
-    onHide: PropTypes.func
+    onHide: PropTypes.func,
 };
 
 export default IdentityDetail;
