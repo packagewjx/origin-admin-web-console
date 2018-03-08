@@ -49,7 +49,7 @@ class ResourceDetail extends React.Component {
                 }
             }
         ];
-        this.actions.concat(this.props.additionalActions);
+        this.actions = this.actions.concat(this.props.additionalActions);
     }
 
     componentDidMount() {
@@ -238,7 +238,7 @@ ResourceDetail.propTypes = {
      * these actions's UI. Children will be placed below the content. Or you can just go to another page.
      * @type {Array.<{label:string, func:function(data:any)}>}
      */
-    additionalActions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string, PropTypes.func))
+    additionalActions: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default ResourceDetail;
