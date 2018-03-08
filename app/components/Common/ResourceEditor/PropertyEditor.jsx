@@ -35,11 +35,13 @@ class PropertyEditor extends React.Component {
             }
             state.key = keys;
         }
-        state.showModal = false;
+        state.showObjectEditModal = false;
         this.state = state;
     }
 
     handleChange(arg) {
+        console.log("in property editor");
+        console.log(arg);
         this.props.onChange(arg);
     }
 
@@ -71,7 +73,6 @@ class PropertyEditor extends React.Component {
                 );
             }
             else if (option.type === 'object') {
-                console.log(this.props.value);
                 formControl = (
                     <ObjectFormControl label={option.label} value={this.props.value} subOptions={option.subOptions}
                                        onChange={this.handleChange} newValue={option.newValue}/>
@@ -159,38 +160,36 @@ class ObjectFormControl extends React.Component {
 
     constructor(props) {
         super(props);
-        this.closeModal = this.closeModal.bind(this);
+        this.closeObjectEditModal = this.closeObjectEditModal.bind(this);
         this.submitChange = this.submitChange.bind(this);
 
-        this.state = {showModal: false};
+        this.state = {showObjectEditModal: false};
     }
 
-    closeModal() {
-        this.setState({showModal: false});
+    closeObjectEditModal() {
+        this.setState({showObjectEditModal: false});
     }
 
     submitChange(data) {
-        console.log("in objectFormControl");
-        console.log(data);
         this.props.onChange(data);
-        this.closeModal();
+        this.closeObjectEditModal();
     }
 
     render() {
         let self = this;
-        let value = this.props.value || typeof this.props.newValue === 'function' ? this.props.newValue() : {};
+        let value = this.props.value || (typeof this.props.newValue === 'function' ? this.props.newValue() : {});
 
         return (
             <div>
-                <Button onClick={() => self.setState({showModal: true})}>查看&编辑</Button>
-                <Modal show={this.state.showModal} onHide={this.closeModal}>
+                <Button onClick={() => self.setState({showObjectEditModal: true})}>查看&编辑</Button>
+                <Modal show={this.state.showObjectEditModal} onHide={this.closeObjectEditModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>编辑{this.props.label}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <ResourceEditor item={value}
                                         onConfirm={this.submitChange}
-                                        onCancel={this.closeModal}
+                                        onCancel={this.closeObjectEditModal}
                                         propertyOptions={this.props.subOptions}/>
                     </Modal.Body>
                 </Modal>

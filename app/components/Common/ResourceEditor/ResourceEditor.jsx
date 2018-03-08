@@ -61,14 +61,9 @@ class ResourceEditor extends React.Component {
                     propertyEditors.push(
                         <PropertyEditor
                             onChange={(data) => {
-                                console.log(data);
                                 this.setState({
                                     item: accessData(this.state.item, option.accessor, data),
                                     changed: true
-                                }, () => {
-                                    console.log("here");
-                                    console.log(this.state);
-                                    this.forceUpdate()
                                 });
                             }}
                             key={i} option={option} value={accessData(this.state.item, option.accessor)}/>
