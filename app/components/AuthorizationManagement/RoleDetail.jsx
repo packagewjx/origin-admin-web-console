@@ -10,7 +10,7 @@ import ResourceDetail from "../Common/ResourceDatail/ResourceDetail";
 
 class RoleDetail extends React.Component {
     render() {
-        let propertyOptions = PredefinedPropertyOption["roles"];
+        let propertyOptions = PredefinedPropertyOption.roles();
         return (
             <ResourceDetail propertyOptions={propertyOptions} namespace={this.props.params.namespace}
                             resourceName="roles" objectName={this.props.params.name}/>

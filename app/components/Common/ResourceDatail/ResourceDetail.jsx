@@ -210,7 +210,7 @@ class ResourceDetail extends React.Component {
                     <Modal.Body>
                         <ResourceEditor item={this.state.item} onCancel={this.closeEditModal}
                                         onConfirm={this.updateItem}
-                                        propertyOptions={PredefinedPropertyOption[this.props.resourceName]}/>
+                                        propertyOptions={PredefinedPropertyOption[this.props.resourceName]()}/>
                     </Modal.Body>
                 </Modal>
                 <Modal show={this.state.deleteModalShow} onHide={this.closeDeleteModal}>

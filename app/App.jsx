@@ -88,16 +88,16 @@ ReactDOM.render(
             <Route path="clusterrolebindings/:name" component={ClusterRoleBindingDetail}/>
 
             {/*Persistent Storage*/}
-            <Route path="persistentvolumns" component={PersistentVolumeOverview}/>
-            <Route path="persistentvolumns/:name" component={PersistentVolumeDetail}/>
-            <Route path="persistentvolumnclaims" component={PersistentVolumeClaimOverview}/>
+            <Route path="persistentvolumes" component={PersistentVolumeOverview}/>
+            <Route path="persistentvolumes/:name" component={PersistentVolumeDetail}/>
+            <Route path="persistentvolumeclaims" component={PersistentVolumeClaimOverview}/>
 
             {/*模板管理*/}
             <Route path="imagestreams" component={ImagestreamOverview}/>
             <Route path="templates" component={TemplateOverview}/>
 
             {/*Project Network*/}
-            <Route path="projectnetwork" component={ProjectNetworkSetting}/>
+            <Route path="project-network" component={ProjectNetworkSetting}/>
 
             {/*Monitor*/}
             <Route path="monitor" component={ServerMonitor}/>

@@ -10,7 +10,7 @@ import {apiClient} from "../Utils/ApiClient/apiClient";
 import PolicyRule from "../Utils/ApiClient/model/PolicyRule";
 
 /**
- * Utils. Global Property Options
+ * Utils. Global Property Options, and common option.
  */
 let itemNameSelectionCallback = function (data, resolve) {
     let selections = [];
@@ -20,124 +20,179 @@ let itemNameSelectionCallback = function (data, resolve) {
     }
     resolve(selections);
 };
-let namePropertyOption = new PropertyOption("metadata.name", "名称", "text");
-namePropertyOption.immutable = true;
-let namespacePropertyOption = new PropertyOption("metadata.namespace", "名称空间", "select");
-namespacePropertyOption.selections = new Promise(resolve => {
-    apiClient().then(function (client) {
-        client.namespaces.list().then((data) => itemNameSelectionCallback(data, resolve));
-    })
-});
-namespacePropertyOption.immutable = true;
 
-let annotationPropertyOption = new PropertyOption("metadata.annotations", "注解", "keyValue");
+let globalNamePropertyOption = new PropertyOption("metadata.name", "名称", "text");
+globalNamePropertyOption.immutable = true;
 
-/**
- * User Property Option Definition
- */
-let userGroupOption = new PropertyOption("groups", "用户组", "select");
-userGroupOption.isArray = true;
-userGroupOption.selections = new Promise(resolve => {
-    apiClient().then(function (client) {
-        client.groups.list().then((data) => itemNameSelectionCallback(data, resolve))
-    })
-});
-
-let userIdentitiesOption = new PropertyOption("identities", "用户身份", "select");
-userIdentitiesOption.isArray = true;
-userIdentitiesOption.selections = new Promise(resolve => {
-    apiClient().then(function (client) {
-        client.identities.list().then((data) => itemNameSelectionCallback(data, resolve))
-    })
-});
-
-let userPropertyOption = [
-    new PropertyOption("metadata.name", "用户名", "text"),
-    userGroupOption,
-    userIdentitiesOption
-];
-
-/**
- * PolicyRule Property Options
- * @type {Array}
- */
-let policyRulePropertyOption = [
-    new PropertyOption("apiGroups", "API组", "text"),
-    new PropertyOption("resources", "资源种类", "text"),
-    new PropertyOption("resourceNames", "资源名", "text"),
-    new PropertyOption("verbs", "操作", "select"),
-    new PropertyOption("nonResourceURLs", "非资源URL", "text"),
-    new PropertyOption("attributeRestrictions", "属性限制", "text"),
-];
-policyRulePropertyOption[0].isArray = true;
-policyRulePropertyOption[1].isArray = true;
-policyRulePropertyOption[2].isArray = true;
-policyRulePropertyOption[3].isArray = true;
-policyRulePropertyOption[3].selections = [
-    {label: "获取单个对象", value: "get"},
-    {label: "获取所有对象", value: "list"},
-    {label: "创建对象", value: "create"},
-    {label: "删除单个对象", value: "delete"},
-    {label: "删除所有对象", value: "deletecollection"},
-    {label: "更新单个对象属性", value: "update"},
-    {label: "部分更新单个对象属性", value: "patch"},
-    {label: "监视对象变化", value: "watch"},
-];
-policyRulePropertyOption[4].isArray = true;
-
-
-/**
- * Role Property Options
- */
-let newPolicyRuleFunc = function () {
-    let rule = new PolicyRule();
-    rule.apiGroups = [];
-    rule.verbs = [];
-    rule.resources = [];
-    rule.resourceNames = [];
-    rule.nonResourceURLs = [];
-    rule.attributeRestrictions = "";
-    return rule;
+function getNamespacePropertyOption() {
+    let namespacePropertyOption = new PropertyOption("metadata.namespace", "名称空间", "select");
+    namespacePropertyOption.selections = new Promise(resolve => {
+        apiClient().then(function (client) {
+            client.namespaces.list().then((data) => itemNameSelectionCallback(data, resolve));
+        })
+    });
+    namespacePropertyOption.immutable = true;
+    return namespacePropertyOption;
 };
-let subPolicyRuleOption = new PropertyOption("rules", "角色权限", "object", undefined, newPolicyRuleFunc);
-subPolicyRuleOption.subOptions = policyRulePropertyOption;
-subPolicyRuleOption.isArray = true;
 
-let rolePropertyOption = [
-    namePropertyOption,
-    namespacePropertyOption,
-    annotationPropertyOption,
-    subPolicyRuleOption
-];
+let globalAnnotationPropertyOption = new PropertyOption("metadata.annotations", "注解", "keyValue");
+
+function getSubPolicyRuleOption() {
+    let policyRulePropertyOption = [
+        new PropertyOption("apiGroups", "API组", "text"),
+        new PropertyOption("resources", "资源种类", "text"),
+        new PropertyOption("resourceNames", "资源名", "text"),
+        new PropertyOption("verbs", "操作", "select"),
+        new PropertyOption("nonResourceURLs", "非资源URL", "text"),
+        new PropertyOption("attributeRestrictions", "属性限制", "text"),
+    ];
+    policyRulePropertyOption[0].isArray = true;
+    policyRulePropertyOption[1].isArray = true;
+    policyRulePropertyOption[2].isArray = true;
+    policyRulePropertyOption[3].isArray = true;
+    policyRulePropertyOption[3].selections = [
+        {label: "获取单个对象", value: "get"},
+        {label: "获取所有对象", value: "list"},
+        {label: "创建对象", value: "create"},
+        {label: "删除单个对象", value: "delete"},
+        {label: "删除所有对象", value: "deletecollection"},
+        {label: "更新单个对象属性", value: "update"},
+        {label: "部分更新单个对象属性", value: "patch"},
+        {label: "监视对象变化", value: "watch"},
+    ];
+    policyRulePropertyOption[4].isArray = true;
+
+    let newPolicyRuleFunc = function () {
+        let rule = new PolicyRule();
+        rule.apiGroups = [];
+        rule.verbs = [];
+        rule.resources = [];
+        rule.resourceNames = [];
+        rule.nonResourceURLs = [];
+        rule.attributeRestrictions = "";
+        return rule;
+    };
+    let subPolicyRuleOption = new PropertyOption("rules", "角色权限", "object", newPolicyRuleFunc);
+    subPolicyRuleOption.subOptions = policyRulePropertyOption;
+    subPolicyRuleOption.newValue = newPolicyRuleFunc;
+    subPolicyRuleOption.isArray = true;
+
+    return subPolicyRuleOption;
+}
 
 /**
- * Cluster Role Property Options
- */
-let clusterRolePropertyOption = [
-    namePropertyOption,
-    annotationPropertyOption,
-    subPolicyRuleOption,
-];
-
-
-/**
- * User Identity Options
- */
-let identityPropertyOption = [
-    namePropertyOption,
-    new PropertyOption("user.name", "关联用户", "text"),
-    new PropertyOption("providerName", "身份提供方", "text"),
-    new PropertyOption("providerUserName", "身份提供方用户名", "text"),
-    new PropertyOption("extra", "额外信息", "object"),
-];
-identityPropertyOption[1].displayIfUndefined = true;
-
-/**
- * Some defined PropertyOptions, each key is the resource plural name, e.g. users, roles
+ * Some defined PropertyOptions, each key is the resource plural name, e.g. users, roles. Each contains a function.
+ * to get the new value every time.
  */
 export const PredefinedPropertyOption = {
-    users: userPropertyOption,
-    roles: rolePropertyOption,
-    identities: identityPropertyOption,
-    clusterroles: clusterRolePropertyOption,
+    users: function () {
+        let userGroupOption = new PropertyOption("groups", "用户组", "select");
+        userGroupOption.isArray = true;
+        userGroupOption.selections = new Promise(resolve => {
+            apiClient().then(function (client) {
+                client.groups.list().then((data) => itemNameSelectionCallback(data, resolve))
+            })
+        });
+
+        let userIdentitiesOption = new PropertyOption("identities", "用户身份", "select");
+        userIdentitiesOption.isArray = true;
+        userIdentitiesOption.selections = new Promise(resolve => {
+            apiClient().then(function (client) {
+                client.identities.list().then((data) => itemNameSelectionCallback(data, resolve))
+            })
+        });
+
+        return [
+            globalNamePropertyOption,
+            userGroupOption,
+            userIdentitiesOption
+        ];
+    },
+    identities: function () {
+        let identityPropertyOption = [
+            globalNamePropertyOption,
+            new PropertyOption("user.name", "关联用户", "text"),
+            new PropertyOption("providerName", "身份提供方", "text"),
+            new PropertyOption("providerUserName", "身份提供方用户名", "text"),
+            new PropertyOption("extra", "额外信息", "object"),
+        ];
+        identityPropertyOption[1].displayIfUndefined = true;
+        identityPropertyOption[1].immutable = true;
+        return identityPropertyOption;
+    },
+    roles: function () {
+        let subPolicyRuleOption = getSubPolicyRuleOption();
+
+        return [
+            globalNamePropertyOption,
+            getNamespacePropertyOption(),
+            globalAnnotationPropertyOption,
+            subPolicyRuleOption
+        ];
+    },
+    rolebindings: function () {
+        let userNamesOption = new PropertyOption("userNames", "关联用户", "select");
+        userNamesOption.isArray = true;
+        userNamesOption.selections = new Promise(resolve => {
+            apiClient().then((client) => {
+                client.users.list().then((data) => itemNameSelectionCallback(data, resolve));
+            })
+        });
+        let groupNamesOption = new PropertyOption("groupNames", "关联组", "select");
+        groupNamesOption.isArray = true;
+        groupNamesOption.selections = new Promise(resolve => {
+            apiClient().then((client) => {
+                client.groups.list().then((data) => itemNameSelectionCallback(data, resolve));
+            })
+        });
+        let roleOption = new PropertyOption("roleRef.name", "关联角色", "select");
+        roleOption.selections = new Promise(resolve => {
+            apiClient().then((client) => {
+                client.roles.list().then((data) => itemNameSelectionCallback(data, resolve));
+            })
+        })
+
+        let roleBindingOptions = [
+            globalNamePropertyOption,
+            roleOption,
+            groupNamesOption,
+            userNamesOption
+        ];
+    },
+    clusterroles: function () {
+        return [
+            globalNamePropertyOption,
+            globalAnnotationPropertyOption,
+            getSubPolicyRuleOption(),
+        ];
+    },
+    clusterrolebindings: function () {
+        let clusterRoleOption = new PropertyOption("roleRef.name", "关联集群角色", "select");
+        clusterRoleOption.selections = new Promise(resolve => {
+            apiClient().then((client) => {
+                client.groups.list().then((data) => itemNameSelectionCallback(data, resolve));
+            })
+        });
+        let userNamesOption = new PropertyOption("userNames", "关联用户", "select");
+        userNamesOption.isArray = true;
+        userNamesOption.selections = new Promise(resolve => {
+            apiClient().then((client) => {
+                client.users.list().then((data) => itemNameSelectionCallback(data, resolve));
+            })
+        });
+        let groupNamesOption = new PropertyOption("groupNames", "关联组", "select");
+        groupNamesOption.isArray = true;
+        groupNamesOption.selections = new Promise(resolve => {
+            apiClient().then((client) => {
+                client.groups.list().then((data) => itemNameSelectionCallback(data, resolve));
+            })
+        });
+
+        return [
+            globalNamePropertyOption,
+            clusterRoleOption,
+            userNamesOption,
+            groupNamesOption
+        ];
+    }
 };

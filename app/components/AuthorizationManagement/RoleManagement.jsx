@@ -30,7 +30,7 @@ class RoleManagement extends React.Component {
 
     render() {
 
-        let propertyOptions = PredefinedPropertyOption.roles;
+        let propertyOptions = PredefinedPropertyOption.roles();
 
         return (
             <ResourceOverview title={"角色管理"} resourceName={"roles"} tableConfig={this.tableConfig}

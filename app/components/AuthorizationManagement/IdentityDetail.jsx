@@ -31,7 +31,7 @@ class IdentityDetail extends React.Component {
 
         return (
             <ResourceDetail resourceName="identities" objectName={this.props.params.name}
-                            propertyOptions={PredefinedPropertyOption.identities} additionalActions={actions}
+                            propertyOptions={PredefinedPropertyOption.identities()} additionalActions={actions}
                             api={this.resourceDetailAPI}>
                 <BindUserModal show={this.state.showBindUserModal}
                                onHide={() => {

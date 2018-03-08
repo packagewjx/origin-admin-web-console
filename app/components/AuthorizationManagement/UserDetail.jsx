@@ -10,7 +10,7 @@ import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
 
 class UserDetail extends React.Component {
     render() {
-        let propertyOptions = PredefinedPropertyOption["users"];
+        let propertyOptions = PredefinedPropertyOption.users();
 
         return (
             <ResourceDetail propertyOptions={propertyOptions} resourceName="users" objectName={this.props.params.name}/>

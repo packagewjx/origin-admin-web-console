@@ -20,7 +20,7 @@ class UserManagement extends React.Component {
             new ColumnConfig("用户身份", "identities")
         ];
 
-        let propertyOptions = PredefinedPropertyOption.users;
+        let propertyOptions = PredefinedPropertyOption.users();
 
         return (
             <ResourceOverview getNewResourceObject={getNewUser} propertyOptions={propertyOptions} resourceName={"users"}

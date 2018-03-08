@@ -7,6 +7,8 @@
 import React from 'react';
 import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
 import {ColumnConfig, TableConfig} from "../Common/ResourceOverview/TableConfig";
+import Identity from "../Utils/ApiClient/model/Identity";
+import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
 
 class IdentityManagement extends React.Component {
     constructor(props) {
@@ -19,11 +21,16 @@ class IdentityManagement extends React.Component {
             new ColumnConfig("身份提供方", "providerName"),
             new ColumnConfig("身份提供方用户名", "providerUserName")
         ];
+
+        this.propertyOptions = PredefinedPropertyOption.identities();
+        this.propertyOptions.splice(1, 1);
     }
 
     render() {
         return (
-            <ResourceOverview title="用户身份管理" resourceName="identities" tableConfig={this.tableConfig}/>
+            <ResourceOverview title="用户身份管理" resourceName="identities" tableConfig={this.tableConfig}
+                              getNewResourceObject={() => new Identity()}
+                              propertyOptions={this.propertyOptions}/>
         );
     }
 }

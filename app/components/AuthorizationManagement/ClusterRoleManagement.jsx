@@ -5,12 +5,28 @@
  **/
 
 import React from 'react';
-import ContentWrapper from "../Layout/ContentWrapper";
+import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
+import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
+import {TableConfig} from "../Common/ResourceOverview/TableConfig";
+import ClusterRole from "../Utils/ApiClient/model/ClusterRole";
 
 class ClusterRoleManagement extends React.Component {
     render() {
+        let options = PredefinedPropertyOption.clusterroles();
+
+        let tableConfigs = new TableConfig();
+        tableConfigs.columns = [
+            "name",
+        ];
+
+        let newObject = () => {
+            return new ClusterRole();
+        };
+
         return (
-            <ContentWrapper/>
+            <ResourceOverview title="集群角色管理" resourceName="clusterroles" tableConfig={tableConfigs}
+                              propertyOptions={options} getNewResourceObject={newObject}
+            />
         );
     }
 }

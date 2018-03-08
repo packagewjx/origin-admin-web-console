@@ -1,4 +1,5 @@
 import ObjectMeta from "./ObjectMeta";
+import ObjectReference from "./ObjectReference";
 
 export default class Identity {
     /**
@@ -47,6 +48,7 @@ export default class Identity {
         this.kind = "Identity";
         this.apiVersion = "v1";
         this.metadata = new ObjectMeta();
+        this.user = new ObjectReference();
     }
 
 }
