@@ -123,6 +123,7 @@ export const PredefinedPropertyOption = {
                 client.groups.list().then((data) => itemNameSelectionCallback(data, resolve))
             })
         });
+        userGroupOption.immutable = true;
 
         let userIdentitiesOption = new PropertyOption("identities", "用户身份", "select");
         userIdentitiesOption.isArray = true;
@@ -131,6 +132,7 @@ export const PredefinedPropertyOption = {
                 client.identities.list().then((data) => itemNameSelectionCallback(data, resolve))
             })
         });
+        userIdentitiesOption.immutable = true;
 
         return [
             globalNamePropertyOption,

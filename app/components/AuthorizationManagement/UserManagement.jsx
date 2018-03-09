@@ -21,6 +21,8 @@ class UserManagement extends React.Component {
         ];
 
         let propertyOptions = PredefinedPropertyOption.users();
+        propertyOptions.splice(1, 2);
+
 
         return (
             <ResourceOverview getNewResourceObject={getNewUser} propertyOptions={propertyOptions} resourceName={"users"}
