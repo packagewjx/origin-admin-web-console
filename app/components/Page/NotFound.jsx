@@ -12,9 +12,13 @@ class NotFound extends React.Component {
                 </div>
                 <ul className="list-inline text-center text-sm mb-xl">
                     <li><Link to="welcome" className="text-muted">返回首页</Link></li>
+                    <li className="text-muted">|</li>
+                    <li><a style={{cursor: "pointer"}} className="text-muted" onClick={() => {
+                        this.props.router.goBack()
+                    }}>返回上一页</a></li>
                 </ul>
             </div>
-            );
+        );
     }
 
 }
