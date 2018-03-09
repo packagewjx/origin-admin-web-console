@@ -33,7 +33,7 @@ function getNamespacePropertyOption() {
     });
     namespacePropertyOption.immutable = true;
     return namespacePropertyOption;
-};
+}
 
 let globalAnnotationPropertyOption = new PropertyOption("metadata.annotations", "注解", "keyValue");
 
@@ -59,6 +59,10 @@ function getSubPolicyRuleOption() {
         {label: "更新单个对象属性", value: "update"},
         {label: "部分更新单个对象属性", value: "patch"},
         {label: "监视对象变化", value: "watch"},
+        {label: "编辑", value: "edit"},
+        {label: "查看", value: "view"},
+        {label: "更新单个对象属性(POST)", value: "post"},
+        {label: "创建对象(PUT)", value: "put"}
     ];
     policyRulePropertyOption[4].isArray = true;
 
@@ -187,7 +191,7 @@ export const PredefinedPropertyOption = {
         let clusterRoleOption = new PropertyOption("roleRef.name", "关联集群角色", "select");
         clusterRoleOption.selections = new Promise(resolve => {
             apiClient().then((client) => {
-                client.groups.list().then((data) => itemNameSelectionCallback(data, resolve));
+                client.clusterroles.list().then((data) => itemNameSelectionCallback(data, resolve));
             })
         });
         let userNamesOption = new PropertyOption("userNames", "关联用户", "select");

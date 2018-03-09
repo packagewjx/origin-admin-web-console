@@ -64,8 +64,10 @@ export class FieldDisplayer extends React.Component {
                 option.subOptions = this.props.option.subOptions;
                 option.selections = this.props.option.selections;
                 fieldDisplay.push(<FieldDisplayer key={i} option={option} value={this.props.value[i]}/>);
-                fieldDisplay.push(<hr style={{marginTop: 5, marginBottom: 5}} key={"hr" + i}/>);
+                fieldDisplay.push(<hr style={{marginTop: 5, marginBottom: 5, borderTop: "1px solid #999999"}}
+                                      key={"hr" + i}/>);
             }
+            fieldDisplay.splice(fieldDisplay.length - 1, 1);//remove the last hr
         } else {
             //display it normally
             switch (this.props.option.type) {

@@ -5,12 +5,25 @@
  **/
 
 import React from 'react';
-import ContentWrapper from "../Layout/ContentWrapper";
+import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
+import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
+import {ColumnConfig, TableConfig} from "../Common/ResourceOverview/TableConfig";
+import ClusterRoleBinding from "../Utils/ApiClient/model/ClusterRoleBinding";
 
 class ClusterRoleBindingManagement extends React.Component {
     render() {
+        let option = PredefinedPropertyOption.clusterrolebindings();
+        let tableConfig = new TableConfig();
+        tableConfig.columns = [
+            "name",
+            new ColumnConfig("关联角色", "roleRef.name", "clusterroles/{roleRef.name}"),
+            new ColumnConfig("关联用户", "userNames"),
+            new ColumnConfig("关联组", "groupNames")
+        ];
+
         return (
-            <ContentWrapper/>
+            <ResourceOverview title={"集群角色绑定"} resourceName={"clusterrolebindings"} tableConfig={tableConfig}
+                              getNewResourceObject={() => new ClusterRoleBinding()} propertyOptions={option}/>
         );
     }
 }

@@ -5,12 +5,17 @@
  **/
 
 import React from 'react';
-import ContentWrapper from "../Layout/ContentWrapper";
+import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
+import ResourceDetail from "../Common/ResourceDatail/ResourceDetail";
 
 class RoleBindingDetail extends React.Component {
     render() {
+        let option = PredefinedPropertyOption.rolebindings();
+
         return (
-            <ContentWrapper/>
+            <ResourceDetail resourceName={"rolebindings"} objectName={this.props.params.name}
+                            namespace={this.props.params.namespace} propertyOptions={option}
+            />
         );
     }
 }

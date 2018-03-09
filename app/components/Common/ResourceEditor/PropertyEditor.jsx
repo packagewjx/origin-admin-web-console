@@ -384,7 +384,7 @@ class ArrayEditor extends React.Component {
         let itemEditors = [];
         let option = this.props.option;
         let array = this.state.array;
-        if (typeof array === 'undefined')
+        if (!(array instanceof Array))
             return null;
 
         for (let i = 0; i < array.length; i++) {
