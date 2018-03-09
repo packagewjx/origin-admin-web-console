@@ -66,7 +66,8 @@ class ResourceEditor extends React.Component {
                                     changed: true
                                 });
                             }}
-                            key={i} option={option} value={accessData(this.state.item, option.accessor)}/>
+                            key={i} option={option} value={accessData(this.state.item, option.accessor)}
+                            isCreate={this.props.isCreate}/>
                     );
                 }
                 propertyEditors.push(<br key={"br" + i}/>);

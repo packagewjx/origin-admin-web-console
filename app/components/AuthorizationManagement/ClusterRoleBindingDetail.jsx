@@ -5,11 +5,15 @@
  **/
 
 import React from 'react';
-import ContentWrapper from "../Layout/ContentWrapper";
+import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
+import ResourceDetail from "../Common/ResourceDatail/ResourceDetail";
 
 class ClusterRoleBindingDetail extends React.Component {
     render() {
-        return (<ContentWrapper/>);
+        let option = PredefinedPropertyOption.clusterrolebindings();
+
+        return (<ResourceDetail resourceName="clusterrolebindings" objectName={this.props.params.name}
+                                propertyOptions={option}/>);
     }
 }
 

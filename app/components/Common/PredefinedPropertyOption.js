@@ -8,6 +8,7 @@
 import PropertyOption from "./PropertyOption";
 import {apiClient} from "../Utils/ApiClient/apiClient";
 import PolicyRule from "../Utils/ApiClient/model/PolicyRule";
+import Subject from "../Utils/ApiClient/model/Subject";
 
 /**
  * Utils. Global Property Options, and common option.
@@ -35,6 +36,26 @@ function getNamespacePropertyOption() {
     return namespacePropertyOption;
 }
 
+function getRoleSubjectOption() {
+    let option = new PropertyOption("subjects", "关联主体", "object", () => new Subject());
+    let namespaceOption = getNamespacePropertyOption();
+    namespaceOption.accessor = "namespace";
+    let subOptions = [
+        namespaceOption,
+        new PropertyOption("name", "名称", "text"),
+        new PropertyOption("kind", "主体类型", "select"),
+        new PropertyOption("apiGroup", "所属API组", "text")
+    ];
+    subOptions[2].selections = [
+        {label: "系统组", value: "SystemGroup"},
+        {label: "软件服务帐号", value: "ServiceAccount"},
+        {label: "用户", value: "User"}
+    ];
+    option.subOptions = subOptions;
+    option.isArray = true;
+    return option;
+}
+
 let globalAnnotationPropertyOption = new PropertyOption("metadata.annotations", "注解", "keyValue");
 
 function getSubPolicyRuleOption() {
@@ -50,6 +71,7 @@ function getSubPolicyRuleOption() {
     policyRulePropertyOption[1].isArray = true;
     policyRulePropertyOption[2].isArray = true;
     policyRulePropertyOption[3].isArray = true;
+    //ALL VERBS!
     policyRulePropertyOption[3].selections = [
         {label: "获取单个对象", value: "get"},
         {label: "获取所有对象", value: "list"},
@@ -62,7 +84,11 @@ function getSubPolicyRuleOption() {
         {label: "编辑", value: "edit"},
         {label: "查看", value: "view"},
         {label: "更新单个对象属性(POST)", value: "post"},
-        {label: "创建对象(PUT)", value: "put"}
+        {label: "创建对象(PUT)", value: "put"},
+        {label: "管理", value: "admin"},
+        {label: "assign", value: "assign"},
+        {label: "impersonate", value: "impersonate"},
+        {label: "代理", value: "proxy"},
     ];
     policyRulePropertyOption[4].isArray = true;
 
@@ -135,20 +161,6 @@ export const PredefinedPropertyOption = {
         ];
     },
     rolebindings: function () {
-        let userNamesOption = new PropertyOption("userNames", "关联用户", "select");
-        userNamesOption.isArray = true;
-        userNamesOption.selections = new Promise(resolve => {
-            apiClient().then((client) => {
-                client.users.list().then((data) => itemNameSelectionCallback(data, resolve));
-            })
-        });
-        let groupNamesOption = new PropertyOption("groupNames", "关联组", "select");
-        groupNamesOption.isArray = true;
-        groupNamesOption.selections = new Promise(resolve => {
-            apiClient().then((client) => {
-                client.groups.list().then((data) => itemNameSelectionCallback(data, resolve));
-            })
-        });
         let roleOption = new PropertyOption("roleRef.name", "关联角色", "select");
         roleOption.selections = new Promise(resolve => {
             //this binding includes roles in namespace and clusterroles
@@ -171,13 +183,13 @@ export const PredefinedPropertyOption = {
                 });
             })
         });
+        let subjectOption = getRoleSubjectOption();
 
         return [
             globalNamePropertyOption,
             getNamespacePropertyOption(),
             roleOption,
-            groupNamesOption,
-            userNamesOption
+            subjectOption
         ];
     },
     clusterroles: function () {
@@ -194,26 +206,12 @@ export const PredefinedPropertyOption = {
                 client.clusterroles.list().then((data) => itemNameSelectionCallback(data, resolve));
             })
         });
-        let userNamesOption = new PropertyOption("userNames", "关联用户", "select");
-        userNamesOption.isArray = true;
-        userNamesOption.selections = new Promise(resolve => {
-            apiClient().then((client) => {
-                client.users.list().then((data) => itemNameSelectionCallback(data, resolve));
-            })
-        });
-        let groupNamesOption = new PropertyOption("groupNames", "关联组", "select");
-        groupNamesOption.isArray = true;
-        groupNamesOption.selections = new Promise(resolve => {
-            apiClient().then((client) => {
-                client.groups.list().then((data) => itemNameSelectionCallback(data, resolve));
-            })
-        });
+        let subjectOption = getRoleSubjectOption();
 
         return [
             globalNamePropertyOption,
             clusterRoleOption,
-            userNamesOption,
-            groupNamesOption
+            subjectOption
         ];
     }
 };

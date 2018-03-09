@@ -17,7 +17,7 @@ class ClusterRoleBindingManagement extends React.Component {
         tableConfig.columns = [
             "name",
             new ColumnConfig("关联角色", "roleRef.name", "clusterroles/{roleRef.name}"),
-            new ColumnConfig("关联用户", "userNames"),
+            new ColumnConfig("关联用户/服务帐号", "userNames"),
             new ColumnConfig("关联组", "groupNames")
         ];
 

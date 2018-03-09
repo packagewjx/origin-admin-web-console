@@ -50,7 +50,8 @@ class PropertyEditor extends React.Component {
             return option.render(this.props.value, this.props.onChange);
         }
         else if (option.isArray) {
-            return (<ArrayEditor option={option} value={this.props.value} onChange={this.handleChange}/>);
+            return (<ArrayEditor option={option} value={this.props.value} onChange={this.handleChange}
+                                 isCreate={this.props.isCreate}/>);
         } else if (option.type === 'keyValue') {
             return (
                 <KeyValueEditor value={this.props.value} label={option.label}
@@ -73,7 +74,8 @@ class PropertyEditor extends React.Component {
             else if (option.type === 'object') {
                 formControl = (
                     <ObjectFormControl label={option.label} value={this.props.value} subOptions={option.subOptions}
-                                       onChange={this.handleChange} newValue={option.newValue}/>
+                                       onChange={this.handleChange} newValue={option.newValue}
+                                       isCreate={this.props.isCreate}/>
                 );
             }
             else {
@@ -188,7 +190,8 @@ class ObjectFormControl extends React.Component {
                         <ResourceEditor item={value}
                                         onConfirm={this.submitChange}
                                         onCancel={this.closeObjectEditModal}
-                                        propertyOptions={this.props.subOptions}/>
+                                        propertyOptions={this.props.subOptions}
+                                        isCreate={this.props.isCreate}/>
                     </Modal.Body>
                 </Modal>
             </div>
@@ -201,7 +204,8 @@ ObjectFormControl.propTypes = {
     value: PropTypes.any,
     subOptions: PropTypes.arrayOf(PropTypes.instanceOf(PropertyOption)),
     onChange: PropTypes.func,
-    newValue: PropTypes.func
+    newValue: PropTypes.func,
+    isCreate: PropTypes.bool
 };
 
 /**
@@ -358,7 +362,7 @@ class SelectionFormControl extends React.Component {
 SelectionFormControl.propTypes = {
     label: PropTypes.string,
     value: PropTypes.string,
-    selections: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    selections: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     onChange: PropTypes.func
 };
 
@@ -403,7 +407,8 @@ class ArrayEditor extends React.Component {
                 case 'object':
                     itemEditor = (
                         <ObjectFormControl onChange={(data) => this.onItemChange(data, i)} value={item}
-                                           label={option.label} subOptions={option.subOptions}/>
+                                           label={option.label} subOptions={option.subOptions}
+                                           isCreate={this.props.isCreate}/>
                     );
                     break;
                 case 'boolean':
@@ -455,7 +460,8 @@ class ArrayEditor extends React.Component {
 ArrayEditor.propTypes = {
     value: PropTypes.array,
     option: PropTypes.instanceOf(PropertyOption),
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    isCreate: PropTypes.bool
 };
 
 
@@ -472,7 +478,11 @@ PropertyEditor.propTypes = {
     /**
      * The current value of this propertyEditor editing.
      */
-    value: PropTypes.any
+    value: PropTypes.any,
+    /**
+     * To pass down to the ObjectFormControl's ResourceEditor
+     */
+    isCreate: PropTypes.bool
 };
 
 

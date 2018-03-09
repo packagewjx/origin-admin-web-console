@@ -42,7 +42,7 @@ class RoleBindingManagement extends React.Component {
             Promise.all([p1, p2]).then(() => {
                 this.setState(result);
             })
-        })
+        });
     }
 
     render() {
