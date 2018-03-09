@@ -15,7 +15,7 @@ import ReactTable from "react-table";
 import {Button, Modal} from "react-bootstrap";
 import ResourceEditor from "../ResourceEditor/ResourceEditor";
 import PropertyOption from "../PropertyOption";
-import {deepClone} from "../../Utils/UtilFunctions";
+import {accessData, deepClone} from "../../Utils/UtilFunctions";
 
 /**
  * This component is used to display all resource objects of a kind of resource. They are displayed in a table. The
@@ -187,12 +187,12 @@ function Cell(props) {
  * @returns {*}
  */
 function renderItem(item, referer, linkTo) {
-    let data = getData(item, referer);
+    let data = accessData(item, referer);
     if (typeof linkTo === 'string' && linkTo !== "") {
         //replace {referer} to item.referer, if any
         let reg = /{([^}]+)}/g;
         linkTo = linkTo.replace(reg, function (match, $1) {
-            return getData(item, $1);
+            return accessData(item, $1);
         });
 
         return (

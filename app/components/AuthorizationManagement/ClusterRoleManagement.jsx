@@ -7,7 +7,7 @@
 import React from 'react';
 import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
 import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
-import {TableConfig} from "../Common/ResourceOverview/TableConfig";
+import {ColumnConfig, TableConfig} from "../Common/ResourceOverview/TableConfig";
 import ClusterRole from "../Utils/ApiClient/model/ClusterRole";
 
 class ClusterRoleManagement extends React.Component {
@@ -17,6 +17,7 @@ class ClusterRoleManagement extends React.Component {
         let tableConfigs = new TableConfig();
         tableConfigs.columns = [
             "name",
+            new ColumnConfig("描述", "metadata.annotations.openshift\\.io/description")
         ];
 
         let newObject = () => {

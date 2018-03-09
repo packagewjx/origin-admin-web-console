@@ -1,22 +1,22 @@
 /**
  * Access the value of obj indicated by accessor. If this accessor cannot access a data, it WILL create the data parent,
  * @param {object} obj
- * @param {string} accessor
+ * @param {string} accessor each key is divided by '.'. Use '\\.' to represent to raw '.' character.
  * @param newVal new value for this data, if set.
  * @return {object} if newVal is set, return new object, otherwise the accessor data.
  */
 export function accessData(obj, accessor, newVal) {
     if (accessor === "" || typeof obj === 'undefined' || obj === null)
         return obj;
-    if (!accessor.match(/^([\w_$]+(\[\d+])?\.)*[\w_$]+(\[\d+])?$/)) {
+    if (!accessor.match(/^((?:[\w_$\/]|\\\.)+(\[\d+])?\.)*(?:[\w_$\/]|\\\.)+(\[\d+])?$/)) {
         console.error("accessor ", accessor, " is of wrong format");
         return obj;
     }
 
-    let keys = accessor.split(".");
+    let keys = splitString(accessor, ".", "\\.");
     let cur = obj;
     let parent = null;
-    let keyRegExp = /^([\w_$]+)(?:\[(\d+)])?$/;//e.g. a[1], a
+    let keyRegExp = /^([\w_$./]+)(?:\[(\d+)])?$/;//e.g. a[1], a
 
     for (let i = 0; i < keys.length - 1; i++) {
         let key = keys[i];
@@ -87,6 +87,31 @@ export function deepClone(obj) {
     } else {
         return obj;
     }
+}
+
+/**
+ *
+ * @param {string} str the original string
+ * @param {string} splitter splitter to split the string
+ * @param {string} escapeSplitter to indicate the raw splitter character
+ */
+export function splitString(str, splitter, escapeSplitter) {
+    let myEscape = "__splitter__";
+    str = str.replace(escapeSplitter, myEscape);
+    let strings = str.split(splitter);
+    for (let i = 0; i < strings.length; i++) {
+        strings[i] = strings[i].replace(myEscape, splitter);
+    }
+    return strings;
+}
+
+export function testSplitString() {
+    console.log(splitString("123.4123.949.49123\.3124", ".", "\."));
+    console.log(splitString(".....\.", ".", "\."));
+    console.log(splitString("", ".", "\."));
+    console.log(splitString("wujunxian", ".", "\."));
+    console.log(splitString("metadata\\.name", ".", "\\."));
+
 }
 
 

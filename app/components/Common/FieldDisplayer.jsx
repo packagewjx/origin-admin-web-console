@@ -49,7 +49,7 @@ export class FieldDisplayer extends React.Component {
     render() {
         let fieldDisplay = (<span/>);
         let value = this.props.value;
-        if (typeof value === 'undefined' && !this.props.option.displayIfUndefined) {
+        if ((typeof value === 'undefined' || value === null) && !this.props.option.displayIfUndefined) {
             return (<noscript/>);
         } else if (typeof this.props.option.displayRender === 'function') {
             //use the displayRender if it exists.
