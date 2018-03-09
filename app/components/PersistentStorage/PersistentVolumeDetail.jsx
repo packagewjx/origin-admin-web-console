@@ -5,12 +5,16 @@
  **/
 
 import React from 'react';
-import ContentWrapper from "../Layout/ContentWrapper";
+import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
+import ResourceDetail from "../Common/ResourceDatail/ResourceDetail";
 
 class PersistentStorageDetail extends React.Component {
     render() {
+        let options = PredefinedPropertyOption.persistentvolumes();
+
         return (
-            <ContentWrapper/>
+            <ResourceDetail resourceName={"persistentvolumes"} objectName={this.props.params.name}
+                            propertyOptions={options}/>
         );
     }
 }

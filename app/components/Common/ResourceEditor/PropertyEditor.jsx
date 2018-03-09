@@ -44,7 +44,6 @@ class PropertyEditor extends React.Component {
     }
 
     render() {
-        //TODO get rid of object editor bug
         let option = this.props.option;
         if (typeof option.render === 'function') {
             return option.render(this.props.value, this.props.onChange);
@@ -139,6 +138,7 @@ function BooleanFormControl(props) {
         <div className="checkbox c-checkbox">
             <label className="needsclick">
                 <input type="checkbox" checked={props.value}
+                       value={props.value}
                        onChange={onChange}
                        className="needsclick"/>
                 <em className="fa fa-check"/></label>

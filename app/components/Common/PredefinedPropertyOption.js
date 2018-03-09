@@ -216,4 +216,35 @@ export const PredefinedPropertyOption = {
             subjectOption
         ];
     },
+    persistentvolumes: function () {
+        let nfsOption = new PropertyOption("spec.nfs", "NFS存储定义", "object");
+        nfsOption.subOptions = [
+            new PropertyOption("server", "NFS服务器地址", "text"),
+            new PropertyOption("path", "路径", "text"),
+            new PropertyOption("readOnly", "是否只读", "boolean")
+        ];
+        let phaseOption = new PropertyOption("status.phase", "状态", "text");
+        phaseOption.immutable = true;
+        let claimOption = new PropertyOption("spec.claimRef.name", "已分配给", "text");
+        claimOption.immutable = true;
+        let accessModeOption = new PropertyOption("spec.accessModes", "存取模式", "text");
+        accessModeOption.isArray = true;
+        let reclaimOption = new PropertyOption("spec.persistentVolumeReclaimPolicy", "再利用策略", "select");
+        reclaimOption.selections = [
+            {label: "保存内容，手动删除", value: "Retain"},
+            {label: "删除内容循环使用（只支持NFS与HostPath）", value: "Recycle"},
+            {label: "自动删除但不重新使用", value: "Delete"}
+        ];
+
+
+        return [
+            globalNamePropertyOption,
+            new PropertyOption("spec.capacity.storage", "容量", "text"),
+            accessModeOption,
+            reclaimOption,
+            phaseOption,
+            claimOption,
+            nfsOption
+        ];
+    }
 };
