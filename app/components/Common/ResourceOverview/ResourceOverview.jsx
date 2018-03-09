@@ -188,6 +188,16 @@ function Cell(props) {
  */
 function renderItem(item, referer, linkTo) {
     let data = accessData(item, referer);
+
+    if (data instanceof Array) {
+        let newData = "";
+        for (let i = 0; i < data.length - 1; i++) {
+            newData += data[i] + ",";
+        }
+        newData += data[data.length - 1];
+        data = newData;
+    }
+
     if (typeof linkTo === 'string' && linkTo !== "") {
         //replace {referer} to item.referer, if any
         let reg = /{([^}]+)}/g;

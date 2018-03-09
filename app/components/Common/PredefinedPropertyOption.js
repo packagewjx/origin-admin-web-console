@@ -25,7 +25,7 @@ let globalNamePropertyOption = new PropertyOption("metadata.name", "名称", "te
 globalNamePropertyOption.immutable = true;
 
 function getNamespacePropertyOption() {
-    let namespacePropertyOption = new PropertyOption("metadata.namespace", "名称空间", "select");
+    let namespacePropertyOption = new PropertyOption("metadata.namespace", "项目", "select");
     namespacePropertyOption.selections = new Promise(resolve => {
         apiClient().then(function (client) {
             client.namespaces.list().then((data) => itemNameSelectionCallback(data, resolve));
@@ -147,13 +147,30 @@ export const PredefinedPropertyOption = {
         });
         let roleOption = new PropertyOption("roleRef.name", "关联角色", "select");
         roleOption.selections = new Promise(resolve => {
+            //this binding includes roles in namespace and clusterroles
+            let roleNames = [];
             apiClient().then((client) => {
-                client.roles.list().then((data) => itemNameSelectionCallback(data, resolve));
+                let p1 = client.roles.list().then((data) => {
+                    for (let i = 0; i < data.items.length; i++) {
+                        let name = data.items[i].metadata.name;
+                        roleNames.push({label: "项目" + data.items[i].metadata.namespace + "角色" + name, value: name});
+                    }
+                });
+                let p2 = client.clusterroles.list().then((data) => {
+                    for (let i = 0; i < data.items.length; i++) {
+                        let name = data.items[i].metadata.name;
+                        roleNames.push({label: "集群角色" + name, value: name});
+                    }
+                });
+                Promise.all([p1, p2]).then(function () {
+                    resolve(roleNames);
+                });
             })
-        })
+        });
 
-        let roleBindingOptions = [
+        return [
             globalNamePropertyOption,
+            getNamespacePropertyOption(),
             roleOption,
             groupNamesOption,
             userNamesOption

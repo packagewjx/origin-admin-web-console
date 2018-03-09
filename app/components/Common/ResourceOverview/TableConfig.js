@@ -19,7 +19,7 @@ export const DefaultColumnConfig = {
         linkTo: "<<resourceName>>/namespaces/{metadata.namespace}/{metadata.name}"
     },
     namespace: {
-        title: "名称空间",
+        title: "项目",
         referer: "metadata.namespace",
     },
     creationTimestamp: {

@@ -1,3 +1,6 @@
+import ObjectReference from "./ObjectReference";
+import ObjectMeta from "./ObjectMeta";
+
 export default class RoleBinding {
     /**
      * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds
@@ -44,5 +47,10 @@ export default class RoleBinding {
     constructor() {
         this.kind = "RoleBinding";
         this.apiVersion = "v1";
+        this.metadata = new ObjectMeta();
+        this.roleRef = new ObjectReference();
+        this.groupNames = [];
+        this.userNames = [];
+        this.subjects = [];
     }
 }

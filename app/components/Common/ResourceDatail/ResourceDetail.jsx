@@ -138,7 +138,7 @@ class ResourceDetail extends React.Component {
         let objectMetaPropertyOptions = [
             new PropertyOption("metadata.name", "名称", "text"),
             new PropertyOption("metadata.generateName", "系统生成名", "text"),
-            new PropertyOption("metadata.namespace", "名称空间", "text"),
+            new PropertyOption("metadata.namespace", "项目", "text"),
             new PropertyOption("metadata.selfLink", "对象URL", "text"),
             new PropertyOption("metadata.uid", "UID", "text"),
             new PropertyOption("metadata.resourceVersion", "资源版本号", "text"),

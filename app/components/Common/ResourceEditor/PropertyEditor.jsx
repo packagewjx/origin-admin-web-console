@@ -40,8 +40,6 @@ class PropertyEditor extends React.Component {
     }
 
     handleChange(arg) {
-        console.log("in property editor");
-        console.log(arg);
         this.props.onChange(arg);
     }
 
@@ -343,7 +341,7 @@ class SelectionFormControl extends React.Component {
         for (let i = 0; i < this.state.selections.length; i++) {
             let option = this.state.selections[i];
             optionHtml.push(
-                <option key={option.value} value={option.value}>{option.label}</option>
+                <option key={i} value={option.value}>{option.label}</option>
             );
         }
 
