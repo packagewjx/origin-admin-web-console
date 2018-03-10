@@ -1,5 +1,4 @@
 import React from 'react';
-import {History} from 'react-router';
 import {apiClient, setAccessToken} from "../Utils/ApiClient/apiClient";
 import {appHistory} from "../../App";
 
@@ -53,10 +52,11 @@ class Login extends React.Component {
         return (
             <div className="block-center mt-xl wd-xl">
                 {/* START panel */}
-                <div className="panel panel-dark panel-flat">
+                <div className="panel panel-info panel-flat">
                     <div className="panel-heading text-center">
                         <a href="#">
-                            <img src="img/logo.png" alt="Image" className="block-center img-rounded"/>
+                            <img src="../../img/innovationbasetitlelogo.png" height={40} width={280} alt="Image"
+                                 className="block-center img-rounded"/>
                         </a>
                     </div>
                     <div className="panel-body">

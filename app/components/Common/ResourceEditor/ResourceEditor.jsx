@@ -110,7 +110,7 @@ class ResourceEditor extends React.Component {
                         <AceEditor
                             mode="yaml"
                             theme="textmate"
-                            value={YAML.stringify(this.state.item, null, 2)}
+                            value={YAML.stringify(this.state.item, 4, 2)}
                             onBlur={(event, editor) => {
                                 this.setState({item: YAML.parse(editor.getValue())});
                             }}

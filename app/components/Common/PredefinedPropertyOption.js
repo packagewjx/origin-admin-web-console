@@ -9,6 +9,7 @@ import PropertyOption from "./PropertyOption";
 import {apiClient} from "../Utils/ApiClient/apiClient";
 import PolicyRule from "../Utils/ApiClient/model/PolicyRule";
 import Subject from "../Utils/ApiClient/model/Subject";
+import Parameter from "../Utils/ApiClient/model/Parameter";
 
 /**
  * Utils. Global Property Options, and common option.
@@ -89,6 +90,7 @@ function getSubPolicyRuleOption() {
         {label: "assign", value: "assign"},
         {label: "impersonate", value: "impersonate"},
         {label: "代理", value: "proxy"},
+        {label: "所有操作", value: "*"}
     ];
     policyRulePropertyOption[4].isArray = true;
 
@@ -246,5 +248,30 @@ export const PredefinedPropertyOption = {
             claimOption,
             nfsOption
         ];
+    },
+    templates: function () {
+        let parameterOption = new PropertyOption("parameters", "参数", "object", () => new Parameter());
+        parameterOption.isArray = true;
+        parameterOption.subOptions = [
+            new PropertyOption("name", "参数名", "text"),
+            new PropertyOption("displayName", "显示名", "text"),
+            new PropertyOption("required", "必要参数", "boolean"),
+            new PropertyOption("value", "默认值", "text"),
+            new PropertyOption("generate", "生成表达式", "text"),
+            new PropertyOption("from", "生成表达式参数", "text")
+        ];
+        let objectsOption = new PropertyOption("objects", "模版内部对象", "object", () => {
+        });
+        objectsOption.isArray = true;
+        objectsOption.subOptions = [];
+
+        return [
+            globalNamePropertyOption,
+            getNamespacePropertyOption(),
+            new PropertyOption("message", "帮助消息", "text"),
+            globalAnnotationPropertyOption,
+            parameterOption,
+            objectsOption,
+        ]
     }
 };
