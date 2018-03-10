@@ -59,6 +59,22 @@ function getRoleSubjectOption() {
 
 let globalAnnotationPropertyOption = new PropertyOption("metadata.annotations", "注解", "keyValue");
 
+
+function getGlobalObjectReferenceProertySubOptions() {
+    let namespace = getNamespacePropertyOption();
+    namespace.accessor = "namespace";
+
+    return [
+        new PropertyOption("kind", "引用类型", "text"),
+        namespace,
+        new PropertyOption("name", "名称", "text"),
+        new PropertyOption("uid", "UID", "text"),
+        new PropertyOption("apiVersion", "API版本", "text"),
+        new PropertyOption("resourceVersion", "资源版本", "text"),
+        new PropertyOption("fieldPath", "JSON路径表达式", "text")
+    ];
+}
+
 function getSubPolicyRuleOption() {
     let policyRulePropertyOption = [
         new PropertyOption("apiGroups", "API组", "text"),
@@ -273,6 +289,39 @@ export const PredefinedPropertyOption = {
             globalAnnotationPropertyOption,
             parameterOption,
             objectsOption,
+        ]
+    },
+    imagestreams: function () {
+        let specOption = new PropertyOption("spec", "镜像流定义", "object");
+        let specTagOption = new PropertyOption("tags", "镜像标签列表", "object");
+        specTagOption.isArray = true;
+        let specTagFromOption = new PropertyOption("from", "引用其他标签名", "object");
+        specTagFromOption.subOptions = getGlobalObjectReferenceProertySubOptions();
+        let specTagRType = new PropertyOption("referencePolicy.type", "引用策略类型", "select");
+        specTagRType.selections = [
+            {label: "源地址", value: "Source"},
+            {label: "本地", value: "Local"}
+        ];
+        specTagOption.subOptions = [
+            new PropertyOption("name", "标签名", "text"),
+            new PropertyOption("annotations", "注解", "keyValue"),
+            specTagFromOption,
+            new PropertyOption("reference", "是否已经导入此标签代表的镜像", "boolean"),
+            new PropertyOption("generation", "年代数", "number"),
+            new PropertyOption("importPolicy.insecure", "是否导入不安全镜像库的镜像", "boolean"),
+            new PropertyOption("importPolicy.scheduled", "是否定时更新镜像", "boolean"),
+            specTagRType
+        ];
+        specOption.subOptions = [
+            new PropertyOption("lookupPolicy.local", "是否本地查找", "boolean"),
+            new PropertyOption("dockerImageRepository", "docker镜像库", "text"),
+            specTagOption
+        ];
+
+        return [
+            globalNamePropertyOption,
+            globalAnnotationPropertyOption,
+            specOption
         ]
     }
 };

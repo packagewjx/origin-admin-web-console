@@ -5,12 +5,25 @@
  **/
 
 import React from 'react';
-import ContentWrapper from "../Layout/ContentWrapper";
+import {TableConfig} from "../Common/ResourceOverview/TableConfig";
+import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
+import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
+import ImageStream from "../Utils/ApiClient/model/ImageStream";
 
 class ImagestreamOverview extends React.Component {
     render() {
+        let tableConfig = new TableConfig();
+        tableConfig.columns = [
+            "namespacedName",
+            "namespace",
+            "creationTimestamp"
+        ];
+
+        let propertyOptions = PredefinedPropertyOption.imagestreams();
+
         return (
-            <ContentWrapper/>
+            <ResourceOverview title={"镜像流管理"} resourceName={"imagestreams"} tableConfig={tableConfig}
+                              propertyOptions={propertyOptions} getNewResourceObject={() => new ImageStream()}/>
         );
     }
 }

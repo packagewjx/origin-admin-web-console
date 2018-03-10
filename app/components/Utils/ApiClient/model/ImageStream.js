@@ -1,3 +1,6 @@
+import ObjectMeta from "./ObjectMeta";
+import ImageStreamSpec from "./ImageStreamSpec";
+
 export default class ImageStream {
     /**
      * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds
@@ -28,4 +31,11 @@ export default class ImageStream {
      * @member {ImageStreamStatus} status
      */
     status;
+
+    constructor() {
+        this.kind = "ImageStream";
+        this.apiVersion = "v1";
+        this.metadata = new ObjectMeta();
+        this.spec = new ImageStreamSpec();
+    }
 }
