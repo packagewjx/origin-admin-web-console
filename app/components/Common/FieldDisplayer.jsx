@@ -93,7 +93,7 @@ export class FieldDisplayer extends React.Component {
                 case "object":
                     let subOption = this.props.option.subOptions;
                     let subOptionMap = {};
-                    if (subOption instanceof Array) {
+                    if (subOption instanceof Array && subOption.length > 0) {
                         //this method use the defined sub options.
                         for (let i = 0; i < subOption.length; i++) {
                             subOption[i].value = accessData(this.props.value, subOption[i].accessor);
@@ -102,6 +102,14 @@ export class FieldDisplayer extends React.Component {
                         fieldDisplay = [];
                         for (let key in value) {
                             if (value.hasOwnProperty(key)) {
+                                if (typeof subOptionMap[key] === 'undefined') {
+                                    //if subOption did not have this key's option, generate one.
+                                    if (typeof value[key] === 'object')
+                                        subOptionMap[key] = new PropertyOption("", key, "object");
+                                    else
+                                        subOptionMap[key] = new PropertyOption("", key, "text");
+                                }
+
                                 fieldDisplay.push(<FieldDisplayer key={key} option={subOptionMap[key]}
                                                                   value={value[key]}/>);
                             }

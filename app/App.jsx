@@ -44,6 +44,7 @@ import PersistentVolumeOverview from "./components/PersistentStorage/PersistentV
 import ProjectNetworkSetting from "./components/ProjectNetwork/ProjectNetworkSetting";
 import PersistentVolumeDetail from "./components/PersistentStorage/PersistentVolumeDetail";
 import PersistentVolumeClaimOverview from "./components/PersistentStorage/PersistentVolumeClaimOverview";
+import TemplateDetail from "./components/TemplatesAndImagestreams/TemplateDetail";
 
 // Init css loader (for themes)
 initLoadThemes();
@@ -95,6 +96,7 @@ ReactDOM.render(
             {/*模板管理*/}
             <Route path="imagestreams" component={ImagestreamOverview}/>
             <Route path="templates" component={TemplateOverview}/>
+            <Route path="templates/namespaces/:namespace/:name" component={TemplateDetail}/>
 
             {/*Project Network*/}
             <Route path="project-network" component={ProjectNetworkSetting}/>

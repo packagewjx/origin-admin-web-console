@@ -255,6 +255,7 @@ export const PredefinedPropertyOption = {
         parameterOption.subOptions = [
             new PropertyOption("name", "参数名", "text"),
             new PropertyOption("displayName", "显示名", "text"),
+            new PropertyOption("description", "描述", "text"),
             new PropertyOption("required", "必要参数", "boolean"),
             new PropertyOption("value", "默认值", "text"),
             new PropertyOption("generate", "生成表达式", "text"),

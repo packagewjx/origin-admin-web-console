@@ -5,12 +5,16 @@
  **/
 
 import React from 'react';
-import ContentWrapper from "../Layout/ContentWrapper";
+import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
+import ResourceDetail from "../Common/ResourceDatail/ResourceDetail";
 
 class TemplateDetail extends React.Component {
     render() {
+        let propertyOptions = PredefinedPropertyOption.templates();
+
         return (
-            <ContentWrapper/>
+            <ResourceDetail resourceName={"templates"} objectName={this.props.params.name}
+                            namespace={this.props.params.namespace} propertyOptions={propertyOptions}/>
         );
     }
 }
