@@ -14,7 +14,7 @@ class Sidebar extends React.Component {
                 kind: "submenu", name: "auth", title: "权限管理", iconClass: "icon-people", children: [
                     {kind: "item", route: "users", title: "用户管理", iconClass: ""},
                     {kind: "item", route: "identities", title: "用户身份管理"},
-                    {kind: "item", route: "groups", title: "用户组管理"},
+                // {kind: "item", route: "groups", title: "用户组管理"},
                     {kind: "item", route: "roles", title: "项目角色管理"},
                 {kind: "item", route: "rolebindings", title: "查看项目角色绑定"},
                     {kind: "item", route: "clusterroles", title: "集群角色管理"},
@@ -33,7 +33,7 @@ class Sidebar extends React.Component {
                     {kind: "item", route: "imagestreams", title: "镜像流管理"}
                 ]
             },
-            {kind: "item", route: "project-network", title: "项目网络设置", iconClass: "fa fa-wifi"},
+            // {kind: "item", route: "project-network", title: "项目网络设置", iconClass: "fa fa-wifi"},
             {kind: "item", route: "monitor", title: "监控", iconClass: "fa fa-desktop"},
         ];
 

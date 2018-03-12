@@ -64,6 +64,20 @@ class ResourceOverview extends React.Component {
                 filterable: true
             });
         }
+
+        //fill the this.props.api with functions
+        if (typeof props.api === 'object') {
+            let api = {
+                refresh: () => {
+                    this.fetchData();
+                },
+                getData: () => {
+                    return this.state.data;
+                }
+            };
+            Object.assign(props.api, api);
+            console.log(props.api);
+        }
     }
 
     closeAddResourceModal() {
@@ -255,7 +269,13 @@ ResourceOverview.propTypes = {
      */
     getNewResourceObject: PropTypes.func,
     disableCreate: PropTypes.bool,
-    additionalButtons: PropTypes.array
+    additionalButtons: PropTypes.array,
+    /**
+     * Resource Overview will fill this object with control functions of the following:
+     * refresh():undefined  retrieve the latest data.
+     * getData():Array.<any>  get the current display data.
+     */
+    api: PropTypes.object,
 };
 
 export default ResourceOverview;

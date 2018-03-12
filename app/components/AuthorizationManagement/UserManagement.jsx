@@ -14,8 +14,14 @@ import {BACKEND_BASE_ADDRESS} from "../Common/constants";
 import {apiClient, getToken} from "../Utils/ApiClient/apiClient";
 import Identity from "../Utils/ApiClient/model/Identity";
 import UserIdentityMapping from "../Utils/ApiClient/model/UserIdentityMapping";
+import PropTypes from "prop-types";
 
 class UserManagement extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.overviewAPI = {};
+    }
 
     render() {
         let tableConfig = new TableConfig();
@@ -28,12 +34,14 @@ class UserManagement extends React.Component {
         let propertyOptions = PredefinedPropertyOption.users();
         propertyOptions.splice(1, 2);
 
-        let additionalButtons = [<CreateUserButton key={"abc"}/>];
+        let additionalButtons = [<CreateUserButton key={"abc"} onCreated={() => {
+            this.overviewAPI.refresh();
+        }}/>];
 
         return (
             <ResourceOverview getNewResourceObject={getNewUser} propertyOptions={propertyOptions} resourceName={"users"}
                               tableConfig={tableConfig} title="用户管理" disableCreate={true}
-                              additionalButtons={additionalButtons}/>
+                              additionalButtons={additionalButtons} api={this.overviewAPI}/>
         );
     }
 }
@@ -46,7 +54,14 @@ class CreateUserButton extends React.Component {
         this.closeModal = this.closeModal.bind(this);
         this.createUser = this.createUser.bind(this);
 
-        this.state = {modalShow: false, username: "", password: "", password2: "", passwordNotEqual: false};
+        this.state = {
+            modalShow: false,
+            username: "",
+            password: "",
+            password2: "",
+            passwordNotEqual: false,
+            waiting: false
+        };
     }
 
     createUser() {
@@ -56,8 +71,6 @@ class CreateUserButton extends React.Component {
         }
 
         this.setState({waiting: true, passwordNotEqual: false});
-
-        console.log(this.state);
 
         let htpasswdIdentity = {username: this.state.username, password: this.state.password};
         let p1 = $.ajax(BACKEND_BASE_ADDRESS + "/htpasswdidentities", {
@@ -97,7 +110,10 @@ class CreateUserButton extends React.Component {
             }, () => reject())
         });
 
-        Promise.all([p1, p2]).then(() => this.setState({modalShow: false})).finally(() => this.setState({waiting: false}));
+        Promise.all([p1, p2]).then(() => {
+            this.setState({modalShow: false});
+            this.props.onCreated();
+        }).finally(() => this.setState({waiting: false}));
     }
 
     showModal() {
@@ -118,39 +134,47 @@ class CreateUserButton extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <form className="form-horizontal">
-                            <FormGroup>
-                                <label className="col-lg-2 control-label">用户名</label>
-                                <Col lg={10}>
-                                    <FormControl type="text" className="form-control"
-                                                 onChange={(event) => this.setState({username: event.target.value})}/>
-                                </Col>
-                            </FormGroup>
-                            <FormGroup>
-                                <label className="col-lg-2 control-label">密码</label>
-                                <Col lg={10}>
-                                    <FormControl type="password" className="form-control"
-                                                 onChange={(event) => this.setState({password: event.target.value})}/>
-                                </Col>
-                            </FormGroup>
-                            <FormGroup>
-                                <label className="col-lg-2 control-label">再次输入密码</label>
-                                <Col lg={10}>
-                                    <FormControl type="password" className="form-control"
-                                                 onChange={(event) => this.setState({password2: event.target.value})}/>
-                                    {this.state.passwordNotEqual ? <p className="text-danger">两次密码输入不一致</p> : null}
-                                </Col>
-                            </FormGroup>
+                            <fieldset disabled={this.state.waiting}>
+                                <FormGroup>
+                                    <label className="col-lg-2 control-label">用户名</label>
+                                    <Col lg={10}>
+                                        <FormControl type="text" className="form-control"
+                                                     onChange={(event) => this.setState({username: event.target.value})}/>
+                                    </Col>
+                                </FormGroup>
+                                <br/>
+                                <FormGroup>
+                                    <label className="col-lg-2 control-label">密码</label>
+                                    <Col lg={10}>
+                                        <FormControl type="password" className="form-control"
+                                                     onChange={(event) => this.setState({password: event.target.value})}/>
+                                    </Col>
+                                </FormGroup>
+                                <br/>
+                                <FormGroup>
+                                    <label className="col-lg-2 control-label">再次输入密码</label>
+                                    <Col lg={10}>
+                                        <FormControl type="password" className="form-control"
+                                                     onChange={(event) => this.setState({password2: event.target.value})}/>
+                                        {this.state.passwordNotEqual ? <p className="text-danger">两次密码输入不一致</p> : null}
+                                    </Col>
+                                </FormGroup>
+                            </fieldset>
                         </form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button bsStyle="success" onClick={this.createUser}>创建</Button>
-                        <Button onClick={this.closeModal}>取消</Button>
+                        <Button bsStyle="success" onClick={this.createUser} disabled={this.state.waiting}>创建</Button>
+                        <Button onClick={this.closeModal} disabled={this.state.waiting}>取消</Button>
                     </Modal.Footer>
                 </Modal>
             </Button>
         );
     }
 }
+
+CreateUserButton.propTypes = {
+    onCreated: PropTypes.func
+};
 
 function getNewUser() {
     let user = new User();
