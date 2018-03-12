@@ -26,3 +26,5 @@ export const APP_MEDIAQUERY = {
     'tablet':                 768,
     'mobile':                 480
 };
+
+export const BACKEND_BASE_ADDRESS = "http://116.56.140.108:3001";

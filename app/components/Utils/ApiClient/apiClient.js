@@ -5,7 +5,7 @@ const API_RESOURCE_LIST_URLS = ["https://116.56.140.108:8443/oapi/v1", "https://
 
 let client = {};
 let fetchingPromise = undefined;
-let token = "Bearer F1EPZixeFRlZ4xWui13uuEOFvF5SdBqtcOI2kdXwh1M";//for developing usage
+let token = "Bearer 4QhpW2j7X3EXooRifZZM5Yax_4vZiFeb9afjnOhQ7aw";//for developing usage
 
 let verbFunctions = {
     create: createFunction,
@@ -44,6 +44,10 @@ function setAccessToken(newToken) {
     token = "Bearer " + newToken;
     //clear fetchingPromise to clear all the functions that have been created
     fetchingPromise = undefined;
+}
+
+function getToken() {
+    return token;
 }
 
 /**
@@ -256,4 +260,4 @@ function updateFunction(resource) {
 }
 
 
-export {client, apiClient, GlobalOption, setAccessToken}
+export {client, apiClient, GlobalOption, setAccessToken, getToken}
