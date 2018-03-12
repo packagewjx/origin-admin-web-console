@@ -136,12 +136,14 @@ class ResourceOverview extends React.Component {
                 <div className="content-heading">
                     {this.props.title}
                 </div>
-                {this.props.disableCreate ? null :
-                    <p>
+
+                <p>
+                    {this.props.disableCreate ? null :
                         <Button bsStyle="success" onClick={this.showAddResourceModal.bind(this)}>
                             <em className="fa fa-plus"/> 添加一项
-                        </Button>
-                    </p>}
+                        </Button>}
+                    {this.props.additionalButtons}
+                </p>
                 <ReactTable
                     data={this.state.data}
                     loading={this.state.loading}
@@ -252,7 +254,8 @@ ResourceOverview.propTypes = {
      * @type {function():any}
      */
     getNewResourceObject: PropTypes.func,
-    disableCreate: PropTypes.bool
+    disableCreate: PropTypes.bool,
+    additionalButtons: PropTypes.array
 };
 
 export default ResourceOverview;

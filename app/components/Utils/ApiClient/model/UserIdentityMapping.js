@@ -1,4 +1,5 @@
 import ObjectMeta from "./ObjectMeta";
+import ObjectReference from "./ObjectReference";
 
 export default class UserIdentityMapping {
     /**
@@ -33,6 +34,8 @@ export default class UserIdentityMapping {
 
     constructor() {
         this.metadata = new ObjectMeta();
+        this.user = new ObjectReference();
+        this.identity = new ObjectReference();
         this.kind = "UserIdentityMapping";
         this.apiVersion = "v1";
     }
