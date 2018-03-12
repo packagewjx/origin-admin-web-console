@@ -57,6 +57,28 @@ function getRoleSubjectOption() {
     return option;
 }
 
+function getRoleBindingsUserNamesOption() {
+    let userNameOption = new PropertyOption("userNames", "关联用户", "select");
+    userNameOption.isArray = true;
+    userNameOption.selections = new Promise(resolve => {
+        apiClient().then((client) => {
+            client.users.list().then((data) => itemNameSelectionCallback(data, resolve));
+        })
+    });
+    return userNameOption;
+}
+
+function getRoleBindingsGroupNamesOption() {
+    let groupsOption = new PropertyOption("groupNames", "关联组", "select");
+    groupsOption.isArray = true;
+    groupsOption.selections = new Promise(resolve => {
+        apiClient().then((client) => {
+            client.groups.list().then((data) => itemNameSelectionCallback(data, resolve));
+        })
+    });
+    return groupsOption;
+}
+
 let globalAnnotationPropertyOption = new PropertyOption("metadata.annotations", "注解", "keyValue");
 
 
@@ -203,13 +225,13 @@ export const PredefinedPropertyOption = {
                 });
             })
         });
-        let subjectOption = getRoleSubjectOption();
 
         return [
             globalNamePropertyOption,
             getNamespacePropertyOption(),
             roleOption,
-            subjectOption
+            getRoleBindingsUserNamesOption(),
+            getRoleBindingsGroupNamesOption()
         ];
     },
     clusterroles: function () {
@@ -226,12 +248,12 @@ export const PredefinedPropertyOption = {
                 client.clusterroles.list().then((data) => itemNameSelectionCallback(data, resolve));
             })
         });
-        let subjectOption = getRoleSubjectOption();
 
         return [
             globalNamePropertyOption,
             clusterRoleOption,
-            subjectOption
+            getRoleBindingsUserNamesOption(),
+            getRoleBindingsGroupNamesOption()
         ];
     },
     persistentvolumes: function () {

@@ -78,7 +78,7 @@ export class FieldDisplayer extends React.Component {
                     break;
                 case "select":
                     fieldDisplay = (
-                        <span>{this.state.selectionMap[value]}</span>
+                        <span>{this.state.selectionMap[value] || value}</span>
                     );
                     break;
                 case "keyValue":

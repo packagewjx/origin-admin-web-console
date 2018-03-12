@@ -67,7 +67,7 @@ class RoleBindingManagement extends React.Component {
 
 
         return (
-            <ResourceOverview title="查看项目角色绑定" resourceName="rolebindings" tableConfig={tableConfig}
+            <ResourceOverview title="项目角色绑定管理" resourceName="rolebindings" tableConfig={tableConfig}
                               propertyOptions={roleBindingOptions}
                               getNewResourceObject={() => new RoleBinding()}/>
         );

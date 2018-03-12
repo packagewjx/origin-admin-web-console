@@ -22,7 +22,7 @@ class ClusterRoleBindingManagement extends React.Component {
         ];
 
         return (
-            <ResourceOverview title={"查看集群角色绑定"} resourceName={"clusterrolebindings"} tableConfig={tableConfig}
+            <ResourceOverview title={"集群角色绑定管理"} resourceName={"clusterrolebindings"} tableConfig={tableConfig}
                               getNewResourceObject={() => new ClusterRoleBinding()} propertyOptions={option}/>
         );
     }

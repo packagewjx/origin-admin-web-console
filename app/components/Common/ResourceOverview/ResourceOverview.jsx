@@ -45,7 +45,6 @@ class ResourceOverview extends React.Component {
                 }
             };
             Object.assign(props.api, api);
-            console.log(props.api);
         }
     }
 
