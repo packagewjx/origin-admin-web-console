@@ -34,37 +34,6 @@ class ResourceOverview extends React.Component {
         //initialize add resource modal
         this.newResourceObject = {};
 
-        // changing ColumnConfig, set to default and replace value.
-        this.columns = [];
-        for (let i = 0; i < this.props.tableConfig.columns.length; i++) {
-            /**
-             * @type {ColumnConfig}
-             */
-            let column = this.props.tableConfig.columns[i];
-            if (typeof column === 'string') {
-                if (DefaultColumnConfig.hasOwnProperty(column)) {
-                    //because javascript is giving value, so ,we have to clone it, to prevent changing the DefaultColumnConfig
-                    column = this.props.tableConfig.columns[i] = deepClone(DefaultColumnConfig[column]);
-                } else {
-                    console.error("Error, this column is not one of keys of DefaultColumnConfig");
-                }
-            }
-            // add render function if not exist
-            column.renderFunction = column.renderFunction || renderItem;
-            if (typeof column.linkTo === 'string' && column.linkTo !== "") {
-                // replace <<resourceName>> in linkTo to real resource name
-                column.linkTo = column.linkTo.replace("<<resourceName>>", this.props.resourceName);
-            }
-
-            this.columns.push({
-                Cell: row => <Cell row={row} referer={column.referer} linkTo={column.linkTo}
-                                   renderFunction={column.renderFunction}/>,
-                Header: column.title,
-                accessor: column.referer,
-                filterable: true
-            });
-        }
-
         //fill the this.props.api with functions
         if (typeof props.api === 'object') {
             let api = {
@@ -145,6 +114,38 @@ class ResourceOverview extends React.Component {
     }
 
     render() {
+        // changing ColumnConfig, set to default and replace value.
+        this.columns = [];
+        for (let i = 0; i < this.props.tableConfig.columns.length; i++) {
+            /**
+             * @type {ColumnConfig}
+             */
+            let column = this.props.tableConfig.columns[i];
+            if (typeof column === 'string') {
+                if (DefaultColumnConfig.hasOwnProperty(column)) {
+                    //because javascript is giving value, so ,we have to clone it, to prevent changing the DefaultColumnConfig
+                    column = this.props.tableConfig.columns[i] = deepClone(DefaultColumnConfig[column]);
+                } else {
+                    console.error("Error, this column is not one of keys of DefaultColumnConfig");
+                }
+            }
+            // add render function if not exist
+            column.renderFunction = column.renderFunction || renderItem;
+            if (typeof column.linkTo === 'string' && column.linkTo !== "") {
+                // replace <<resourceName>> in linkTo to real resource name
+                column.linkTo = column.linkTo.replace("<<resourceName>>", this.props.resourceName);
+            }
+
+            this.columns.push({
+                Cell: row => <Cell row={row} referer={column.referer} linkTo={column.linkTo}
+                                   renderFunction={column.renderFunction}/>,
+                Header: column.title,
+                accessor: column.referer,
+                filterable: true
+            });
+        }
+
+
         return (
             <ContentWrapper>
                 <div className="content-heading">
