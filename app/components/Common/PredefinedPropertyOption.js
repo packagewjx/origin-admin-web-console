@@ -62,7 +62,21 @@ function getRoleBindingsUserNamesOption() {
     userNameOption.isArray = true;
     userNameOption.selections = new Promise(resolve => {
         apiClient().then((client) => {
-            client.users.list().then((data) => itemNameSelectionCallback(data, resolve));
+            let selections = [];
+            let userPromise = client.users.list().then((data) => {
+                for (let i = 0; i < data.items.length; i++) {
+                    selections.push({label: data.items[i].metadata.name, value: data.items[i].metadata.name});
+                }
+            });
+            let saPromise = client.serviceaccounts.list().then((data) => {
+                for (let i = 0; i < data.items.length; i++) {
+                    let name = "system:serviceaccount:" + data.items[i].metadata.namespace + ":" + data.items[i].metadata.name;
+                    selections.push({label: name, value: name});
+                }
+            });
+            Promise.all([userPromise, saPromise]).then(() => {
+                resolve(selections);
+            });
         })
     });
     return userNameOption;
