@@ -114,6 +114,10 @@ module.exports = {
             from: 'fonts',
             to: 'fonts',
             context: path.join(__dirname, 'app')
+        }, {
+            from: 'httpd-cfg',
+            to: 'httpd-cfg',
+            context: path.join(__dirname, 'app')
         }]),
         new webpack.ProvidePlugin({
             $: 'jquery',

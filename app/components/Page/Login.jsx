@@ -32,6 +32,8 @@ class Login extends React.Component {
                     apiClient().then(function (client) {
                         client.users.list().then(function () {
                             appHistory.replace("/");
+                            //store the token
+                            $.localStorage.set("token", match[1]);
                         }, function () {
                             self.setState({notAdmin: true});
                         })

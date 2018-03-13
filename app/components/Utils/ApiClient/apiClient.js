@@ -5,7 +5,10 @@ const API_RESOURCE_LIST_URLS = ["https://116.56.140.108:8443/oapi/v1", "https://
 
 let client = {};
 let fetchingPromise = undefined;
-let token = "Bearer JNTG4uLRQOMvdre3jdsM9CtmJNhfq2WkSa0IuAePZsg";//for developing usage
+let token = "";//for developing usage
+
+//read token from storage and set it.
+setAccessToken($.localStorage.get("token"));
 
 let verbFunctions = {
     create: createFunction,
