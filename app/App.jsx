@@ -53,6 +53,7 @@ initLoadThemes();
 // Init api client
 apiClient().then(function (client) {
     console.log(client);
+    client.netnamespaces.list().then((data) => console.log(data));
 });
 
 

@@ -13,6 +13,9 @@ import ResourceEditor from "./ResourceEditor";
 /**
  * This is the class that generate the field editor based on a single PropertyOption. It use some sub components to
  * make this work.
+ * PropertyEditor Do not store any data, it just notice the upper component to receive the new edited data, when this
+ * change is approved by the upper component, it should pass the new data to this Editor. Meaning that you should set
+ * the value props of this Editor the some state of the upper component.
  * @see ArrayEditor
  * @see KeyValueEditor
  * @see BooleanFormControl
@@ -238,6 +241,10 @@ class KeyValueEditor extends React.Component {
         this.state = {key: keys};
     }
 
+    componentWillReceiveProps(nextProps) {
+
+    }
+
     handleKeyChange(event, oldKey) {
         let keys = this.state.key;
         keys[oldKey] = event.target.value;
@@ -374,12 +381,10 @@ class ArrayEditor extends React.Component {
     constructor(props) {
         super(props);
         this.onItemChange = this.onItemChange.bind(this);
-
-        this.state = {array: this.props.value};
     }
 
     onItemChange(data, index) {
-        let array = this.state.array;
+        let array = this.props.value;
         array.splice(index, 1, data);
         this.props.onChange(array);
     }
@@ -387,7 +392,7 @@ class ArrayEditor extends React.Component {
     render() {
         let itemEditors = [];
         let option = this.props.option;
-        let array = this.state.array;
+        let array = this.props.value;
         if (!(array instanceof Array))
             return null;
 
@@ -429,7 +434,7 @@ class ArrayEditor extends React.Component {
                     {itemEditor}
                     <InputGroup.Button>
                         <Button bsClass="btn btn-labeled btn-danger mr" onClick={() => {
-                            let array = this.state.array;
+                            let array = this.props.value;
                             array.splice(i, 1);
                             this.props.onChange(array);
                         }}><em className="fa fa-minus"/></Button>
@@ -446,7 +451,7 @@ class ArrayEditor extends React.Component {
                 <Col lg={10}>
                     {itemEditors}
                     <Button bsClass="btn btn-labeled btn-success mr" onClick={() => {
-                        let array = this.state.array;
+                        let array = this.props.value;
                         //give the new value based on its type
                         array.push(option.newValue());
                         this.props.onChange(array);
