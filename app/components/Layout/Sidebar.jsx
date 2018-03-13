@@ -33,7 +33,12 @@ class Sidebar extends React.Component {
                     {kind: "item", route: "imagestreams", title: "镜像流管理"}
                 ]
             },
-            {kind: "item", route: "project-network", title: "项目网络设置", iconClass: "fa fa-wifi"},
+            {
+                kind: "submenu", name: "project-network", title: "项目网络管理", iconClass: "fa fa-wifi", children: [
+                    {kind: "item", route: "project-network-view", title: "查看项目网络"},
+                    {kind: "item", route: "project-network-setting", title: "项目网络设置"},
+                ]
+            },
             {kind: "item", route: "monitor", title: "监控", iconClass: "fa fa-desktop"},
         ];
 

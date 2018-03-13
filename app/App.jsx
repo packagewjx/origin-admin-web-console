@@ -46,6 +46,7 @@ import PersistentVolumeDetail from "./components/PersistentStorage/PersistentVol
 import PersistentVolumeClaimOverview from "./components/PersistentStorage/PersistentVolumeClaimOverview";
 import TemplateDetail from "./components/TemplatesAndImagestreams/TemplateDetail";
 import ImagestreamDetail from "./components/TemplatesAndImagestreams/ImagestreamDetail";
+import ProjectNetworkView from "./components/ProjectNetwork/ProjectNetworkView";
 
 // Init css loader (for themes)
 initLoadThemes();
@@ -102,7 +103,8 @@ ReactDOM.render(
             <Route path="templates/namespaces/:namespace/:name" component={TemplateDetail}/>
 
             {/*Project Network*/}
-            <Route path="project-network" component={ProjectNetworkSetting}/>
+            <Route path="project-network-view" component={ProjectNetworkView}/>
+            <Route path="project-network-setting" component={ProjectNetworkSetting}/>
 
             {/*Monitor*/}
             <Route path="monitor" component={ServerMonitor}/>

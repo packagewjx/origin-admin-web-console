@@ -110,8 +110,7 @@ class ProjectNetworkSetting extends React.Component {
                     </Row>
                     <hr/>
                     <Row>
-                        <label className="col-lg-2 control-label"><strong>隔离项目网络</strong></label>
-                        <Col lg={10}>
+                        <Col lg={12}>
                             <PropertyEditor option={isolateProperty} onChange={(data) => this.setState({isolate: data})}
                                             value={this.state.isolate}/>
                         </Col>
