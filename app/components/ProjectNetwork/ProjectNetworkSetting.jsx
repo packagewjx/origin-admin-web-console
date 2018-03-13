@@ -90,41 +90,46 @@ class ProjectNetworkSetting extends React.Component {
                     项目网络设置
                 </div>
                 <form className="form-horizontal">
-                    <Row>
-                        <Col lg={12}>
-                            <PropertyEditor option={globalProperty} onChange={(data) => {
-                                this.setState({global: data})
-                            }} value={this.state.global} isCreate={false}/>
-                        </Col>
-                    </Row>
-                    <hr/>
-                    <Row>
-                        <label className="col-lg-2 control-label"><strong>连通项目网络</strong></label>
-                        <Col lg={10}>
-                            <PropertyEditor option={makeToProperty} onChange={(data) => {
-                                this.setState({joinTo: data})
-                            }} value={this.state.joinTo} isCreate={false}/>
-                            <PropertyEditor option={makeFromProperty} onChange={(data) => this.setState({join: data})}
-                                            value={this.state.join}/>
-                        </Col>
-                    </Row>
-                    <hr/>
-                    <Row>
-                        <Col lg={12}>
-                            <PropertyEditor option={isolateProperty} onChange={(data) => this.setState({isolate: data})}
-                                            value={this.state.isolate}/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <div className="pull-right">
-                            <Button bsClass="btn btn-labeled btn-success mr" onClick={this.submitData}>
-                                确认
-                            </Button>
-                            <Button bsClass="btn btn-labeled btn-default mr" onClick={this.clearData}>
-                                重置
-                            </Button>
-                        </div>
-                    </Row>
+                    <fieldset disabled={this.state.waiting}>
+                        <Row>
+                            <Col lg={12}>
+                                <PropertyEditor option={globalProperty} onChange={(data) => {
+                                    this.setState({global: data})
+                                }} value={this.state.global} isCreate={false}/>
+                            </Col>
+                        </Row>
+                        <hr/>
+                        <Row>
+                            <label className="col-lg-2 control-label"><strong>连通项目网络</strong></label>
+                            <Col lg={10}>
+                                <PropertyEditor option={makeToProperty} onChange={(data) => {
+                                    this.setState({joinTo: data})
+                                }} value={this.state.joinTo} isCreate={false}/>
+                                <br/>
+                                <PropertyEditor option={makeFromProperty}
+                                                onChange={(data) => this.setState({join: data})}
+                                                value={this.state.join}/>
+                            </Col>
+                        </Row>
+                        <hr/>
+                        <Row>
+                            <Col lg={12}>
+                                <PropertyEditor option={isolateProperty}
+                                                onChange={(data) => this.setState({isolate: data})}
+                                                value={this.state.isolate}/>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <div className="pull-right">
+                                <Button bsClass="btn btn-labeled btn-success mr" onClick={this.submitData}>
+                                    确认
+                                </Button>
+                                <Button bsClass="btn btn-labeled btn-default mr" onClick={this.clearData}>
+                                    重置
+                                </Button>
+                            </div>
+                        </Row>
+                    </fieldset>
                 </form>
             </ContentWrapper>
         );
