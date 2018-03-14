@@ -393,8 +393,11 @@ class ArrayEditor extends React.Component {
         let itemEditors = [];
         let option = this.props.option;
         let array = this.props.value;
-        if (!(array instanceof Array))
+        if (typeof array === 'undefined')
+            array = [];
+        else if (!(array instanceof Array)) {
             return null;
+        }
 
         for (let i = 0; i < array.length; i++) {
             let item = array[i];
@@ -451,7 +454,7 @@ class ArrayEditor extends React.Component {
                 <Col lg={10}>
                     {itemEditors}
                     <Button bsClass="btn btn-labeled btn-success mr" onClick={() => {
-                        let array = this.props.value;
+                        let array = this.props.value || [];
                         //give the new value based on its type
                         array.push(option.newValue());
                         this.props.onChange(array);

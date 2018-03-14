@@ -281,8 +281,13 @@ export const PredefinedPropertyOption = {
         phaseOption.immutable = true;
         let claimOption = new PropertyOption("spec.claimRef.name", "已分配给", "text");
         claimOption.immutable = true;
-        let accessModeOption = new PropertyOption("spec.accessModes", "存取模式", "text");
+        let accessModeOption = new PropertyOption("spec.accessModes", "存取模式", "select");
         accessModeOption.isArray = true;
+        accessModeOption.selections = [
+            {label: "ReadWriteOnce-单用户读写", value: "ReadWriteOnce"},
+            {label: "ReadOnlyMany-多用户只读", value: "ReadOnlyMany"},
+            {label: "ReadWriteMany-多用户读写", value: "ReadWriteMany"},
+        ];
         let reclaimOption = new PropertyOption("spec.persistentVolumeReclaimPolicy", "再利用策略", "select");
         reclaimOption.selections = [
             {label: "保存内容，手动删除", value: "Retain"},
