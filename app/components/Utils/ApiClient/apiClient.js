@@ -1,5 +1,6 @@
 import DeleteOptions from "./model/DeleteOptions";
 import {appHistory} from "../../../App";
+import CacheManager from "./CacheManager";
 
 const API_RESOURCE_LIST_URLS = ["https://116.56.140.108:8443/oapi/v1", "https://116.56.140.108:8443/api/v1"];
 
@@ -22,8 +23,14 @@ let verbFunctions = {
 class GlobalOption {
     namespace;
 
+    /**
+     * When this is true, apiClient will fetch the newest data. Otherwise use cached data if exists.
+     */
+    invalidateCache;
+
     constructor() {
         this.namespace = "";
+        this.invalidateCache = false;
     }
 }
 
@@ -122,6 +129,14 @@ function apiClient() {
 function getFunction(resource) {
     return function (name, options) {
         options = options || defaultOption;
+        let namespace = options.namespace;
+        let kind = resource.name;
+
+        if (!defaultOption.invalidateCache) {
+            let cachedData = CacheManager.getCache(kind, "get", namespace, name);
+            if (typeof cachedData !== "undefined")
+                return Promise.resolve(cachedData.data);
+        }
 
         let url = resource.baseURL;
         if (options.namespace !== "") {
@@ -133,7 +148,11 @@ function getFunction(resource) {
         return $.ajax(url, {
             headers: {authorization: token},
             method: "GET",
-            error: failCallback
+            error: failCallback,
+            success: (data) => {
+                CacheManager.saveCache(kind, "get", namespace, name, data);
+                return Promise.resolve(data);
+            }
         });
     }
 }
@@ -223,17 +242,36 @@ function deleteCollectionFunction(resource) {
 function listFunction(resource) {
     return function (options) {
         options = options || defaultOption;
+        let namespace = options.namespace;
+        let kind = resource.name;
+
+        if (!options.invalidateCache) {
+            let cache = CacheManager.getCache(kind, "list", namespace, undefined);
+            if (typeof cache !== 'undefined')
+                return Promise.resolve(cache);
+        }
+
         let url = resource.baseURL;
         if (options.namespace !== "") {
             url += "/namespaces/" + options.namespace;
         }
         url += "/" + resource.name;
 
-        return $.ajax(url, {
-            method: "GET",
-            headers: {"authorization": token},
-            error: failCallback
-        });
+        return new Promise((resolve, reject) => {
+            $.ajax(url, {
+                method: "GET",
+                headers: {"authorization": token},
+                error: (xhr, status, error) => {
+                    failCallback(xhr, status, error);
+                    reject(xhr, status, error);
+                },
+                success: (data, status, xhr) => {
+                    CacheManager.saveCache(kind, "list", namespace, "", data);
+                    resolve(data, status, xhr);
+                }
+            });
+        })
+
     }
 }
 

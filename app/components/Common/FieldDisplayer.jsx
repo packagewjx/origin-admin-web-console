@@ -134,8 +134,10 @@ export class FieldDisplayer extends React.Component {
 
         return (
             <Row>
+
                 <Col lg={2}>
-                    <strong>{this.props.option.label}:</strong>
+                    <p className="text-right"><strong>{this.props.option.label}:</strong></p>
+                    {/*<label className="control-label text-right">{this.props.option.label}:</label>*/}
                 </Col>
                 <Col lg={10}>
                     {fieldDisplay}
