@@ -338,25 +338,35 @@ export const PredefinedPropertyOption = {
         specTagOption.isArray = true;
         let specTagFromOption = new PropertyOption("from", "引用其他标签名", "object");
         specTagFromOption.subOptions = getGlobalObjectReferenceProertySubOptions();
-        let specTagRType = new PropertyOption("referencePolicy.type", "引用策略类型", "select");
+        //reference policy
+        let specTagRType = new PropertyOption("type", "引用策略类型", "select");
         specTagRType.selections = [
             {label: "源地址", value: "Source"},
             {label: "本地", value: "Local"}
         ];
+        let specTagReferencePolicy = new PropertyOption("referencePolicy", "引用策略", "object");
+        specTagReferencePolicy.subOptions = [specTagRType];
+        //import policy
+        let specTagImportPolicy = new PropertyOption("importPolicy", "导入镜像策略", "object");
+        let specImportPolicyInsecured = new PropertyOption("insecure", "是否导入不安全镜像库的镜像", "boolean");
+        let specImportPolicyScheduled = new PropertyOption("scheduled", "是否定时更新镜像", "boolean");
+        specTagImportPolicy.subOptions = [specImportPolicyInsecured, specImportPolicyScheduled];
+
+
         specTagOption.subOptions = [
             new PropertyOption("name", "标签名", "text"),
             new PropertyOption("annotations", "注解", "keyValue"),
             specTagFromOption,
             new PropertyOption("reference", "是否已经导入此标签代表的镜像", "boolean"),
             new PropertyOption("generation", "年代数", "number"),
-            new PropertyOption("importPolicy.insecure", "是否导入不安全镜像库的镜像", "boolean"),
-            new PropertyOption("importPolicy.scheduled", "是否定时更新镜像", "boolean"),
-            specTagRType
+            specTagImportPolicy,
+            specTagReferencePolicy,
         ];
+
         specOption.subOptions = [
             new PropertyOption("lookupPolicy.local", "是否本地查找", "boolean"),
             new PropertyOption("dockerImageRepository", "docker镜像库", "text"),
-            specTagOption
+            specTagOption,
         ];
 
         return [

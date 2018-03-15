@@ -76,6 +76,11 @@ export class FieldDisplayer extends React.Component {
                         <span>{value}</span>
                     );
                     break;
+                case "boolean":
+                    fieldDisplay = (
+                        <span>{value ? "是" : "否"}</span>
+                    );
+                    break;
                 case "select":
                     fieldDisplay = (
                         <span>{this.state.selectionMap[value] || value}</span>

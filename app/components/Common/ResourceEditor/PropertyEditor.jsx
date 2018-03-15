@@ -401,49 +401,76 @@ class ArrayEditor extends React.Component {
 
         for (let i = 0; i < array.length; i++) {
             let item = array[i];
-            let itemEditor = undefined;
             switch (option.type) {
                 case 'keyValue':
                     console.error("Array Editor did not support keyValue!");
                     return null;
                 case 'select':
-                    itemEditor = (
-                        <SelectionFormControl value={item} label={option.label} selections={option.selections}
-                                              onChange={(data) => this.onItemChange(data, i)}/>
+                    itemEditors.push(
+                        <InputGroup key={i}>
+                            <InputGroup.Addon>{i + 1}</InputGroup.Addon>
+                            <SelectionFormControl value={item} label={option.label} selections={option.selections}
+                                                  onChange={(data) => this.onItemChange(data, i)}/>
+                            <InputGroup.Button>
+                                <Button bsClass="btn btn-labeled btn-danger mr" onClick={() => {
+                                    let array = this.props.value;
+                                    array.splice(i, 1);
+                                    this.props.onChange(array);
+                                }}><em className="fa fa-minus"/></Button>
+                            </InputGroup.Button>
+                        </InputGroup>
                     );
                     break;
                 case 'object':
-                    itemEditor = (
-                        <ObjectFormControl onChange={(data) => this.onItemChange(data, i)} value={item}
-                                           label={option.label} subOptions={option.subOptions}
-                                           isCreate={this.props.isCreate}/>
+                    itemEditors.push(
+                        <InputGroup key={i}>
+                            <InputGroup.Addon>{i + 1}</InputGroup.Addon>
+                            <ObjectFormControl onChange={(data) => this.onItemChange(data, i)} value={item}
+                                               label={option.label} subOptions={option.subOptions}
+                                               isCreate={this.props.isCreate}/>
+                            <InputGroup.Button>
+                                <Button bsClass="btn btn-labeled btn-danger mr" onClick={() => {
+                                    let array = this.props.value;
+                                    array.splice(i, 1);
+                                    this.props.onChange(array);
+                                }}><em className="fa fa-minus"/></Button>
+                            </InputGroup.Button>
+                        </InputGroup>
                     );
                     break;
                 case 'boolean':
-                    itemEditor = (
-                        <BooleanFormControl onChange={(data) => this.onItemChange(data, i)} label={option.label}
-                                            value={item}/>
+                    itemEditors.push(
+                        <InputGroup key={i}>
+                            <InputGroup.Addon>{i + 1}</InputGroup.Addon>
+                            <BooleanFormControl onChange={(data) => this.onItemChange(data, i)} label={option.label}
+                                                value={item}/>
+                            <InputGroup.Button>
+                                <Button bsClass="btn btn-labeled btn-danger mr" onClick={() => {
+                                    let array = this.props.value;
+                                    array.splice(i, 1);
+                                    this.props.onChange(array);
+                                }}><em className="fa fa-minus"/></Button>
+                            </InputGroup.Button>
+                        </InputGroup>
                     );
                     break;
                 default:
-                    itemEditor = (
-                        <InputFormControl onChange={(data) => this.onItemChange(data, i)}
-                                          value={item} type={option.type} placeholder={option.placeholder}/>
+                    itemEditors.push(
+                        <InputGroup key={i}>
+                            <InputGroup.Addon>{i + 1}</InputGroup.Addon>
+                            <InputFormControl onChange={(data) => this.onItemChange(data, i)}
+                                              value={item} type={option.type} placeholder={option.placeholder}/>
+                            <InputGroup.Button>
+                                <Button bsClass="btn btn-labeled btn-danger mr" onClick={() => {
+                                    let array = this.props.value;
+                                    array.splice(i, 1);
+                                    this.props.onChange(array);
+                                }}><em className="fa fa-minus"/></Button>
+                            </InputGroup.Button>
+                        </InputGroup>
                     );
                     break;
             }
-            itemEditors.push(
-                <InputGroup key={i}>
-                    {itemEditor}
-                    <InputGroup.Button>
-                        <Button bsClass="btn btn-labeled btn-danger mr" onClick={() => {
-                            let array = this.props.value;
-                            array.splice(i, 1);
-                            this.props.onChange(array);
-                        }}><em className="fa fa-minus"/></Button>
-                    </InputGroup.Button>
-                </InputGroup>
-            );
             itemEditors.push(<br key={"br" + i}/>);
         }
 
