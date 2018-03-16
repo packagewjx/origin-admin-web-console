@@ -15,6 +15,7 @@ import 'brace/theme/textmate';
 import YAML from "yamljs"
 import {accessData, deepClone} from "../../Utils/UtilFunctions";
 import {FieldDisplayer} from "../FieldDisplayer";
+import Notify from "../Notify";
 
 /**
  * A Component for editing the resource object. It use PropertyOptions to define what to edit, and how to edit, and
@@ -28,9 +29,13 @@ class ResourceEditor extends React.Component {
         let item = deepClone(props.item);//clone the object to prevent accidentally change it original value.
 
         this.state = {item: item, changed: false, waiting: props.disabled || false};
+        this.yamlError = false;//prevent commit if yaml syntax error
     }
 
     confirmButtonClick(event) {
+        //prevent commit if yaml is wrong
+        if (this.yamlError)
+            return;
         let result = this.props.onConfirm(this.state.item);
         if (result === true) {
             // if boolean
@@ -49,7 +54,7 @@ class ResourceEditor extends React.Component {
 
     render() {
         let propertyEditors = undefined;
-        if (this.props.propertyOptions instanceof Array) {
+        if (this.props.propertyOptions instanceof Array && this.props.propertyOptions.length > 0) {
             propertyEditors = [];
             for (let i = 0; i < this.props.propertyOptions.length; i++) {
                 let option = this.props.propertyOptions[i];
@@ -82,7 +87,7 @@ class ResourceEditor extends React.Component {
 
         return (
             <div>
-                <Tabs id="EditorTabs">
+                <Tabs id="EditorTabs" onSelect={this.onTabSelect}>
                     <Tab eventKey={1} title="属性设置">
                         <form className="form-horizontal">
                             <fieldset disabled={this.state.waiting}>
@@ -112,7 +117,20 @@ class ResourceEditor extends React.Component {
                             theme="textmate"
                             value={YAML.stringify(this.state.item, 4, 2)}
                             onBlur={(event, editor) => {
-                                this.setState({item: YAML.parse(editor.getValue())});
+                                try {
+                                    this.yamlError = false;
+                                    this.setState({item: YAML.parse(editor.getValue())});
+                                } catch (e) {
+                                    console.log(e);
+                                    if (typeof e.parsedLine === 'number') {
+                                        Notify("YAML语法错误,行号:" + e.parsedLine + ",出错的对象为'" + e.snippet + "',原因为:" + e.message, {
+                                            status: "danger",
+                                            pos: "top-right"
+                                        });
+                                        this.yamlError = true;
+                                    }
+
+                                }
                             }}
                             name="yaml-editor"
                             editorProps={{$blockScrolling: true}}
@@ -120,7 +138,7 @@ class ResourceEditor extends React.Component {
                         <hr/>
                         <Row>
                             <Col lg={6}>
-                                <Button disabled={this.state.waiting}
+                                <Button disabled={this.state.waiting || this.state.yamlError}
                                         onClick={this.confirmButtonClick}
                                         bsClass="btn btn-labeled btn-success mr">
                                     <span className="btn-label"><i className="fa fa-check"/></span> 确定
