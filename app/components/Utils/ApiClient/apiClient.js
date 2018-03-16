@@ -1,6 +1,7 @@
 import DeleteOptions from "./model/DeleteOptions";
 import {appHistory} from "../../../App";
 import CacheManager from "./CacheManager";
+import Notify from "../../Common/Notify";
 
 const API_RESOURCE_LIST_URLS = ["https://116.56.140.108:8443/oapi/v1", "https://116.56.140.108:8443/api/v1"];
 
@@ -41,11 +42,14 @@ let failCallback = function (xhr, status, error) {
     if (xhr.responseJSON) {
         console.error("Error making api request, returned message: ", xhr.responseJSON.message, ". Status is");
         console.error(xhr.responseJSON);
+        Notify("请求出错，原因为：" + xhr.responseJSON.message, {status: "danger", pos: "top-right"});
     } else if (xhr.responseText) {
         console.error("Error making api request, returned message: ", xhr.responseText);
+        Notify("请求出错，原因为：" + xhr.responseText, {status: "danger", pos: "top-right"});
     }
     if (xhr.status === 401 || xhr.status === 403) {
         //jump to login page
+        Notify("请求出错，您尚未登录", {status: "warning", pos: "top-right"});
         appHistory.push("/login");
     }
 };

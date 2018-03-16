@@ -87,26 +87,24 @@ class CreateUserButton extends React.Component {
                 let user = new User();
                 user.metadata.name = this.state.username;
                 let p1 = client.users.create(user);
-                p1.fail((xhr) => console.log(xhr));
+                p1.fail((xhr) => console.error(xhr));
 
                 let identity = new Identity();
                 identity.providerUserName = this.state.username;
                 identity.providerName = "htpasswd";
                 identity.metadata.name = "htpasswd" + ":" + this.state.username;
                 let p2 = client.identities.create(identity);
-                p2.fail((xhr) => console.log(xhr));
+                p2.fail((xhr) => console.error(xhr));
 
-                let userIdentityMapping = new UserIdentityMapping();
-                userIdentityMapping.user.name = this.state.username;
-                userIdentityMapping.identity.name = identity.metadata.name;
-                userIdentityMapping.metadata.name = identity.metadata.name;
-                let p3 = client.useridentitymappings.create(userIdentityMapping);
-                p3.fail((xhr) => console.log(xhr));
-
-                Promise.all([p1, p2, p3]).then(() => {
-                    resolve();
-                }, () => reject());
-
+                Promise.all([p1, p2]).then(() => {
+                    let userIdentityMapping = new UserIdentityMapping();
+                    userIdentityMapping.user.name = this.state.username;
+                    userIdentityMapping.identity.name = identity.metadata.name;
+                    userIdentityMapping.metadata.name = identity.metadata.name;
+                    let p3 = client.useridentitymappings.create(userIdentityMapping);
+                    p3.fail((xhr) => console.error(xhr));
+                    p3.then(() => resolve(), () => reject());
+                });
             }, () => reject())
         });
 

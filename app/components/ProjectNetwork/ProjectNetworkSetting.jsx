@@ -150,32 +150,6 @@ function getNamespaceSelection() {
     })
 }
 
-function isolateProject(name) {
-    return new Promise((resolve, reject) => {
-        apiClient().then((client) => {
-            client.netnamespaces.get(name).then((data) => {
-                if (typeof data.metadata.annotations === 'undefined') {
-                    data.metadata.annotations = {};
-                }
-                data.metadata.annotations["pod.network.openshift.io/multitenant.change-network"] = "isolate";
-                return client.netnamespaces.update(data, name);
-            }, () => reject())
-                .then((data) => {
-                    let timerId = setInterval(() => {
-                        client.netnamespaces.get(name).then((obj) => {
-                            if (typeof obj.metadata.annotations === 'undefined'
-                                || typeof obj.metadata.annotations["pod.network.openshift.io/multitenant.change-network"] === 'undefined') {
-                                //this indicate the operation is completed
-                                clearTimeout(timerId);
-                                resolve();
-                            }
-                        })
-                    }, 100)
-                }, () => reject())
-        }, () => reject())
-    })
-}
-
 /**
  *
  * @param {string} name name of the project that is going to be changed

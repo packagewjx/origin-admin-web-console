@@ -122,6 +122,10 @@ module.exports = {
             from: 'httpd-ssl',
             to: 'httpd-ssl',
             context: path.join(__dirname, 'app')
+        }, {
+            from: '.htaccess',
+            to: '',
+            context: path.join(__dirname, 'app')
         }]),
         new webpack.ProvidePlugin({
             $: 'jquery',

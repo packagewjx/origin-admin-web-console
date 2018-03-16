@@ -47,7 +47,6 @@ import PersistentVolumeClaimOverview from "./components/PersistentStorage/Persis
 import TemplateDetail from "./components/TemplatesAndImagestreams/TemplateDetail";
 import ImagestreamDetail from "./components/TemplatesAndImagestreams/ImagestreamDetail";
 import ProjectNetworkView from "./components/ProjectNetwork/ProjectNetworkView";
-import CacheManager from "./components/Utils/ApiClient/CacheManager";
 
 // Init css loader (for themes)
 initLoadThemes();
@@ -56,21 +55,6 @@ initLoadThemes();
 apiClient().then(function (client) {
     console.log(client);
 });
-
-/**
- * Test the cache
- */
-
-(function () {
-    CacheManager.saveCache("abc", "list", "wujunxian", undefined, "test");
-    CacheManager.saveCache("abc", "list", undefined, undefined, "two undefined");
-    CacheManager.saveCache("abc", "get", "wujunxian", "asd", "test get");
-    console.log(CacheManager.getCache("abc", "list", undefined, undefined));
-    console.log(CacheManager.getCache("abc", "get", "wujunxian", "asd"));
-    console.log(CacheManager.getCache("abc", "get", "sxs", "asd"));
-    console.log(CacheManager.cache);
-})();
-
 
 // Disable warning "Synchronous XMLHttpRequest on the main thread is deprecated.."
 $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
