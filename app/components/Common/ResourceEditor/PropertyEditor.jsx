@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import PropertyOption from "../PropertyOption";
 import {Button, Col, FormControl, FormGroup, InputGroup, Modal, Row} from "react-bootstrap";
 import ResourceEditor from "./ResourceEditor";
+import {accessData} from "../../Utils/UtilFunctions";
 
 /**
  * This is the class that generate the field editor based on a single PropertyOption. It use some sub components to
@@ -54,6 +55,9 @@ class PropertyEditor extends React.Component {
         else if (option.isArray) {
             return (<ArrayEditor option={option} value={this.props.value} onChange={this.handleChange}
                                  isCreate={this.props.isCreate}/>);
+        } else if (option.type === "selectSet") {
+            return (
+                <SelectAndSetEditor value={this.props.value} onChange={this.handleChange} option={this.props.option}/>);
         } else if (option.type === 'keyValue') {
             return (
                 <KeyValueEditor value={this.props.value} label={option.label}
@@ -497,6 +501,147 @@ ArrayEditor.propTypes = {
     option: PropTypes.instanceOf(PropertyOption),
     onChange: PropTypes.func,
     isCreate: PropTypes.bool
+};
+
+/**
+ * This editor edit an object, first select the property you want to edit, then click add, it will add an editor for
+ * that property, you can delete it by click the delete button besides that property. This editor use selections, but
+ * it don't use value, it use it's label and propertyOption. You can set required is true in the selection object, it
+ * will always render that property editor.
+ * This editor is used for editing an object that has a lot of optional properties.
+ */
+class SelectAndSetEditor extends React.Component {
+    constructor(props) {
+        super(props);
+        this.addEditor = this.addEditor.bind(this);
+        this.onSelect = this.onSelect.bind(this);
+        this.onPropertyChange = this.onPropertyChange.bind(this);
+        this.deleteProperty = this.deleteProperty.bind(this);
+
+        this.state = {editors: [], selections: this.props.option.selections, requiredEditors: []};
+        /**
+         * Track the user which property he chose.
+         * @type {number}
+         */
+        this.selectedIndex = 0;
+
+        /**
+         * When a property is added, the selection of that property was deleted from this.state.selections. The deleted
+         * one is stored in this object, key is its accessor. If the user want to delete that selected property, the
+         * selection will be added to this.state.selections.
+         * @type {{}}
+         */
+        this.deletedSelection = {};
+    }
+
+    componentDidMount() {
+        let selectionFunc = (selections) => {
+            /**
+             * Render the required editor, and delete them from selections
+             */
+            let requiredEditors = [];
+            for (let i = 0; i < selections.length; i++) {
+                let selection = selections[i];
+                if (!selection.required)
+                    continue;
+                requiredEditors.push(<PropertyEditor key={i} option={selection.propertyOption}
+                                                     onChange={(data) => this.onPropertyChange(data, selection.propertyOption)}/>);
+                selections.splice(i, 1);
+                i--;
+            }
+            this.setState({requiredEditors: requiredEditors, selections: selections});
+        };
+
+        if (typeof this.props.option.selections === 'object' && typeof this.props.option.selections.then === 'function') {
+            this.props.option.selections.then((selections) => selectionFunc(selections));
+        } else {
+            selectionFunc(this.props.option.selections);
+        }
+    }
+
+    onPropertyChange(value, propertyOption) {
+        accessData(this.props.value, propertyOption.accessor, value);
+        console.debug(this.props.value);
+        this.props.onChange(this.props.value);
+    }
+
+    /**
+     * User don't neet this property, delete it and its' editor, and add the original selection.
+     * @param index
+     * @param propertyOption
+     */
+    deleteProperty(index, propertyOption) {
+        delete this.props.value[propertyOption.accessor];
+        this.props.onChange(this.props.value);
+        let editors = this.state.editors;
+        editors.splice(index, 1);
+        let selections = this.state.selections;
+        selections.push(this.deletedSelection[propertyOption.accessor]);
+        this.setState({editors, selections});
+    }
+
+    /**
+     * User chose a property, and then add its' editor.
+     */
+    addEditor() {
+        let selections = this.state.selections;
+        let selection = selections[this.selectedIndex];
+        selections.splice(this.selectedIndex, 1);
+        this.deletedSelection[selection.propertyOption.accessor] = selection;
+        let editors = this.state.editors;
+        editors.push(
+            <Row style={{marginLeft: 0, marginRight: 0}} key={selection.propertyOption.accessor}>
+                <Col lg={11}>
+                    <PropertyEditor
+                        onChange={(data) => this.onPropertyChange(data, selection.propertyOption)}
+                        option={selection.propertyOption}/>
+                </Col>
+                <Col lg={1}>
+                    <Button bsClass="btn btn-labeled btn-danger mr"
+                            onClick={() => this.deleteProperty(editors.length - 1, selection.propertyOption)}>
+                        <em className="fa fa-minus"/></Button>
+                </Col>
+            </Row>
+        );
+        this.setState({selections: selections, editors: editors});
+    }
+
+    onSelect(event) {
+        this.selectedIndex = event.target.value;
+    }
+
+    render() {
+        let options = [];
+        for (let i = 0; i < this.state.selections.length; i++) {
+            options.push(<option key={i} value={i} label={this.state.selections[i].label}/>)
+        }
+
+        return (
+            <FormGroup>
+                <label className="col-lg-2 control-label">{this.props.option.label}</label>
+                <Col lg={10}>
+                    {this.state.requiredEditors}
+                    {this.state.editors}
+                    <InputGroup>
+                        <FormControl componentClass="select" className="form-control m-b" onChange={this.onSelect}>
+                            {options}
+                        </FormControl>
+                        <InputGroup.Button>
+                            <Button bsClass="btn btn-labeled btn-success mr" onClick={this.addEditor}><em
+                                className="fa fa-plus"/></Button>
+                        </InputGroup.Button>
+                    </InputGroup>
+                </Col>
+            </FormGroup>
+        );
+    }
+
+}
+
+SelectAndSetEditor.propTypes = {
+    value: PropTypes.object,
+    option: PropTypes.instanceOf(PropertyOption),
+    onChange: PropTypes.func,
 };
 
 

@@ -11,16 +11,16 @@ class Sidebar extends React.Component {
 
         //For dynamic menu rendering.
         this.menu = [{
-                kind: "submenu", name: "auth", title: "权限管理", iconClass: "icon-people", children: [
-                    {kind: "item", route: "users", title: "用户管理", iconClass: ""},
-                    {kind: "item", route: "identities", title: "用户身份管理"},
+            kind: "submenu", name: "auth", title: "权限管理", iconClass: "fa fa-users", children: [
+                {kind: "item", route: "users", title: "用户管理", iconClass: ""},
+                {kind: "item", route: "identities", title: "用户身份管理"},
                 // {kind: "item", route: "groups", title: "用户组管理"},
-                    {kind: "item", route: "roles", title: "项目角色管理"},
+                {kind: "item", route: "roles", title: "项目角色管理"},
                 {kind: "item", route: "rolebindings", title: "项目角色绑定管理"},
-                    {kind: "item", route: "clusterroles", title: "集群角色管理"},
+                {kind: "item", route: "clusterroles", title: "集群角色管理"},
                 {kind: "item", route: "clusterrolebindings", title: "集群角色绑定管理"},
-                ]
-            },
+            ]
+        },
             {
                 kind: "submenu", name: "persistent-storage", title: "持久存储管理", iconClass: "fa fa-hdd-o", children: [
                     {kind: "item", route: "persistentvolumes", title: "持久卷管理"},
@@ -34,12 +34,22 @@ class Sidebar extends React.Component {
                 ]
             },
             {
+                kind: "submenu", name: "project", title: "集群管理", iconClass: "fa fa-briefcase", children: [
+                    {kind: "item", route: "projects", title: "项目管理"},
+                    {kind: "item", route: "nodes", title: "节点管理"},
+                    {kind: "item", route: "project-network-view", title: "多租户网络管理"},
+                    {kind: "item", route: "pods", title: "容器管理"},
+                    {kind: "item", route: "quota", title: "配额管理"},
+                ]
+            },
+            {
                 kind: "submenu", name: "project-network", title: "项目网络管理", iconClass: "fa fa-wifi", children: [
                     {kind: "item", route: "project-network-view", title: "查看项目网络"},
                     {kind: "item", route: "project-network-setting", title: "项目网络设置"},
                 ]
             },
             {kind: "item", route: "monitor", title: "监控", iconClass: "fa fa-desktop"},
+            {kind: "item", route: "terminal", title: "终端", iconClass: "fa fa-terminal"}
         ];
 
         this.state = {
