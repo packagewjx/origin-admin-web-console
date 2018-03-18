@@ -100,6 +100,12 @@ ReactDOM.render(
             <Route path="templates" component={TemplateOverview}/>
             <Route path="templates/namespaces/:namespace/:name" component={TemplateDetail}/>
 
+            {/*项目管理*/}
+            <Route path="resourcequotas"/>
+            <Route path="pods"/>
+            <Route path="projects"/>
+            <Route path="nodes"/>
+
             {/*Project Network*/}
             <Route path="project-network-view" component={ProjectNetworkView}/>
             <Route path="project-network-setting" component={ProjectNetworkSetting}/>

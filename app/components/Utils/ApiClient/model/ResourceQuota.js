@@ -1,3 +1,6 @@
+import ObjectMeta from "./ObjectMeta";
+import ResourceQuotaSpec from "./ResourceQuotaSpec";
+
 export default class ResourceQuota {
     /**
      * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds
@@ -13,7 +16,7 @@ export default class ResourceQuota {
 
     /**
      * Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata
-     * @member {module:model/V1ObjectMeta} metadata
+     * @member {ObjectMeta} metadata
      */
     metadata;
 
@@ -28,4 +31,11 @@ export default class ResourceQuota {
      * @member {ResourceQuotaStatus} status
      */
     status;
+
+    constructor() {
+        this.kind = "ResourceQuota";
+        this.apiVersion = "v1";
+        this.metadata = new ObjectMeta();
+        this.spec = new ResourceQuotaSpec();
+    }
 }

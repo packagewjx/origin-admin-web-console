@@ -374,5 +374,51 @@ export const PredefinedPropertyOption = {
             globalAnnotationPropertyOption,
             specOption
         ]
+    },
+    resourcequotas: function () {
+        let specHardOption = new PropertyOption("spec.hard", "资源限制", "selectSet");
+        specHardOption.selections = [
+            {label: "CPU核数上限", propertyOption: new PropertyOption("cpu", "CPU核数上限", "number")},
+            {label: "内存占用上限", propertyOption: new PropertyOption("memory", "内存占用上限（单位Gi，Mi）", "text")},
+            {label: "请求CPU数量上限", propertyOption: new PropertyOption("requests\\.cpu", "请求CPU数量上限", "number")},
+            {label: "请求内存大小上限", propertyOption: new PropertyOption("requests\\.memory", "请求内存大小上限（单位Gi，Mi）", "text")},
+            {label: "CPU限制值上限", propertyOption: new PropertyOption("limits\\.cpu", "CPU限制值上限", "number")},
+            {label: "内存限制值上限", propertyOption: new PropertyOption("limits\\.memory", "内存限制值上限（单位Gi，Mi）", "text")},
+            {
+                label: "请求持久存储空间容量上限",
+                propertyOption: new PropertyOption("requests\\.storage", "请求持久存储空间容量上限（单位Gi，Mi）", "text")
+            },
+            {label: "持久存储申请数量上限", propertyOption: new PropertyOption("persistentvolumeclaims", "持久存储申请数量上限", "number")},
+            {label: "容器（Pods）数量上限", propertyOption: new PropertyOption("pods", "容器（Pods）数量上限", "number")},
+            {
+                label: "复制控制器（ReplicationControllers）数量上限",
+                propertyOption: new PropertyOption("replicationcontrollers", "复制控制器（ReplicationControllers）数量上限")
+            },
+            {label: "资源配额数量上限", propertyOption: new PropertyOption("resourcequotas", "资源配额数量上限", "number")},
+            {label: "服务数量上限", propertyOption: new PropertyOption("services", "服务数量上限", "number")},
+            {label: "密钥数量上限", propertyOption: new PropertyOption("secrets", "密钥数量上限", "number")},
+            {
+                label: "配置表（ConfigMaps）数量上限",
+                propertyOption: new PropertyOption("configmaps", "配置表（ConfigMaps）数量上限", "number")
+            },
+            {label: "镜像流数量上限", propertyOption: new PropertyOption("openshift\\.io/imagestreams", "镜像流数量上限", "number")}
+        ];
+
+        let specScopeOption = new PropertyOption("spec.scopes", "限制范围", "select");
+        specScopeOption.isArray = true;
+        specScopeOption.selections = [
+            {label: "停止中的容器", value: "Terminating"},
+            {label: "运行中的容器", value: "NotTerminating"},
+            {label: "尽力服务的容器", value: "BestEffort"},
+            {label: "非尽力服务的容器", value: "NotBestEffort"}
+        ];
+
+
+        return [
+            globalNamePropertyOption,
+            getNamespacePropertyOption(),
+            specHardOption,
+            specScopeOption
+        ]
     }
 };

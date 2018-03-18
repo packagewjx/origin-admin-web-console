@@ -34,7 +34,7 @@ class Sidebar extends React.Component {
                 ]
             },
             {
-                kind: "submenu", name: "project", title: "集群管理", iconClass: "fa fa-briefcase", children: [
+                kind: "submenu", name: "project", title: "集群管理", iconClass: "fa fa-cubes", children: [
                     {kind: "item", route: "projects", title: "项目管理"},
                     {kind: "item", route: "nodes", title: "节点管理"},
                     {kind: "item", route: "project-network-view", title: "多租户网络管理"},
