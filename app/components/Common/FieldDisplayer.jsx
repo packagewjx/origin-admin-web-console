@@ -111,7 +111,7 @@ export class FieldDisplayer extends React.Component {
                         for (let i = 0; i < subOptions.length; i++) {
                             let data = accessData(this.props.value, subOptions[i].accessor);
                             if (typeof data !== 'undefined') {
-                                fieldDisplay.push(<FieldDisplayer option={subOptions[i]} value={data}/>)
+                                fieldDisplay.push(<FieldDisplayer key={i} option={subOptions[i]} value={data}/>)
                             }
                         }
                     }

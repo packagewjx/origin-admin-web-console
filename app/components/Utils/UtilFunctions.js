@@ -1,5 +1,5 @@
 /**
- * Access the value of obj indicated by accessor. If this accessor cannot access a data, it WILL create the data parent,
+ * Access the value of obj indicated by accessor. If set the newVal and this accessor cannot access a data, it WILL create the data parent,
  * @param {object} obj
  * @param {string} accessor each key is divided by '.'. Use '\\.' to represent to raw '.' character.
  * @param newVal new value for this data, if set.
@@ -15,9 +15,10 @@ export function accessData(obj, accessor, newVal) {
 
     let keys = splitString(accessor, ".", "\\.");
     let keyRegExp = /^([\w_$./]+)(?:\[(\d+)])?$/;//e.g. a[1], a
-    let cur = goToLeafObject(keys, obj);
     let match = keyRegExp.exec(keys[keys.length - 1]);
     if (typeof newVal !== 'undefined') {
+        //if set the value, create the object.
+        let cur = goToLeafObject(keys, obj, true);
         if (match[2]) {
             if (typeof cur[match[1]] === 'undefined') {
                 cur[match[1]] = new Array(parseInt(match[2]) + 1);
@@ -29,6 +30,9 @@ export function accessData(obj, accessor, newVal) {
         }
         return obj;
     } else {
+        let cur = goToLeafObject(keys, obj, false);
+        if (typeof cur === 'undefined')
+            return undefined;
         if (match[2]) {
             return cur[match[1]] instanceof Array ? cur[match[1]][match[2]] : undefined;
         } else {
@@ -38,11 +42,13 @@ export function accessData(obj, accessor, newVal) {
 }
 
 /**
- *
+ * Go down the object structure using the keys array.
  * @param {Array.<String>} keys keys to go down the object's structure.
  * @param {Object} object
+ * @param {Boolean} doCreate if this is set, then it will create the path objects along the way if undefined.
+ * @return {any} the leaf object, use the last key to access its data
  */
-export function goToLeafObject(keys, object) {
+export function goToLeafObject(keys, object, doCreate) {
     let cur = object;
     let parent = null;
     let keyRegExp = /^([\w_$./]+)(?:\[(\d+)])?$/;//e.g. a[1], a
@@ -55,6 +61,8 @@ export function goToLeafObject(keys, object) {
             cur = cur[keyMatch[2]];
         }
         if (typeof cur === 'undefined') {
+            if (!doCreate)
+                return undefined;
             if (keyMatch[2]) {
                 //two situations
                 if (typeof parent[keyMatch[1]] === 'undefined') {
