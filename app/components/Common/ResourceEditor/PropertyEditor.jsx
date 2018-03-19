@@ -407,7 +407,8 @@ class ArrayEditor extends React.Component {
             let item = array[i];
             switch (option.type) {
                 case 'keyValue':
-                    console.error("Array Editor did not support keyValue!");
+                case "selectSet":
+                    console.error("Array Editor did not support keyValue and selectSet!");
                     return null;
                 case 'select':
                     itemEditors.push(

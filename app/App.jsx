@@ -47,6 +47,8 @@ import PersistentVolumeClaimOverview from "./components/PersistentStorage/Persis
 import TemplateDetail from "./components/TemplatesAndImagestreams/TemplateDetail";
 import ImagestreamDetail from "./components/TemplatesAndImagestreams/ImagestreamDetail";
 import ProjectNetworkView from "./components/ProjectNetwork/ProjectNetworkView";
+import ResourceQuotaOverview from "./components/Project/ResourceQuotaOverview";
+import ResourceQuotaDetail from "./components/Project/ResourceQuotaDetail";
 
 // Init css loader (for themes)
 initLoadThemes();
@@ -101,7 +103,8 @@ ReactDOM.render(
             <Route path="templates/namespaces/:namespace/:name" component={TemplateDetail}/>
 
             {/*项目管理*/}
-            <Route path="resourcequotas"/>
+            <Route path="resourcequotas" component={ResourceQuotaOverview}/>
+            <Route path="resourcequotas/namespaces/:namespace/:name" component={ResourceQuotaDetail}/>
             <Route path="pods"/>
             <Route path="projects"/>
             <Route path="nodes"/>

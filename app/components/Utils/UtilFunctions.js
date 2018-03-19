@@ -14,10 +14,38 @@ export function accessData(obj, accessor, newVal) {
     }
 
     let keys = splitString(accessor, ".", "\\.");
-    let cur = obj;
+    let keyRegExp = /^([\w_$./]+)(?:\[(\d+)])?$/;//e.g. a[1], a
+    let cur = goToLeafObject(keys, obj);
+    let match = keyRegExp.exec(keys[keys.length - 1]);
+    if (typeof newVal !== 'undefined') {
+        if (match[2]) {
+            if (typeof cur[match[1]] === 'undefined') {
+                cur[match[1]] = new Array(parseInt(match[2]) + 1);
+            } else if (!cur[match[1]] instanceof Array)
+                console.warn(cur[match[1]], "is not an array");
+            cur[match[1]][match[2]] = newVal;
+        } else {
+            cur[match[1]] = newVal;
+        }
+        return obj;
+    } else {
+        if (match[2]) {
+            return cur[match[1]] instanceof Array ? cur[match[1]][match[2]] : undefined;
+        } else {
+            return cur[match[1]];
+        }
+    }
+}
+
+/**
+ *
+ * @param {Array.<String>} keys keys to go down the object's structure.
+ * @param {Object} object
+ */
+export function goToLeafObject(keys, object) {
+    let cur = object;
     let parent = null;
     let keyRegExp = /^([\w_$./]+)(?:\[(\d+)])?$/;//e.g. a[1], a
-
     for (let i = 0; i < keys.length - 1; i++) {
         let key = keys[i];
         let keyMatch = keyRegExp.exec(key);
@@ -39,26 +67,7 @@ export function accessData(obj, accessor, newVal) {
             }
         }
     }
-
-    let match = keyRegExp.exec(keys[keys.length - 1]);
-    if (typeof newVal !== 'undefined') {
-        if (match[2]) {
-            if (typeof cur[match[1]] === 'undefined') {
-                cur[match[1]] = new Array(parseInt(match[2]) + 1);
-            } else if (!cur[match[1]] instanceof Array )
-                console.warn(cur[match[1]], "is not an array");
-            cur[match[1]][match[2]] = newVal;
-        } else {
-            cur[match[1]] = newVal;
-        }
-        return obj;
-    } else {
-        if (match[2]) {
-            return cur[match[1]] instanceof Array ? cur[match[1]][match[2]] : undefined;
-        } else {
-            return cur[match[1]];
-        }
-    }
+    return cur;
 }
 
 /**
@@ -90,10 +99,11 @@ export function deepClone(obj) {
 }
 
 /**
- *
+ * Split the string using the splitter, you can define a raw splitter character too.
  * @param {string} str the original string
  * @param {string} splitter splitter to split the string
  * @param {string} escapeSplitter to indicate the raw splitter character
+ * @retrun {Array.<String>} the split string
  */
 export function splitString(str, splitter, escapeSplitter) {
     let myEscape = "__splitter__";

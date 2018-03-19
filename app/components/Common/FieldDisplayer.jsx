@@ -8,7 +8,7 @@ import React from 'react';
 import PropertyOption from "./PropertyOption";
 import {Col, Row} from "react-bootstrap";
 import PropTypes from "prop-types";
-import {accessData} from "../Utils/UtilFunctions";
+import {accessData, goToLeafObject, splitString} from "../Utils/UtilFunctions";
 
 /**
  * A component used to display a field. If this field is a value, just display its label and value. If it is an object
@@ -53,11 +53,8 @@ export class FieldDisplayer extends React.Component {
             return (<noscript/>);
         } else if (typeof this.props.option.displayRender === 'function') {
             //use the displayRender if it exists.
-            return this.props.option.displayRender(this.props.option);
+            return this.props.option.displayRender(this.props.option, value);
         } else if (this.props.option.isArray) {
-            /*
-            Array should calculate the selection map for child FieldDisplayer to avoid repeatedly compute it.
-             */
             fieldDisplay = [];
             for (let i = 0; i < this.props.value.length; i++) {
                 let option = new PropertyOption("", i + 1, this.props.option.type);
@@ -95,31 +92,30 @@ export class FieldDisplayer extends React.Component {
                         }
                     }
                     break;
-                case "object":
-                    let subOption = this.props.option.subOptions;
-                    let subOptionMap = {};
-                    if (subOption instanceof Array && subOption.length > 0) {
-                        //this method use the defined sub options.
-                        for (let i = 0; i < subOption.length; i++) {
-                            subOption[i].value = accessData(this.props.value, subOption[i].accessor);
-                            subOptionMap[subOption[i].accessor] = subOption[i];
+                case "selectSet":
+                    fieldDisplay = [];
+                    //calculate the map mapping accessor => label
+                    for (let i = 0; i < this.props.option.selections.length; i++) {
+                        let selection = this.props.option.selections[i];
+                        let accessor = selection.propertyOption.accessor;
+                        let data = accessData(this.props.value, accessor);
+                        if (typeof data !== "undefined") {
+                            fieldDisplay.push(<FieldDisplayer key={i} value={data} option={selection.propertyOption}/>);
                         }
+                    }
+                    break;
+                case "object":
+                    let subOptions = this.props.option.subOptions;
+                    if (subOptions instanceof Array && subOptions.length > 0) {
                         fieldDisplay = [];
-                        for (let key in value) {
-                            if (value.hasOwnProperty(key)) {
-                                if (typeof subOptionMap[key] === 'undefined') {
-                                    //if subOption did not have this key's option, generate one.
-                                    if (typeof value[key] === 'object')
-                                        subOptionMap[key] = new PropertyOption("", key, "object");
-                                    else
-                                        subOptionMap[key] = new PropertyOption("", key, "text");
-                                }
-
-                                fieldDisplay.push(<FieldDisplayer key={key} option={subOptionMap[key]}
-                                                                  value={value[key]}/>);
+                        for (let i = 0; i < subOptions.length; i++) {
+                            let data = accessData(this.props.value, subOptions[i].accessor);
+                            if (typeof data !== 'undefined') {
+                                fieldDisplay.push(<FieldDisplayer option={subOptions[i]} value={data}/>)
                             }
                         }
-                    } else {
+                    }
+                    else {
                         //this automatically generate fields
                         fieldDisplay = [];
                         for (let key in value) {
@@ -139,7 +135,6 @@ export class FieldDisplayer extends React.Component {
 
         return (
             <Row>
-
                 <Col lg={2}>
                     <p className="text-right"><strong>{this.props.option.label}:</strong></p>
                     {/*<label className="control-label text-right">{this.props.option.label}:</label>*/}
@@ -151,6 +146,24 @@ export class FieldDisplayer extends React.Component {
         );
     }
 
+}
+
+/**
+ * when an accessor is multilevel, meaning it has "." inside. This function will go into the level in the value,
+ * then return the one level propertyOption and the value. create the parent object along the way.
+ * @param {String} accessor
+ * @param {any} value
+ * @return {{accessor: String, value: any}} revised option and value. propertyOption.accessor has no "." (except the raw ".").
+ */
+function toOneLevel(accessor, value) {
+    let keys = splitString(accessor, ".", "\\.");
+    //if this has no ".", just return.
+    if (keys.length <= 1)
+        return {accessor, value};
+
+    let leaf = goToLeafObject(keys, value);
+    accessor = keys[keys.length - 1];
+    return {accessor, value: leaf};
 }
 
 FieldDisplayer.propTypes = {

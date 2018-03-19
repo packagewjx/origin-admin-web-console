@@ -48,6 +48,11 @@ export default class PropertyOption {
      * boolean: use <input type=checkbox>
      * keyValue: use two <input>, one for key, one for value, to edit the object directly, but the value must not be an object.
      * object: this will use a modal to edit this object, using this ResourceEditor.
+     * selectSet: Define selections, set label and propertyOption, to set property in a single object.
+     *            User will first select an property he wants to set, then click add button to confirm, he can set the
+     *            property using the propertyOption. Properties are optional by default, you can set the required to
+     *            true to render that propertyEditor all the time. Properties can not be repeated, because keys are unique in an object.
+     *            Does not support array.
      * @member {String} type
      */
     type;
@@ -74,7 +79,7 @@ export default class PropertyOption {
 
     /**
      * This is used for display this property. You should render the label and the value together.
-     * @member {function(propertyOption: PropertyOption)}
+     * @member {function(propertyOption: PropertyOption, value:any)}
      */
     displayRender;
 
