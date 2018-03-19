@@ -41,14 +41,18 @@ import ClusterRoleBindingDetail from "./components/AuthorizationManagement/Clust
 import ImagestreamOverview from "./components/TemplatesAndImagestreams/ImagestreamOverview";
 import TemplateOverview from "./components/TemplatesAndImagestreams/TemplateOverview";
 import PersistentVolumeOverview from "./components/PersistentStorage/PersistentVolumeOverview";
-import ProjectNetworkSetting from "./components/ProjectNetwork/ProjectNetworkSetting";
+import ProjectNetworkSetting from "./components/Project/ProjectNetworkSetting";
 import PersistentVolumeDetail from "./components/PersistentStorage/PersistentVolumeDetail";
 import PersistentVolumeClaimOverview from "./components/PersistentStorage/PersistentVolumeClaimOverview";
 import TemplateDetail from "./components/TemplatesAndImagestreams/TemplateDetail";
 import ImagestreamDetail from "./components/TemplatesAndImagestreams/ImagestreamDetail";
-import ProjectNetworkView from "./components/ProjectNetwork/ProjectNetworkView";
+import ProjectNetworkView from "./components/Project/ProjectNetworkView";
 import ResourceQuotaOverview from "./components/Project/ResourceQuotaOverview";
 import ResourceQuotaDetail from "./components/Project/ResourceQuotaDetail";
+import PodOverview from "./components/Project/PodOverview";
+import ProjectOverview from "./components/Project/ProjectOverview";
+import NodeOverview from "./components/Project/NodeOverview";
+import Terminal from "./components/Terminal";
 
 // Init css loader (for themes)
 initLoadThemes();
@@ -105,16 +109,18 @@ ReactDOM.render(
             {/*项目管理*/}
             <Route path="resourcequotas" component={ResourceQuotaOverview}/>
             <Route path="resourcequotas/namespaces/:namespace/:name" component={ResourceQuotaDetail}/>
-            <Route path="pods"/>
-            <Route path="projects"/>
-            <Route path="nodes"/>
-
-            {/*Project Network*/}
             <Route path="project-network-view" component={ProjectNetworkView}/>
             <Route path="project-network-setting" component={ProjectNetworkSetting}/>
+            <Route path="pods" component={PodOverview}/>
+            <Route path="projects" component={ProjectOverview}/>
+
+            {/*节点监控*/}
+            <Route path="nodes" component={NodeOverview}/>
 
             {/*Monitor*/}
             <Route path="monitor" component={ServerMonitor}/>
+
+            <Route path="terminal" component={Terminal}/>
         </Route>
 
         <Route path="/" component={BasePage}>

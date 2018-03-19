@@ -41,8 +41,8 @@ class Sidebar extends React.Component {
                     {kind: "item", route: "resourcequotas", title: "项目配额管理"},
                 ]
             },
-            {kind: "item", route: "nodes", title: "节点管理", iconClass: "fa fa-cubes"},
-            {kind: "item", route: "monitor", title: "监控", iconClass: "fa fa-desktop"},
+            {kind: "item", route: "nodes", title: "节点监控", iconClass: "fa fa-cubes"},
+            {kind: "item", route: "monitor", title: "Cockpit监控", iconClass: "fa fa-desktop"},
             {kind: "item", route: "terminal", title: "终端", iconClass: "fa fa-terminal"}
         ];
 
