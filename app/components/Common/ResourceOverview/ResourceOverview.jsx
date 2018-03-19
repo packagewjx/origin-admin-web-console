@@ -69,8 +69,8 @@ class ResourceOverview extends React.Component {
         let resourceName = this.props.resourceName;
         let self = this;
         apiClient().then(function (client) {
-            client[resourceName].list().then(function (data) {
-                self.setState({data: data.items, loading: false});
+            client[resourceName].list({invalidateCache: true}).then(function (data) {
+                self.setState({data: data.items, loading: false}, () => console.log(self));
             }, function () {
                 self.setState({loading: false});
             })
@@ -156,6 +156,9 @@ class ResourceOverview extends React.Component {
                         <Button bsStyle="success" onClick={this.showAddResourceModal.bind(this)}>
                             <em className="fa fa-plus"/> 添加一项
                         </Button>}
+                    <Button onClick={this.fetchData}>
+                        <em className="fa fa-refresh"/> 刷新
+                    </Button>
                     {this.props.additionalButtons}
                 </p>
                 <ReactTable

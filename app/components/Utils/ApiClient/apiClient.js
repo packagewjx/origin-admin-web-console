@@ -256,7 +256,7 @@ function listFunction(resource) {
         }
 
         let url = resource.baseURL;
-        if (options.namespace !== "") {
+        if (typeof options.namespace === "string" && options.namespace !== "") {
             url += "/namespaces/" + options.namespace;
         }
         url += "/" + resource.name;

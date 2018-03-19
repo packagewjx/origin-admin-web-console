@@ -420,5 +420,10 @@ export const PredefinedPropertyOption = {
             specHardOption,
             specScopeOption
         ]
+    },
+    projects: function () {
+        return [
+            globalNamePropertyOption
+        ]
     }
 };

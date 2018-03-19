@@ -5,12 +5,23 @@
  **/
 
 import React from 'react';
-import ContentWrapper from "../Layout/ContentWrapper";
+import {ColumnConfig, TableConfig} from "../Common/ResourceOverview/TableConfig";
+import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
 
 class PodOverview extends React.Component {
     render() {
+        let tableConfig = new TableConfig();
+        tableConfig.columns = [
+            new ColumnConfig("名称", "metadata.name"),
+            "namespace",
+            "creationTimestamp",
+            new ColumnConfig("容器IP", "status.podIP"),
+            new ColumnConfig("容器状态", "status.phase"),
+            new ColumnConfig("所在节点IP", "status.hostIP"),
+        ];
+
         return (
-            <ContentWrapper/>
+            <ResourceOverview title={"容器管理"} resourceName={"pods"} tableConfig={tableConfig} disableCreate={true}/>
         );
     }
 }

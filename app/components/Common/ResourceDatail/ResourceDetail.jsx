@@ -114,13 +114,8 @@ class ResourceDetail extends React.Component {
                     option.namespace = self.props.namespace;
                 }
                 client[self.props.resourceName].delete(self.props.objectName, option).then(function (data) {
-                    if (data.status === 'Success') {
-                        resolve();
-                        appHistory.replace("/" + self.props.resourceName);
-                    } else {
-                        console.log(data);
-                        self.setState({deleteModalShow: false});
-                    }
+                    resolve();
+                    appHistory.replace("/" + self.props.resourceName);
                 });
             });
         });
@@ -187,7 +182,6 @@ class ResourceDetail extends React.Component {
             <ContentWrapper>
                 <div className="content-heading">
                     <div className="pull-right">
-                        <Button onClick={this.fetchData}>refresh</Button>
                         <Dropdown id="dropdown-tr" pullRight onSelect={this.onMenuItemClicked}>
                             <Dropdown.Toggle>
                                 操作

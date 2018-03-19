@@ -5,12 +5,24 @@
  **/
 
 import React from 'react';
-import ContentWrapper from "../Layout/ContentWrapper";
+import {ColumnConfig, TableConfig} from "../Common/ResourceOverview/TableConfig";
+import ResourceOverview from "../Common/ResourceOverview/ResourceOverview";
+import {PredefinedPropertyOption} from "../Common/PredefinedPropertyOption";
+import Project from "../Utils/ApiClient/model/Project";
 
 class ProjectOverview extends React.Component {
     render() {
+        let tableConfig = new TableConfig();
+        tableConfig.columns = [
+            new ColumnConfig("项目名", "metadata.name"),
+            "creationTimestamp",
+            new ColumnConfig("状态", "status.phase")
+        ];
+
         return (
-            <ContentWrapper/>
+            <ResourceOverview title={"项目管理"} resourceName={"projects"} tableConfig={tableConfig}
+                              propertyOptions={PredefinedPropertyOption.projects()}
+                              getNewResourceObject={() => new Project()}/>
         );
     }
 }
