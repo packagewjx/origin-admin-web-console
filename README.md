@@ -6,6 +6,7 @@ Openshift Administration Web Console
 
 - [x] ApiClient Cache.
 - [x] Apache https redirect
+- [ ] MultiSelect in the ResourceOverview, to support multi-deletion.
 - [ ] A refined template and imagestream editor page.
-- [ ] A simple monitoring page, check pods, nodes, and some data in that page.
+- [ ] Monitoring pages, check pods, nodes, and some other data.
 - [ ] A Group Management Page.
