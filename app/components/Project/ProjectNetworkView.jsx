@@ -8,6 +8,7 @@ import React from 'react';
 import ContentWrapper from "../Layout/ContentWrapper";
 import {apiClient} from "../Utils/ApiClient/apiClient";
 import ReactTable from "react-table";
+import {Button} from "react-bootstrap";
 
 class ProjectNetworkView extends React.Component {
     constructor(props) {
@@ -33,7 +34,12 @@ class ProjectNetworkView extends React.Component {
         return (
             <ContentWrapper>
                 <div className="content-heading">
-                    查看项目网络
+                    多租户网络管理
+                    <div className="pull-right">
+                        <Button onClick={() => {
+                            this.props.router.push("project-network-setting")
+                        }}>网络设置</Button>
+                    </div>
                 </div>
                 <div>
                     下面表格显示了各个项目的网络id，网络id的意义如下：

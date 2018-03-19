@@ -10,6 +10,7 @@ import {Button, Col, Row} from "react-bootstrap";
 import PropertyEditor from "../Common/ResourceEditor/PropertyEditor";
 import PropertyOption from "../Common/PropertyOption";
 import {apiClient} from "../Utils/ApiClient/apiClient";
+import {Link} from "react-router";
 
 class ProjectNetworkSetting extends React.Component {
     constructor(props) {
@@ -88,6 +89,10 @@ class ProjectNetworkSetting extends React.Component {
             <ContentWrapper>
                 <div className="content-heading">
                     项目网络设置
+                    <ol className="breadcrumb">
+                        <li><Link to="project-network-view">多租户网络管理</Link></li>
+                        <li>项目网络设置</li>
+                    </ol>
                 </div>
                 <form className="form-horizontal">
                     <fieldset disabled={this.state.waiting}>
