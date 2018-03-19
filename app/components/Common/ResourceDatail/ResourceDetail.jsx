@@ -38,8 +38,10 @@ class ResourceDetail extends React.Component {
         this.actions = [
             {
                 label: "编辑", func: (data) => {
-                    //this action is edit
-                    this.setState({editModalShow: true});
+                    //get the newest data when we start do edit
+                    this.fetchData().then((data) => {
+                        this.setState({editModalShow: true})
+                    });
                 }
             },
             {
@@ -73,12 +75,14 @@ class ResourceDetail extends React.Component {
         return new Promise(resolve => {
             apiClient().then(function (client) {
                 let option = new GlobalOption();
+                option.invalidateCache = true;
                 if (self.props.namespace) {
                     option.namespace = self.props.namespace;
                 }
-                client[self.props.resourceName].get(self.props.objectName, option).then(function (data) {
-                    self.setState({item: data});
-                    resolve(data);
+                client[self.props.resourceName].get(self.props.objectName, option).then((data) => {
+                    self.setState({item: data}, () => {
+                        resolve(data);
+                    });
                 });
             })
         });
@@ -183,6 +187,7 @@ class ResourceDetail extends React.Component {
             <ContentWrapper>
                 <div className="content-heading">
                     <div className="pull-right">
+                        <Button onClick={this.fetchData}>refresh</Button>
                         <Dropdown id="dropdown-tr" pullRight onSelect={this.onMenuItemClicked}>
                             <Dropdown.Toggle>
                                 操作

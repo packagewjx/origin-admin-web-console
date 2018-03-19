@@ -136,10 +136,10 @@ function getFunction(resource) {
         let namespace = options.namespace;
         let kind = resource.name;
 
-        if (!defaultOption.invalidateCache) {
+        if (!options.invalidateCache) {
             let cachedData = CacheManager.getCache(kind, "get", namespace, name);
             if (typeof cachedData !== "undefined")
-                return Promise.resolve(cachedData.data);
+                return Promise.resolve(cachedData);
         }
 
         let url = resource.baseURL;
