@@ -189,7 +189,7 @@ class ObjectFormControl extends React.Component {
         return (
             <div>
                 <Button onClick={() => self.setState({showObjectEditModal: true})}>查看&编辑</Button>
-                <Modal show={this.state.showObjectEditModal} onHide={this.closeObjectEditModal}>
+                <Modal show={this.state.showObjectEditModal} onHide={this.closeObjectEditModal} bsSize={"large"}>
                     <Modal.Header closeButton>
                         <Modal.Title>编辑{this.props.label}</Modal.Title>
                     </Modal.Header>
@@ -246,7 +246,13 @@ class KeyValueEditor extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
+        let keys = {};
+        for (let key in nextProps.value) {
+            if (nextProps.value.hasOwnProperty(key)) {
+                keys[key] = key;
+            }
+        }
+        this.state = {key: keys};
     }
 
     handleKeyChange(event, oldKey) {

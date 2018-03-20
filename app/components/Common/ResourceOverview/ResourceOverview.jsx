@@ -297,7 +297,7 @@ class ResourceOverview extends React.Component {
                     }}
                 />
                 <Modal show={this.state.showAddResourceModal}
-                       onHide={this.closeAddResourceModal.bind(this)}>
+                       onHide={this.closeAddResourceModal.bind(this)} backdrop={"static"} bsSize={"large"}>
                     <Modal.Header closeButton>
                         <Modal.Title>添加一项</Modal.Title>
                     </Modal.Header>

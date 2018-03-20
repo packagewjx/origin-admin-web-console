@@ -115,7 +115,8 @@ class ResourceEditor extends React.Component {
                         <AceEditor
                             mode="yaml"
                             theme="textmate"
-                            value={YAML.stringify(this.state.item, 4, 2)}
+                            value={YAML.stringify(this.state.item, 10, 2)}
+                            width={"100%"}
                             onBlur={(event, editor) => {
                                 try {
                                     this.yamlError = false;

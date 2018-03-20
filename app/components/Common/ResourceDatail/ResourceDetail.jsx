@@ -202,7 +202,8 @@ class ResourceDetail extends React.Component {
                     </Col>
                 </Row>
                 {this.props.children}
-                <Modal show={this.state.editModalShow} onHide={this.closeEditModal}>
+                <Modal show={this.state.editModalShow} onHide={this.closeEditModal} backdrop={"static"}
+                       bsSize={"large"}>
                     <Modal.Header closeButton>
                         <Modal.Title>编辑</Modal.Title>
                     </Modal.Header>
