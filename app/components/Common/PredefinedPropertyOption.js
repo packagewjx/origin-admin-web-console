@@ -425,5 +425,19 @@ export const PredefinedPropertyOption = {
         return [
             globalNamePropertyOption
         ]
+    },
+    groups: function () {
+        let usersOption = new PropertyOption("users", "组内用户", "select");
+        usersOption.isArray = true;
+        usersOption.selections = new Promise((resolve, reject) => {
+            apiClient().then((client) => {
+                client.users.list().then((data) => itemNameSelectionCallback(data, resolve), () => reject());
+            }, () => reject());
+        });
+
+        return [
+            globalNamePropertyOption,
+            usersOption
+        ]
     }
 };

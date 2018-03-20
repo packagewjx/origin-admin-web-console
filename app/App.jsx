@@ -53,6 +53,8 @@ import PodOverview from "./components/Project/PodOverview";
 import ProjectOverview from "./components/Project/ProjectOverview";
 import NodeOverview from "./components/Project/NodeOverview";
 import Terminal from "./components/Terminal";
+import GroupManagement from "./components/AuthorizationManagement/GroupManagement";
+import GroupDetail from "./components/AuthorizationManagement/GroupDetail";
 
 // Init css loader (for themes)
 initLoadThemes();
@@ -86,6 +88,8 @@ ReactDOM.render(
             <Route path="users/:name" components={UserDetail}/>
             <Route path="identities" component={IdentityManagement}/>
             <Route path="identities/:name" component={IdentityDetail}/>
+            <Route path="groups" component={GroupManagement}/>
+            <Route path="groups/:name" component={GroupDetail}/>
             <Route path="roles" component={RoleManagement}/>
             <Route path="roles/namespaces/:namespace/:name" components={RoleDetail}/>
             <Route path="rolebindings" component={RoleBindingManagement}/>

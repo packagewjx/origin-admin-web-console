@@ -14,7 +14,7 @@ class Sidebar extends React.Component {
             kind: "submenu", name: "auth", title: "权限管理", iconClass: "fa fa-users", children: [
                 {kind: "item", route: "users", title: "用户管理", iconClass: ""},
                 {kind: "item", route: "identities", title: "用户身份管理"},
-                // {kind: "item", route: "groups", title: "用户组管理"},
+                {kind: "item", route: "groups", title: "用户组管理"},
                 {kind: "item", route: "roles", title: "项目角色管理"},
                 {kind: "item", route: "rolebindings", title: "项目角色绑定管理"},
                 {kind: "item", route: "clusterroles", title: "集群角色管理"},
