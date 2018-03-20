@@ -84,7 +84,7 @@ export default class CacheManager {
 }
 
 CacheManager.cache = {};
-CacheManager.INVALID_TIMEOUT = 5000;
+CacheManager.INVALID_TIMEOUT = 2000;
 
 class Cache {
     data;

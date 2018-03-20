@@ -42,6 +42,20 @@ export function accessData(obj, accessor, newVal) {
 }
 
 /**
+ * Get a random UUID
+ * @return {string} UUID
+ */
+export function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
+/**
  * Go down the object structure using the keys array.
  * @param {Array.<String>} keys keys to go down the object's structure.
  * @param {Object} object

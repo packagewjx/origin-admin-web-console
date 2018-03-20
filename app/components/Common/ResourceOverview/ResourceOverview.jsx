@@ -15,7 +15,9 @@ import ReactTable from "react-table";
 import {Button, Modal} from "react-bootstrap";
 import ResourceEditor from "../ResourceEditor/ResourceEditor";
 import PropertyOption from "../PropertyOption";
-import {accessData, deepClone} from "../../Utils/UtilFunctions";
+import {accessData, deepClone, guid} from "../../Utils/UtilFunctions";
+import ConfirmDialog from "../ConfirmDialog";
+import Notify from "../Notify";
 
 /**
  * This component is used to display all resource objects of a kind of resource. They are displayed in a table. The
@@ -28,8 +30,23 @@ class ResourceOverview extends React.Component {
 
         this.submitNewResource = this.submitNewResource.bind(this);
         this.fetchData = this.fetchData.bind(this);
+        this.isPageSelected = this.isPageSelected.bind(this);
+        this.hasSelected = this.hasSelected.bind(this);
+        this.deleteSelected = this.deleteSelected.bind(this);
 
-        this.state = {data: [], loading: true, showAddResourceModal: false};
+        this.state = {
+            data: [],
+            loading: true,
+            showAddResourceModal: false,
+            selected: {},
+            pageSelected: false,
+            showDeleteSelectedModal: false,
+            deleteSelectedWaiting: false
+        };
+
+        //store the pageSize, for changing checked in that page.
+        this.pageSize = 10;
+        this.pageIndex = 0;
 
         //initialize add resource modal
         this.newResourceObject = {};
@@ -70,7 +87,7 @@ class ResourceOverview extends React.Component {
         let self = this;
         apiClient().then(function (client) {
             client[resourceName].list({invalidateCache: true}).then(function (data) {
-                self.setState({data: data.items, loading: false}, () => console.log(self));
+                self.setState({data: data.items, loading: false});
             }, function () {
                 self.setState({loading: false});
             })
@@ -112,9 +129,99 @@ class ResourceOverview extends React.Component {
         });
     }
 
+    /**
+     * Check if anyone is selected.
+     * @return {boolean}
+     */
+    hasSelected() {
+        for (let key in this.state.selected) {
+            if (this.state.selected.hasOwnProperty(key) && this.state.selected[key])
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if one page is all selected.
+     * @param pageIndex
+     * @param pageSize
+     * @return {boolean}
+     */
+    isPageSelected(pageIndex, pageSize) {
+        for (let i = pageIndex * pageSize; i < pageIndex * pageSize + pageSize; i++) {
+            if (!this.state.selected[i])
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * Delete all the selected resources.
+     */
+    deleteSelected() {
+        let promises = [];
+        let self = this;
+        let selected = this.state.selected;
+        this.setState({deleteSelectedWaiting: true});
+        apiClient().then((client) => {
+            for (let key in selected) {
+                if (selected.hasOwnProperty(key) && selected[key] === true) {
+                    let item = self.state.data[key];
+                    let option = new GlobalOption();
+                    if (typeof item.metadata.namespace === "string" && item.metadata.namespace !== "")
+                        option.namespace = item.metadata.namespace;
+                    console.debug(item);
+                    promises.push(client[this.props.resourceName].delete(item.metadata.name, option));
+                }
+            }
+            Promise.all(promises).then(() => {
+                //clear select data and hide modal
+                self.setState({showDeleteSelectedModal: false, selected: {}, pageSelected: false});
+                Notify("删除成功", {status: "success", pos: "top-right"});
+                self.fetchData();
+            }).finally(() => self.setState({deleteSelectedWaiting: false}));
+        });
+
+    }
+
     render() {
+        let self = this;
         // changing ColumnConfig, set to default and replace value.
         this.columns = [];
+        // add checkbox column to the first column
+        this.columns.push({
+            /**
+             * Single row checkbox
+             * @param props
+             * @return {*}
+             * @constructor
+             */
+            Cell: function (props) {
+                return (
+                    <Checkbox value={self.state.selected[props.index]} onChange={(value) => {
+                        let selected = self.state.selected;
+                        selected[props.index] = value;
+                        self.setState({selected, pageSelected: self.isPageSelected(self.pageIndex, self.pageSize)});
+                    }}/>
+                );
+            },
+            Header: function (props) {
+                return (
+                    <Checkbox value={self.state.pageSelected} onChange={(value) => {
+                        let selected = self.state.selected;
+                        for (let i = self.pageIndex * self.pageSize; i < self.pageIndex * self.pageSize + self.pageSize; i++) {
+                            selected[i] = value;
+                        }
+                        self.setState({selected, pageSelected: value});
+                    }}/>
+                )
+            },
+            width: 40,
+            sortable: false,
+            filterable: false,
+            resizable: false
+        });
+
         for (let i = 0; i < this.props.tableConfig.columns.length; i++) {
             /**
              * @type {ColumnConfig}
@@ -150,8 +257,7 @@ class ResourceOverview extends React.Component {
                 <div className="content-heading">
                     {this.props.title}
                 </div>
-
-                <p>
+                <div className="btn-toolbar">
                     {this.props.disableCreate ? null :
                         <Button bsStyle="success" onClick={this.showAddResourceModal.bind(this)}>
                             <em className="fa fa-plus"/> 添加一项
@@ -159,13 +265,20 @@ class ResourceOverview extends React.Component {
                     <Button onClick={this.fetchData}>
                         <em className="fa fa-refresh"/> 刷新
                     </Button>
+                    {this.hasSelected() ?
+                        <Button bsStyle="danger" onClick={() => {
+                            this.setState({showDeleteSelectedModal: true})
+                        }}>
+                            <em className="fa fa-trash"/> 删除已选
+                        </Button>
+                        : null}
                     {this.props.additionalButtons}
-                </p>
+                </div>
                 <ReactTable
                     data={this.state.data}
                     loading={this.state.loading}
                     columns={this.columns}
-                    defaultPageSize={10}
+                    defaultPageSize={this.pageSize}
                     previousText="上一页"
                     nextText="下一页"
                     loadingText="获取数据中"
@@ -173,8 +286,18 @@ class ResourceOverview extends React.Component {
                     pageText="第"
                     ofText="页共"
                     rowsText="行"
+                    onPageChange={(pageIndex) => {
+                        this.pageIndex = pageIndex;
+                        this.setState({pageSelected: this.isPageSelected(pageIndex, this.pageSize)});
+                    }}
+                    onPageSizeChange={(pageSize, pageIndex) => {
+                        this.pageIndex = pageIndex;
+                        this.pageSize = pageSize;
+                        this.setState({pageSelected: this.isPageSelected(pageIndex, pageSize)});
+                    }}
                 />
-                <Modal show={this.state.showAddResourceModal} onHide={this.closeAddResourceModal.bind(this)}>
+                <Modal show={this.state.showAddResourceModal}
+                       onHide={this.closeAddResourceModal.bind(this)}>
                     <Modal.Header closeButton>
                         <Modal.Title>添加一项</Modal.Title>
                     </Modal.Header>
@@ -184,6 +307,13 @@ class ResourceOverview extends React.Component {
                                         propertyOptions={this.props.propertyOptions} isCreate={true}/>
                     </Modal.Body>
                 </Modal>
+                <ConfirmDialog onConfirm={this.deleteSelected} show={this.state.showDeleteSelectedModal}
+                               confirmButtonStyle={"danger"}
+                               onClose={() => {
+                                   this.setState({showDeleteSelectedModal: false});
+                               }} waiting={this.state.deleteSelectedWaiting}>
+                    <strong>确认要删除已选对象吗？</strong>
+                </ConfirmDialog>
             </ContentWrapper>
         );
     }
@@ -256,6 +386,39 @@ function getData(item, referer) {
     }
     return cur;
 }
+
+/**
+ * A Controlled checkbox.
+ */
+class Checkbox extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.uuid = guid();
+    }
+
+    render() {
+        //use jquery to handle the change.
+        $("#" + this.uuid).prop("checked", !!this.props.value);
+
+        return (
+            <div className="checkbox c-checkbox" style={{margin: 0, paddingLeft: 3}}>
+                <label>
+                    <input id={this.uuid} type="checkbox" style={{width: 0, height: 0}}
+                           onChange={(event) => {
+                               this.props.onChange(event.target.checked);
+                           }}/>
+                    <em className="fa fa-check"/></label>
+            </div>
+        )
+    }
+}
+
+Checkbox.propTypes = {
+    onChange: PropTypes.func,
+    value: PropTypes.bool
+};
+
 
 ResourceOverview.propTypes = {
     title: PropTypes.string.isRequired,
