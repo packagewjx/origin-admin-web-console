@@ -6,9 +6,16 @@
 
 import React from 'react';
 import ContentWrapper from "../Layout/ContentWrapper";
+import {TableConfig} from "../Common/ResourceOverview/TableConfig";
 
 class NodeOverview extends React.Component {
     render() {
+        let tableConfig = new TableConfig();
+        tableConfig.columns = [
+            "name"
+        ];
+
+
         return (
             <ContentWrapper/>
         );

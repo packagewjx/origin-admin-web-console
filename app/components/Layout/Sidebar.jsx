@@ -41,9 +41,7 @@ class Sidebar extends React.Component {
                     {kind: "item", route: "resourcequotas", title: "项目配额管理"},
                 ]
             },
-            {kind: "item", route: "nodes", title: "节点监控", iconClass: "fa fa-cubes"},
             {kind: "item", route: "monitor", title: "Cockpit监控", iconClass: "fa fa-desktop"},
-            {kind: "item", route: "terminal", title: "终端", iconClass: "fa fa-terminal"}
         ];
 
         this.state = {
@@ -60,6 +58,18 @@ class Sidebar extends React.Component {
     componentDidMount() {
         // pass navigator to access router api
         SidebarRun(this.navigator.bind(this));
+
+        //find the current active route, and toggle the collapse
+        for (let i = 0; i < this.menu.length; i++) {
+            if (this.menu[i].kind === "submenu") {
+                for (let j = 0; j < this.menu[i].children.length; j++) {
+                    if (this.routeActive(this.menu[i].children[j].route)) {
+                        this.toggleItemCollapse(this.menu[i].name);
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     navigator(route) {
@@ -72,9 +82,11 @@ class Sidebar extends React.Component {
     }
 
     routeActive(paths) {
+        console.log(this.props.router.location.pathname);
+        let pathname = this.props.router.location.pathname;
         paths = Array.isArray(paths) ? paths : [paths];
         for (let p in paths) {
-            if (this.props.router.isActive(paths[p]) === true)
+            if (pathname.startsWith(paths[p]))
                 return true;
         }
         return false;
@@ -98,6 +110,7 @@ class Sidebar extends React.Component {
             console.error("Not of a menu item", item);
             return (<li/>);
         }
+
         return (
             <li key={item.route} className={this.routeActive(item.route) ? 'active' : ''}>
                 <Link to={item.route} title={item.title}>
