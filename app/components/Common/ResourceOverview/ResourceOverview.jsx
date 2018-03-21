@@ -33,6 +33,7 @@ class ResourceOverview extends React.Component {
         this.isPageSelected = this.isPageSelected.bind(this);
         this.hasSelected = this.hasSelected.bind(this);
         this.deleteSelected = this.deleteSelected.bind(this);
+        this.toggleAutoRefresh = this.toggleAutoRefresh.bind(this);
 
         this.state = {
             data: [],
@@ -41,7 +42,8 @@ class ResourceOverview extends React.Component {
             selected: {},
             pageSelected: false,
             showDeleteSelectedModal: false,
-            deleteSelectedWaiting: false
+            deleteSelectedWaiting: false,
+            timerId: undefined
         };
 
         //store the pageSize, for changing checked in that page.
@@ -77,6 +79,15 @@ class ResourceOverview extends React.Component {
     componentDidMount() {
         //fetch data
         this.fetchData();
+
+        this.toggleAutoRefresh();
+    }
+
+    componentWillUnmount() {
+        //clear timer
+        if (typeof this.state.timerId !== "undefined") {
+            clearInterval(this.state.timerId);
+        }
     }
 
     /**
@@ -153,6 +164,23 @@ class ResourceOverview extends React.Component {
                 return false;
         }
         return true;
+    }
+
+    /**
+     * Toggle auto refresh on/off.
+     */
+    toggleAutoRefresh() {
+        if (typeof this.state.timerId === "undefined") {
+            //auto refresh off
+            let timerId = setInterval(() => {
+                this.fetchData();
+            }, 5000);
+            this.setState({timerId: timerId});
+        } else {
+            //auto refresh on
+            clearInterval(this.state.timerId);
+            this.setState({timerId: undefined});
+        }
     }
 
     /**
@@ -257,6 +285,7 @@ class ResourceOverview extends React.Component {
                 <div className="content-heading">
                     {this.props.title}
                 </div>
+                {/*Start Button Toolbar*/}
                 <div className="btn-toolbar">
                     {this.props.disableCreate ? null :
                         <Button bsStyle="success" onClick={this.showAddResourceModal.bind(this)}>
@@ -265,15 +294,22 @@ class ResourceOverview extends React.Component {
                     <Button onClick={this.fetchData}>
                         <em className="fa fa-refresh"/> 刷新
                     </Button>
-                    {this.hasSelected() ?
+                    {!this.props.disableDelete && this.hasSelected() ?
                         <Button bsStyle="danger" onClick={() => {
                             this.setState({showDeleteSelectedModal: true})
                         }}>
                             <em className="fa fa-trash"/> 删除已选
                         </Button>
                         : null}
+                    <Button onClick={() => {
+                        this.toggleAutoRefresh();
+                    }}>
+                        <em className="fa fa-clock-o"/> {typeof this.state.timerId === "undefined" ? "开启定时刷新" : "关闭定时刷新"}
+                    </Button>
                     {this.props.additionalButtons}
                 </div>
+                {/*End Button Toolbar*/}
+                {/*Start Data Table*/}
                 <ReactTable
                     data={this.state.data}
                     loading={this.state.loading}
@@ -296,6 +332,8 @@ class ResourceOverview extends React.Component {
                         this.setState({pageSelected: this.isPageSelected(pageIndex, pageSize)});
                     }}
                 />
+                {/*End Data Table*/}
+                {/*Start Add Resource Modal*/}
                 <Modal show={this.state.showAddResourceModal}
                        onHide={this.closeAddResourceModal.bind(this)} backdrop={"static"} bsSize={"large"}>
                     <Modal.Header closeButton>
@@ -307,6 +345,7 @@ class ResourceOverview extends React.Component {
                                         propertyOptions={this.props.propertyOptions} isCreate={true}/>
                     </Modal.Body>
                 </Modal>
+                {/*End Add Resource Modal*/}
                 <ConfirmDialog onConfirm={this.deleteSelected} show={this.state.showDeleteSelectedModal}
                                confirmButtonStyle={"danger"}
                                onClose={() => {
@@ -435,6 +474,7 @@ ResourceOverview.propTypes = {
      */
     getNewResourceObject: PropTypes.func,
     disableCreate: PropTypes.bool,
+    disableDelete: PropTypes.bool,
     additionalButtons: PropTypes.array,
     /**
      * Resource Overview will fill this object with control functions of the following:

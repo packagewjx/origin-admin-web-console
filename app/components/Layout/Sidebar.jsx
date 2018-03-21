@@ -41,7 +41,7 @@ class Sidebar extends React.Component {
                     {kind: "item", route: "resourcequotas", title: "项目配额管理"},
                 ]
             },
-            {kind: "item", route: "monitor", title: "Cockpit监控", iconClass: "fa fa-desktop"},
+            {kind: "item", route: "monitor", title: "集群监控", iconClass: "fa fa-desktop"},
         ];
 
         this.state = {
@@ -82,7 +82,6 @@ class Sidebar extends React.Component {
     }
 
     routeActive(paths) {
-        console.log(this.props.router.location.pathname);
         let pathname = this.props.router.location.pathname;
         paths = Array.isArray(paths) ? paths : [paths];
         for (let p in paths) {
