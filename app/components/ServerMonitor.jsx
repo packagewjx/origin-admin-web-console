@@ -10,7 +10,7 @@ import ResponsiveIFrame from "./Common/ResponsiveIFrame";
 class ServerMonitor extends React.Component {
     render() {
         return (
-            <ResponsiveIFrame src="https://116.56.140.108:9090"/>
+            <ResponsiveIFrame src="https://fireflywjx.cn:9090"/>
         );
     }
 }
