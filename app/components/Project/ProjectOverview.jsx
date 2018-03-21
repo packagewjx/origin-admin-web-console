@@ -20,7 +20,7 @@ class ProjectOverview extends React.Component {
         ];
 
         return (
-            <ResourceOverview title={"项目管理"} resourceName={"projects"} tableConfig={tableConfig}
+            <ResourceOverview title={"项目列表"} resourceName={"projects"} tableConfig={tableConfig}
                               propertyOptions={PredefinedPropertyOption.projects()}
                               getNewResourceObject={() => new Project()}/>
         );

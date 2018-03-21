@@ -26,7 +26,7 @@ class Login extends React.Component {
             },
             success: function (data, status, xhr) {
                 let match = new RegExp("<code>(.*)</code>").exec(data);
-                if (typeof match !== 'undefined') {
+                if (match !== null) {
                     setAccessToken(match[1]);
                     //test this token with get user request
                     apiClient().then(function (client) {

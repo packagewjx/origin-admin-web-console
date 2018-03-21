@@ -21,7 +21,7 @@ class PodOverview extends React.Component {
         ];
 
         return (
-            <ResourceOverview title={"容器管理"} resourceName={"pods"} tableConfig={tableConfig} disableCreate={true}
+            <ResourceOverview title={"容器列表"} resourceName={"pods"} tableConfig={tableConfig} disableCreate={true}
                               disableDelete={true}/>
         );
     }
