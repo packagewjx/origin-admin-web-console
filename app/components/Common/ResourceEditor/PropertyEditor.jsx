@@ -243,6 +243,12 @@ class KeyValueEditor extends React.Component {
          * @type {{key: {}}}
          */
         this.state = {key: keys};
+
+        /**
+         * Used to generate key for a new key value pair.
+         * @type {number}
+         */
+        this.keyNum = 0;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -284,9 +290,21 @@ class KeyValueEditor extends React.Component {
         this.setState({key: keys});
     }
 
-    handleValueChange(event, key) {
+    handleValueChange(value, key) {
         let map = this.props.value;
-        map[key] = event.target.value;
+        map[key] = value;
+        this.props.onChange(map);
+    }
+
+    addKeyValue() {
+        let map = this.props.value;
+        map["key" + this.keyNum++] = "";
+        this.props.onChange(map);
+    }
+
+    deleteKeyValue(key) {
+        let map = this.props.value;
+        delete map[key];
         this.props.onChange(map);
     }
 
@@ -297,16 +315,22 @@ class KeyValueEditor extends React.Component {
             if (map.hasOwnProperty(key)) {
                 rowsHtml.push(
                     <Row key={key}>
-                        <Col lg={6}>
+                        <Col lg={5}>
                             <FormControl onBlur={(event) => this.submitKeyChange(event, key)} type="text"
                                          value={this.state.key[key]}
                                          onChange={(event) => this.handleKeyChange(event, key)}
                                          className="form-control"/>
                         </Col>
-                        <Col lg={6}>
-                            <FormControl type="text" value={map[key]}
-                                         onChange={(event) => this.handleValueChange(event, key)}
-                                         className="form-control"/>
+                        <Col lg={7}>
+                            <InputGroup key={key}>
+                                <InputFormControl onChange={(value) => this.handleValueChange(value, key)}
+                                                  value={map[key]}/>
+                                <InputGroup.Button>
+                                    <Button bsClass="btn btn-labeled btn-danger mr"
+                                            onClick={this.deleteKeyValue.bind(this, key)}>
+                                        <em className="fa fa-minus"/></Button>
+                                </InputGroup.Button>
+                            </InputGroup>
                         </Col>
                     </Row>
                 );
@@ -318,6 +342,8 @@ class KeyValueEditor extends React.Component {
                 <label className="col-lg-2 control-label">{this.props.label}</label>
                 <Col lg={10}>
                     {rowsHtml}
+                    <Button bsClass="btn btn-labeled btn-success mr" onClick={this.addKeyValue.bind(this)}>
+                        <em className="fa fa-plus"/></Button>
                 </Col>
             </FormGroup>
         );
