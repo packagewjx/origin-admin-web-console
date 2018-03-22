@@ -3,7 +3,7 @@ import {appHistory} from "../../../App";
 import CacheManager from "./CacheManager";
 import Notify from "../../Common/Notify";
 
-const API_RESOURCE_LIST_URLS = ["https://116.56.140.108:8443/oapi/v1", "https://116.56.140.108:8443/api/v1"];
+const API_RESOURCE_LIST_URLS = ["https://fireflywjx.cn:8443/oapi/v1", "https://fireflywjx.cn:8443/api/v1"];
 
 let client = {};
 let fetchingPromise = undefined;

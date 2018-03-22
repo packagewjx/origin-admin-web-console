@@ -2,7 +2,7 @@ import React from 'react';
 import {apiClient, setAccessToken} from "../Utils/ApiClient/apiClient";
 import {appHistory} from "../../App";
 
-let tokenRequestURL = "https://116.56.140.108:8443/oauth/token/request";
+let tokenRequestURL = "https://fireflywjx.cn:8443/oauth/token/request";
 
 class Login extends React.Component {
     constructor(props) {
