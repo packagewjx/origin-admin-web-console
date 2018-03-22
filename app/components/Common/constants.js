@@ -27,4 +27,4 @@ export const APP_MEDIAQUERY = {
     'mobile':                 480
 };
 
-export const BACKEND_BASE_ADDRESS = "http://116.56.140.108:3001";
+export const BACKEND_BASE_ADDRESS = "https://fireflywjx.cn:3001";
