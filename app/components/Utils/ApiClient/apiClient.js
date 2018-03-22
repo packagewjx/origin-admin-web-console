@@ -183,6 +183,9 @@ function createFunction(resource) {
             processData: false,
             contentType: "application/json",
             data: JSON.stringify(obj),
+            success: () => {
+                Notify("创建" + obj.metadata.name + "成功", {status: "success", pos: "top-right", timeout: 3000});
+            },
             error: failCallback
         });
     }
@@ -210,6 +213,9 @@ function deleteFunction(resource) {
             contentType: "application/json",
             data: JSON.stringify(deleteOptions),
             processData: false,
+            success: () => {
+                Notify("删除" + name + "成功", {status: "success", pos: "top-right", timeout: 3000});
+            },
             error: failCallback
         })
     }
@@ -233,7 +239,10 @@ function deleteCollectionFunction(resource) {
         return $.ajax(url, {
             headers: {authorization: token},
             method: "DELETE",
-            error: failCallback
+            error: failCallback,
+            success: () => {
+                Notify("删除" + resource.name + "所有对象成功", {status: "success", pos: "top-right", timeout: 3000});
+            }
         })
     }
 }
@@ -299,7 +308,10 @@ function updateFunction(resource) {
             contentType: "application/json",
             data: JSON.stringify(obj),
             processData: false,
-            error: failCallback
+            error: failCallback,
+            success: () => {
+                Notify("更新" + name + "成功", {status: "success", pos: "top-right", timeout: 3000});
+            }
         })
     }
 }

@@ -104,7 +104,7 @@ class CreateUserButton extends React.Component {
                     let p3 = client.useridentitymappings.create(userIdentityMapping);
                     p3.fail((xhr) => console.error(xhr));
                     p3.then(() => resolve(), () => reject());
-                });
+                }, () => reject());
             }, () => reject())
         });
 

@@ -17,7 +17,6 @@ import ResourceEditor from "../ResourceEditor/ResourceEditor";
 import PropertyOption from "../PropertyOption";
 import {accessData, deepClone, guid} from "../../Utils/UtilFunctions";
 import ConfirmDialog from "../ConfirmDialog";
-import Notify from "../Notify";
 
 /**
  * This component is used to display all resource objects of a kind of resource. They are displayed in a table. The
@@ -205,7 +204,6 @@ class ResourceOverview extends React.Component {
             Promise.all(promises).then(() => {
                 //clear select data and hide modal
                 self.setState({showDeleteSelectedModal: false, selected: {}, pageSelected: false});
-                Notify("删除成功", {status: "success", pos: "top-right"});
                 self.fetchData();
             }).finally(() => self.setState({deleteSelectedWaiting: false}));
         });

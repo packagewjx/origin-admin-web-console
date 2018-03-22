@@ -1,7 +1,7 @@
 /**
  * display a notify above
  * @param {String} message
- * @param {{status:String, pos:String, timeout:Number}} options
+ * @param {{status:String, pos:String, timeout:Number}|undefined} options
  */
 export default function Notify(message, options) {
     $.notify(message, options || {});
