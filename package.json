@@ -1,6 +1,6 @@
 {
   "name": "Origin-Admin-Web-Console",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "An admin web console for Redhat Openshift PasS Platform",
   "author": "packagewjx@github.com",
   "repository": "https://github.com/packagewjx/origin-admin-web-console",
