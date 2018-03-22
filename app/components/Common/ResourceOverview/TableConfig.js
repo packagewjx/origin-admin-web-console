@@ -43,7 +43,6 @@ export const DefaultColumnConfig = {
             let namespace = item.metadata.namespace;
             let cache = CacheManager.getCache("promise", "cache", "NONAMESPACE", "displayNameListPromise");
             if (typeof cache === 'undefined') {
-                console.log("here");
                 //do calculate the name/displayName map.
                 let promise = new Promise((resolve, reject) => {
                     apiClient().then((client) => {
