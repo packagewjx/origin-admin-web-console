@@ -122,6 +122,10 @@ module.exports = {
             from: '.htaccess',
             to: '',
             context: path.join(__dirname, 'app')
+        }, {
+            from: 'favicon.ico',
+            to: '',
+            context: path.join(__dirname, 'app')
         }]),
         new webpack.ProvidePlugin({
             $: 'jquery',
