@@ -17,8 +17,8 @@ class RoleManagement extends React.Component {
         this.tableConfig = new TableConfig();
         this.tableConfig.columns = [
             'namespacedName',
+            "projectDisplayName",
             'creationTimestamp',
-            'namespace'
         ];
     }
 

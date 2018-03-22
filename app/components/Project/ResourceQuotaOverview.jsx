@@ -16,7 +16,7 @@ class ResourceQuotaOverview extends React.Component {
         let tableConfig = new TableConfig();
         tableConfig.columns = [
             "namespacedName",
-            "namespace",
+            "projectDisplayName"
         ];
 
         return (

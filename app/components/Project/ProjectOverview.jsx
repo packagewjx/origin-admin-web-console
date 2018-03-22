@@ -15,6 +15,7 @@ class ProjectOverview extends React.Component {
         let tableConfig = new TableConfig();
         tableConfig.columns = [
             new ColumnConfig("项目名", "metadata.name"),
+            "displayName",
             "creationTimestamp",
             new ColumnConfig("状态", "status.phase")
         ];

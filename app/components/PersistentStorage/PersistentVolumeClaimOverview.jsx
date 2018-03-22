@@ -13,7 +13,7 @@ class PersistentStorageClaimOverview extends React.Component {
         let tableConfig = new TableConfig();
         tableConfig.columns = [
             new ColumnConfig("名称", "metadata.name"),
-            "namespace",
+            "projectDisplayName",
             new ColumnConfig("请求存取模式", "spec.accessModes"),
             new ColumnConfig("请求空间大小", "spec.resources.requests.storage"),
             new ColumnConfig("新建持久卷名", "spec.volumeName"),

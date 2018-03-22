@@ -13,7 +13,7 @@ class PodOverview extends React.Component {
         let tableConfig = new TableConfig();
         tableConfig.columns = [
             new ColumnConfig("名称", "metadata.name"),
-            "namespace",
+            "projectDisplayName",
             "creationTimestamp",
             new ColumnConfig("容器IP", "status.podIP"),
             new ColumnConfig("容器状态", "status.phase"),

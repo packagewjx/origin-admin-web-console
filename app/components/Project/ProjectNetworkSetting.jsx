@@ -8,9 +8,9 @@ import React from 'react';
 import ContentWrapper from "../Layout/ContentWrapper";
 import {Button, Col, Row} from "react-bootstrap";
 import PropertyEditor from "../Common/ResourceEditor/PropertyEditor";
-import PropertyOption from "../Common/PropertyOption";
 import {apiClient} from "../Utils/ApiClient/apiClient";
 import {Link} from "react-router";
+import {getNamespacePropertyOption} from "../Common/PredefinedPropertyOption";
 
 class ProjectNetworkSetting extends React.Component {
     constructor(props) {
@@ -69,21 +69,24 @@ class ProjectNetworkSetting extends React.Component {
     }
 
     render() {
-        let namespaceSelections = getNamespaceSelection();
-        let globalProperty = new PropertyOption("", "设置全局可访问网络", "select");
+        let globalProperty = getNamespacePropertyOption();
+        globalProperty.accessor = "";
+        globalProperty.label = "设置全局可访问网络";
         globalProperty.isArray = true;
-        globalProperty.selections = namespaceSelections;
 
-        let makeToProperty = new PropertyOption("", "连通至", "select");
-        makeToProperty.selections = namespaceSelections;
+        let makeToProperty = getNamespacePropertyOption();
+        makeToProperty.accessor = "";
+        makeToProperty.label = "连通至";
 
-        let makeFromProperty = new PropertyOption("", "选择连通项目", "select");
+        let makeFromProperty = getNamespacePropertyOption();
         makeFromProperty.isArray = true;
-        makeFromProperty.selections = namespaceSelections;
+        makeFromProperty.accessor = "";
+        makeFromProperty.label = "选择连通项目";
 
-        let isolateProperty = new PropertyOption("", "隔离项目网络", "select");
+        let isolateProperty = getNamespacePropertyOption();
         isolateProperty.isArray = true;
-        isolateProperty.selections = namespaceSelections;
+        isolateProperty.label = "隔离项目网络";
+        isolateProperty.accessor = "";
 
         return (
             <ContentWrapper>
@@ -139,20 +142,6 @@ class ProjectNetworkSetting extends React.Component {
             </ContentWrapper>
         );
     }
-}
-
-function getNamespaceSelection() {
-    return new Promise((resolve, reject) => {
-        apiClient().then((client) => {
-            client.projects.list().then((data) => {
-                let selections = [];
-                for (let i = 0; i < data.items.length; i++) {
-                    selections.push({label: data.items[i].metadata.name, value: data.items[i].metadata.name});
-                }
-                resolve(selections);
-            }, () => reject());
-        }, () => reject())
-    })
 }
 
 /**

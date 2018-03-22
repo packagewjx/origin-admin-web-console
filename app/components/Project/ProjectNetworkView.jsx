@@ -15,7 +15,7 @@ class ProjectNetworkView extends React.Component {
         super(props);
         this.fetchData = this.fetchData.bind(this);
 
-        this.state = {data: []};
+        this.state = {data: [], projectDisplayName: {}};
     }
 
     componentDidMount() {
@@ -26,6 +26,14 @@ class ProjectNetworkView extends React.Component {
         apiClient().then((client) => {
             client.netnamespaces.list().then((data) => {
                 this.setState({data: data.items});
+            });
+            client.namespaces.list().then((data) => {
+                let map = {};
+                for (let i = 0; i < data.items.length; i++) {
+                    let project = data.items[i];
+                    map[project.metadata.name] = project.metadata.annotations["openshift.io/display-name"];
+                }
+                this.setState({projectDisplayName: map});
             });
         })
     }
@@ -69,7 +77,27 @@ class ProjectNetworkView extends React.Component {
                         },
                         {
                             Header: "项目名",
-                            accessor: "metadata.name",
+                            Aggregated: (props) => {
+                                let resultStr = "";
+                                for (let i = 0; i < props.subRows.length; i++) {
+                                    let name = props.subRows[i]._original.metadata.name;
+                                    if (this.state.projectDisplayName[name]) {
+                                        resultStr += this.state.projectDisplayName[name] + "(" + name + ")";
+                                    } else
+                                        resultStr += name;
+                                    resultStr += i < props.subRows.length - 1 ? "," : "";
+                                }
+                                return <span>{resultStr}</span>
+                            },
+                            Cell: (props) => {
+                                if (typeof props.original === "undefined")
+                                    return (<span/>);
+                                let name = props.original.metadata.name;
+                                if (this.state.projectDisplayName[name])
+                                    return (<span>{this.state.projectDisplayName[name]}({name})</span>);
+                                else
+                                    return <span>{name}</span>
+                            },
                             filterable: true
                         },
                     ]}

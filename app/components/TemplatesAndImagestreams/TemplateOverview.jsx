@@ -15,7 +15,7 @@ class TemplateOverview extends React.Component {
         let tableConfig = new TableConfig();
         tableConfig.columns = [
             "namespacedName",
-            "namespace",
+            "projectDisplayName",
             new ColumnConfig("描述", "metadata.annotations.description")
         ];
         let propertyOptions = PredefinedPropertyOption.templates();

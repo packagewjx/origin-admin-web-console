@@ -1,3 +1,7 @@
+import CacheManager from "../../Utils/ApiClient/CacheManager";
+import React from "react";
+import {apiClient} from "../../Utils/ApiClient/apiClient";
+
 export class TableConfig {
     /**
      * Configuration for columns in the table. There are default column config available in DefaultColumnConfig.
@@ -19,15 +23,56 @@ export const DefaultColumnConfig = {
         linkTo: "<<resourceName>>/namespaces/{metadata.namespace}/{metadata.name}"
     },
     namespace: {
-        title: "项目",
+        title: "所属项目名",
         referer: "metadata.namespace",
     },
     creationTimestamp: {
         title: "创建时间",
         referer: "metadata.creationTimestamp"
     },
+    displayName: {
+        title: "显示名",
+        referer: "metadata.annotations.openshift\\.io/display-name"
+    },
+    projectDisplayName: {
+        title: "所属项目名",
+        referer: "metadata.namespace",
+        renderFunction: (item) => {
+            if (typeof item.metadata.namespace === "undefined")
+                return (<span/>);
+            let namespace = item.metadata.namespace;
+            let cache = CacheManager.getCache("promise", "cache", "NONAMESPACE", "displayNameListPromise");
+            if (typeof cache === 'undefined') {
+                console.log("here");
+                //do calculate the name/displayName map.
+                let promise = new Promise((resolve, reject) => {
+                    apiClient().then((client) => {
+                        client.namespaces.list().then((data) => {
+                            let namespaces = data.items;
+                            let map = {};
+                            for (let i = 0; i < namespaces.length; i++) {
+                                if (typeof namespaces[i].metadata.annotations === 'undefined')
+                                    continue;
+                                map[namespaces[i].metadata.name] = namespaces[i].metadata.annotations["openshift.io/display-name"];
+                            }
+                            resolve(map);
+                        }, () => reject());
+                    }, () => reject());
+                });
+                cache = promise;
+                CacheManager.saveCache("promise", "cache", "NONAMESPACE", "displayNameListPromise", promise);
+            }
+            return new Promise((resolve, reject) => {
+                cache.then((map) => {
+                    if (map[namespace]) {
+                        resolve(<span>{map[namespace] + "(" + namespace + ")"}</span>);
+                    } else
+                        resolve(<span>{namespace}</span>);
+                }, () => reject());
+            })
+        }
+    }
 };
-
 
 
 export class ColumnConfig {

@@ -8,13 +8,13 @@
 export function accessData(obj, accessor, newVal) {
     if (accessor === "" || typeof obj === 'undefined' || obj === null)
         return obj;
-    if (!accessor.match(/^((?:[\w_$\/]|\\\.)+(\[\d+])?\.)*(?:[\w_$\/]|\\\.)+(\[\d+])?$/)) {
+    if (!accessor.match(/^((?:[\w_$\/-]|\\\.)+(\[\d+])?\.)*(?:[\w_$\/-]|\\\.)+(\[\d+])?$/)) {
         console.error("accessor ", accessor, " is of wrong format");
         return obj;
     }
 
     let keys = splitString(accessor, ".", "\\.");
-    let keyRegExp = /^([\w_$./]+)(?:\[(\d+)])?$/;//e.g. a[1], a
+    let keyRegExp = /^([\w_$./-]+)(?:\[(\d+)])?$/;//e.g. a[1], a
     let match = keyRegExp.exec(keys[keys.length - 1]);
     if (typeof newVal !== 'undefined') {
         //if set the value, create the object.

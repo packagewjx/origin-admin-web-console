@@ -8,7 +8,6 @@
 import PropertyOption from "./PropertyOption";
 import {apiClient} from "../Utils/ApiClient/apiClient";
 import PolicyRule from "../Utils/ApiClient/model/PolicyRule";
-import Subject from "../Utils/ApiClient/model/Subject";
 import Parameter from "../Utils/ApiClient/model/Parameter";
 
 /**
@@ -30,31 +29,24 @@ function getNamespacePropertyOption() {
     let namespacePropertyOption = new PropertyOption("metadata.namespace", "项目", "select");
     namespacePropertyOption.selections = new Promise(resolve => {
         apiClient().then(function (client) {
-            client.namespaces.list().then((data) => itemNameSelectionCallback(data, resolve));
+            client.namespaces.list().then((data) => {
+                let selections = [];
+                for (let i = 0; i < data.items.length; i++) {
+                    let project = data.items[i];
+                    if (project.metadata.annotations["openshift.io/display-name"]) {
+                        selections.push({
+                            label: project.metadata.annotations["openshift.io/display-name"] + "(" + project.metadata.name + ")",
+                            value: project.metadata.name
+                        })
+                    } else
+                        selections.push({label: project.metadata.name, value: project.metadata.name});
+                }
+                resolve(selections);
+            });
         })
     });
     namespacePropertyOption.immutable = true;
     return namespacePropertyOption;
-}
-
-function getRoleSubjectOption() {
-    let option = new PropertyOption("subjects", "关联主体", "object", () => new Subject());
-    let namespaceOption = getNamespacePropertyOption();
-    namespaceOption.accessor = "namespace";
-    let subOptions = [
-        namespaceOption,
-        new PropertyOption("name", "名称", "text"),
-        new PropertyOption("kind", "主体类型", "select"),
-        new PropertyOption("apiGroup", "所属API组", "text")
-    ];
-    subOptions[2].selections = [
-        {label: "系统组", value: "SystemGroup"},
-        {label: "软件服务帐号", value: "ServiceAccount"},
-        {label: "用户", value: "User"}
-    ];
-    option.subOptions = subOptions;
-    option.isArray = true;
-    return option;
 }
 
 function getRoleBindingsUserNamesOption() {
@@ -423,7 +415,8 @@ export const PredefinedPropertyOption = {
     },
     projects: function () {
         return [
-            globalNamePropertyOption
+            globalNamePropertyOption,
+            new PropertyOption("metadata.annotations.openshift\\.io/display-name", "显示名", "text")
         ]
     },
     groups: function () {
@@ -441,3 +434,5 @@ export const PredefinedPropertyOption = {
         ]
     }
 };
+
+export {getNamespacePropertyOption};

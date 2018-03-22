@@ -49,7 +49,7 @@ class RoleBindingManagement extends React.Component {
         let roleBindingOptions = PredefinedPropertyOption.rolebindings();
         let tableConfig = new TableConfig();
         tableConfig.columns = [
-            "namespace",
+            "projectDisplayName",
             'namespacedName',
             new ColumnConfig("关联角色", "roleRef.name", undefined, (item) => {
                 if (this.state.clusterRoleNames[item.roleRef.name]) {

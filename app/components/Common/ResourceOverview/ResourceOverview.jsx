@@ -43,7 +43,7 @@ class ResourceOverview extends React.Component {
             pageSelected: false,
             showDeleteSelectedModal: false,
             deleteSelectedWaiting: false,
-            timerId: undefined
+            timerId: undefined,
         };
 
         //store the pageSize, for changing checked in that page.
@@ -364,8 +364,35 @@ class ResourceOverview extends React.Component {
  * @returns {*}
  * @constructor
  */
-function Cell(props) {
-    return props.renderFunction(props.row.original, props.referer, props.linkTo);
+class Cell extends React.Component {
+    constructor(props) {
+        super(props);
+        this.doRender = this.doRender.bind(this);
+        this.state = {component: null};
+    }
+
+    componentDidMount() {
+        this.doRender(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.doRender(nextProps);
+    }
+
+    doRender(props) {
+        let ret = props.renderFunction(props.row.original, props.referer, props.linkTo);
+        if (typeof ret.then === "function") {
+            ret.then((component) => {
+                this.setState({component});
+            })
+        } else {
+            this.setState({component: ret});
+        }
+    }
+
+    render() {
+        return this.state.component;
+    }
 }
 
 /**
@@ -402,28 +429,6 @@ function renderItem(item, referer, linkTo) {
             <span>{data}</span>
         );
     }
-}
-
-/**
- * using the referer to retrieve data for a column.
- * TODO replace this method with accessData function in UtilFunctions.
- * @param {any} item
- * @param {String} referer
- * @return {String | Object}
- */
-function getData(item, referer) {
-    let keys = referer.split(".");
-    let cur = item;
-    for (let i = 0; i < keys.length; i++) {
-        if (cur[keys[i]] !== undefined) {
-            cur = cur[keys[i]];
-        } else {
-            console.warn("This item do not have ", referer);
-            console.warn(item);
-            return "";
-        }
-    }
-    return cur;
 }
 
 /**

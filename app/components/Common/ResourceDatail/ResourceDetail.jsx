@@ -100,8 +100,8 @@ class ResourceDetail extends React.Component {
                 client[self.props.resourceName].update(data, self.props.objectName, option).then(function (data, status, xhr) {
                     resolve();
                     self.setState({item: data, editModalShow: false});
-                }, reject());
-            }, reject())
+                }, () => reject());
+            }, () => reject());
         });
     }
 
