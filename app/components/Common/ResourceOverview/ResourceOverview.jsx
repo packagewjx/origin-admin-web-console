@@ -78,8 +78,6 @@ class ResourceOverview extends React.Component {
     componentDidMount() {
         //fetch data
         this.fetchData();
-
-        this.toggleAutoRefresh();
     }
 
     componentWillUnmount() {
