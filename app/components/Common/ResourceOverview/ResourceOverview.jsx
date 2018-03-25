@@ -299,11 +299,6 @@ class ResourceOverview extends React.Component {
                             <em className="fa fa-trash"/> 删除已选
                         </Button>
                         : null}
-                    <Button onClick={() => {
-                        this.toggleAutoRefresh();
-                    }}>
-                        <em className="fa fa-clock-o"/> {typeof this.state.timerId === "undefined" ? "开启定时刷新" : "关闭定时刷新"}
-                    </Button>
                     {this.props.additionalButtons}
                 </div>
                 {/*End Button Toolbar*/}

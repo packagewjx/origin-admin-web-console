@@ -297,7 +297,7 @@ class KeyValueEditor extends React.Component {
     }
 
     addKeyValue() {
-        let map = this.props.value;
+        let map = this.props.value || {};
         map["key" + this.keyNum++] = "";
         this.props.onChange(map);
     }
