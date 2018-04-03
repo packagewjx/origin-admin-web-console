@@ -115,10 +115,6 @@ module.exports = {
             to: 'fonts',
             context: path.join(__dirname, 'app')
         }, {
-            from: 'httpd-ssl',
-            to: 'httpd-ssl',
-            context: path.join(__dirname, 'app')
-        }, {
             from: '.htaccess',
             to: '',
             context: path.join(__dirname, 'app')
