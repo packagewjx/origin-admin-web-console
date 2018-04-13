@@ -1,56 +1,67 @@
 import React from 'react';
 import {apiClient, setAccessToken} from "../Utils/ApiClient/apiClient";
 import {appHistory} from "../../App";
+import {OPENSHIFT_MASTER_API_URL} from "../Common/constants";
 
-let tokenRequestURL = "https://fireflywjx.cn:8443/oauth/token/request";
+let oauthClientId = "origin-admin-web-console";
+let oauthClientSecret = "wujunxian";
+let oauthRedirectUri = "http://localhost:3000/login/";
 
 class Login extends React.Component {
     constructor(props) {
         super(props);
-        this.doLogin = this.doLogin.bind(this);
+        this.checkToken = this.checkToken.bind(this);
 
-        this.state = {notAdmin: false, credentialWrong: false};
+        this.state = {notAdmin: false};
+    }
+
+    componentDidMount() {
+        /**
+         * If an access token is present, we just use it.
+         */
+        let match = /access_token=([^&]*)/.exec(this.props.location.hash);
+        if (match !== null)
+            this.checkToken(match[1]);
     }
 
 
-    doLogin() {
-        //first clear the state, assume is right
-        this.setState({notAdmin: false, credentialWrong: false});
-        let password = $("#inputPassword").val();
-        let username = $("#inputUsername").val();
-        let base64 = btoa(username + ":" + password);
+    checkToken(token) {
         let self = this;
-        $.ajax(tokenRequestURL, {
-            headers: {
-                Authorization: "Basic " + base64
-            },
-            success: function (data, status, xhr) {
-                let match = new RegExp("<code>(.*)</code>").exec(data);
-                if (match !== null) {
-                    setAccessToken(match[1]);
-                    //test this token with get user request
-                    apiClient().then(function (client) {
-                        client.users.list().then(function () {
-                            appHistory.replace("/");
-                            //store the token
-                            $.localStorage.set("token", match[1]);
-                        }, function () {
-                            self.setState({notAdmin: true});
-                        })
-                    });
-                } else {
-                    //no match, no code
-                    self.setState({credentialWrong: true});
-                }
-
-            },
-            error: function (xhr, status, error) {
-
-            },
+        setAccessToken(token);
+        //test this token with get user request
+        apiClient().then(function (client) {
+            client.users.list().then(() => {
+                appHistory.replace("/");
+                //store the token
+                $.localStorage.set("token", token);
+            }, () => {
+                self.setState({notAdmin: true});
+            })
         });
     }
 
     render() {
+        let loginArea = (
+            <div className="panel-body">
+                <p className="text-center pv">请登录管理员帐号</p>
+                <button type="button" className="btn btn-block btn-primary mt-lg" onClick={() => {
+                    window.location.assign(OPENSHIFT_MASTER_API_URL + "/oauth/authorize?client_id=" + oauthClientId
+                        + "&client_secret=" + oauthClientSecret
+                        + "&response_type=token"
+                        + "&redirect_uri=" + oauthRedirectUri);
+                }}>
+                    使用容器云帐号登录
+                </button>
+                {this.state.notAdmin ? <p className="text-danger">此帐号无管理员权限</p> : null}
+            </div>
+        );
+
+        let oauthCallbackArea = (
+            <div className="panel-body">
+                <p className="text-center pv">请稍侯...</p>
+            </div>
+        );
+
         return (
             <div className="block-center mt-xl wd-xl">
                 {/* START panel */}
@@ -61,26 +72,7 @@ class Login extends React.Component {
                                  className="block-center img-rounded"/>
                         </a>
                     </div>
-                    <div className="panel-body">
-                        <p className="text-center pv">请登录管理员帐号</p>
-                        <form role="form" className="mb-lg">
-                            <div className="form-group has-feedback">
-                                <input id="inputUsername" type="test" placeholder="用户名" required="required"
-                                       className="form-control"/>
-                                <span className="fa fa-envelope form-control-feedback text-muted"/>
-                            </div>
-                            <div className="form-group has-feedback">
-                                <input id="inputPassword" type="password" placeholder="密码" required="required"
-                                       className="form-control"/>
-                                <span className="fa fa-lock form-control-feedback text-muted"/>
-                            </div>
-                            {this.state.notAdmin ? <p className="text-danger">此帐号无管理员权限</p> : null}
-                            {this.state.credentialWrong ? <p className="text-danger">用户名或密码错误</p> : null}
-                            <button type="button" className="btn btn-block btn-primary mt-lg"
-                                    onClick={this.doLogin}>登录
-                            </button>
-                        </form>
-                    </div>
+                    {typeof this.props.location.query.code !== 'undefined' ? oauthCallbackArea : loginArea}
                 </div>
                 {/* END panel */}
             </div>

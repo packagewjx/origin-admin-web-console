@@ -28,3 +28,4 @@ export const APP_MEDIAQUERY = {
 };
 
 export const BACKEND_BASE_ADDRESS = "https://fireflywjx.cn:3001";
+export const OPENSHIFT_MASTER_API_URL = "https://fireflywjx.cn:8443";

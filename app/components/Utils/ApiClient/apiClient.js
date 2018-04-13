@@ -2,8 +2,9 @@ import DeleteOptions from "./model/DeleteOptions";
 import {appHistory} from "../../../App";
 import CacheManager from "./CacheManager";
 import Notify from "../../Common/Notify";
+import {OPENSHIFT_MASTER_API_URL} from "../../Common/constants";
 
-const API_RESOURCE_LIST_URLS = ["https://fireflywjx.cn:8443/oapi/v1", "https://fireflywjx.cn:8443/api/v1"];
+const API_RESOURCE_LIST_URLS = [OPENSHIFT_MASTER_API_URL + "/oapi/v1", OPENSHIFT_MASTER_API_URL + "/api/v1"];
 
 let client = {};
 let fetchingPromise = undefined;
