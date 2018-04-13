@@ -5,7 +5,6 @@ import {OPENSHIFT_MASTER_API_URL} from "../Common/constants";
 
 let oauthClientId = "origin-admin-web-console";
 let oauthClientSecret = "wujunxian";
-let oauthRedirectUri = "http://localhost:3000/login/";
 
 class Login extends React.Component {
     constructor(props) {
@@ -48,7 +47,7 @@ class Login extends React.Component {
                     window.location.assign(OPENSHIFT_MASTER_API_URL + "/oauth/authorize?client_id=" + oauthClientId
                         + "&client_secret=" + oauthClientSecret
                         + "&response_type=token"
-                        + "&redirect_uri=" + oauthRedirectUri);
+                        + "&redirect_uri=" + window.location.href);
                 }}>
                     使用容器云帐号登录
                 </button>
