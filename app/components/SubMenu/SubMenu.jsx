@@ -1,6 +1,6 @@
 var React = require('react');
 import ContentWrapper from '../Layout/ContentWrapper';
-import { Grid, Row, Col, Dropdown, MenuItem } from 'react-bootstrap';
+import {Col, Row} from 'react-bootstrap';
 
 class SubMenu extends React.Component {
 

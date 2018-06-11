@@ -27,5 +27,6 @@ export const APP_MEDIAQUERY = {
     'mobile':                 480
 };
 
-export const BACKEND_BASE_ADDRESS = "https://fireflywjx.cn:3001";
-export const OPENSHIFT_MASTER_API_URL = "https://fireflywjx.cn:8443";
+export const BACKEND_BASE_ADDRESS = "https://222.16.4.220:3001";
+export const OPENSHIFT_MASTER_API_URL = "https://222.16.4.220:8443";
+export const COCKPIT_MONITOR_URL = "https://222.16.4.220:9090";

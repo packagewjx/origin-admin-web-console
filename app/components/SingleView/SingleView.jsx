@@ -1,6 +1,6 @@
 import React from 'react';
 import ContentWrapper from '../Layout/ContentWrapper';
-import { Grid, Row, Col, Dropdown, MenuItem } from 'react-bootstrap';
+import {Col, Dropdown, MenuItem, Row} from 'react-bootstrap';
 
 class SingleView extends React.Component {
 

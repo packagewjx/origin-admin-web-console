@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Tab } from 'react-bootstrap';
+import {Tab, Tabs} from 'react-bootstrap';
 import OffsidebarRun from './Offsidebar.run';
 
 class Offsidebar extends React.Component {

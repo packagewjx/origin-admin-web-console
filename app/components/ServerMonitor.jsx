@@ -6,11 +6,12 @@
 
 import React from 'react';
 import ResponsiveIFrame from "./Common/ResponsiveIFrame";
+import {COCKPIT_MONITOR_URL} from "./Common/constants";
 
 class ServerMonitor extends React.Component {
     render() {
         return (
-            <ResponsiveIFrame src="https://fireflywjx.cn:9090"/>
+            <ResponsiveIFrame src={COCKPIT_MONITOR_URL}/>
         );
     }
 }
