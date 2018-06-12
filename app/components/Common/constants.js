@@ -27,6 +27,6 @@ export const APP_MEDIAQUERY = {
     'mobile':                 480
 };
 
-export const BACKEND_BASE_ADDRESS = "https://222.16.4.220:3001";
-export const OPENSHIFT_MASTER_API_URL = "https://222.16.4.220:8443";
-export const COCKPIT_MONITOR_URL = "https://222.16.4.220:9090";
+export const BACKEND_BASE_ADDRESS = "https://scjdkpaas.cn:3001";
+export const OPENSHIFT_MASTER_API_URL = "https://scjdkpaas.cn:8443";
+export const COCKPIT_MONITOR_URL = "https://scjdkpaas.cn:9090";
