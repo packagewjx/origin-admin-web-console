@@ -91,8 +91,8 @@ class CreateUserButton extends React.Component {
 
                 let identity = new Identity();
                 identity.providerUserName = this.state.username;
-                identity.providerName = "htpasswd";
-                identity.metadata.name = "htpasswd" + ":" + this.state.username;
+                identity.providerName = "username";
+                identity.metadata.name = identity.providerName + ":" + this.state.username;
                 let p2 = client.identities.create(identity);
                 p2.fail((xhr) => console.error(xhr));
 

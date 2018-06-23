@@ -42,7 +42,7 @@ class IdentityManagement extends React.Component {
             <ResourceOverview title="用户身份管理" resourceName="identities" tableConfig={this.tableConfig}
                               getNewResourceObject={() => {
                                   let identity = new Identity();
-                                  identity.providerName = "htpasswd";
+                                  identity.providerName = "username";
                                   identity.providerUserName = "";
                                   return identity;
                               }}
